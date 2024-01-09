@@ -2,7 +2,9 @@
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     include 'db_connect.php'; // Asegúrate de incluir el archivo de conexión a la base de datos.
 
-    $categoria = $_POST['categoria'];
+    $categoria = strtoupper($_POST['categoria']); // Convierte a mayúsculas
+    // Verifica si el usuario está autenticado antes de acceder a $_SESSION['nombre_usuario']
+    $nombre_usuario = isset($_SESSION['nombre_usuario']) ? $_SESSION['nombre_usuario'] : 'Usuario Desconocido';
     $creado = $_POST['creado'];
     $fecha_creacion = $_POST['fecha_creacion']; // Asegúrate de que este campo se envíe desde el formulario.
 
