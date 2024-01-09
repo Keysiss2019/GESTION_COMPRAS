@@ -1,3 +1,7 @@
+<?php
+ session_start();
+
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -51,8 +55,9 @@
 
 
 .custom-button.cancel-button {
-    background-color: #ff0000; /* Cambia el color de fondo para el botón "Cancelar" */
+    background-color: gray; /* Cambia el color de fondo para el botón "Cancelar" */
     color: #fff; /* Cambia el color del texto para el botón "Cancelar" */
+    text-decoration: none; /* Elimina el subrayado del enlace */
 }
 
 .custom-button {
@@ -60,9 +65,6 @@
     color: #fff; /* Cambia el color del texto para el botón "Guardar" */
 }
 
-.custom-button:hover {
-    background-color: #555; /* Cambio de color de fondo al pasar el cursor sobre ambos botones */
-}
 
 
       
@@ -72,13 +74,13 @@
 <div class="container">
     <br><br>
     <form action="guardar_categoria.php" method="POST">
-      <h2 style="text-align: center;">Nueva Categoría</h2>
+      <h2 style="text-align: center;">Categoría</h2>
         <label for="categoria">Categoría:</label>
         <input type="text" name="categoria" required>
 
         <label for="creado">Creado por:</label>
-        <input type="text" name="creado" required>
-
+        <input type="text" name="creado" value="<?php echo $_SESSION['nombre_usuario']; ?>">
+        
         <label for="fecha_creacion">Fecha de Creación:</label>
         <input type="text" name="fecha_creacion" value="<?php echo date("Y-m-d"); ?>" readonly>
 
