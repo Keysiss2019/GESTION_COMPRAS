@@ -50,15 +50,7 @@
 </head>
 <body>
     <?php
-      $servername = "localhost";
-      $username = "root";
-       $password = "";
-       $dbname = "gestion_compras2";
-
-       $conn = new mysqli($servername, $username, $password, $dbname);
-        if ($conn->connect_error) {
-         die("Error de conexión: " . $conn->connect_error);
-        }
+      include('../conexion/conexion.php');
 
         // Almacena el contenido del encabezado
         $headerContent = '
