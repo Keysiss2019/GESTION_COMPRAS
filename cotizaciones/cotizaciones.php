@@ -88,7 +88,7 @@ if ($result->num_rows > 0) {
         $rowsContent .= '<td>
                            <a href="verCotizacion.php?id='. $row["ID_COTIZACION"] . '" style="background-color: blue; color: white; padding: 4px; border-radius: 5px; margin-right: 5px;">
                            <i class="fas fa-eye"></i>
-                           </a>
+                           </a> 
       
                             <a href="editar_cotizacion.php?id=' . $row["ID_COTIZACION"] . '" style="background-color: green; color: white; padding: 5px; border-radius: 5px;"><i class="fas fa-edit"></i></a>
                             <button class="btn btn-danger" onclick="eliminarCotizacion(' . $row["ID_COTIZACION"] . ')" style="font-size: 14px;">
