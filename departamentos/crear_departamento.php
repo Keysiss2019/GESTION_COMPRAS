@@ -86,75 +86,71 @@ $empresas = $stmt_empresas->fetchAll(PDO::FETCH_ASSOC);
         }
 
        
-    .button-container {
-        text-align: center;
-    }
+       .button-container {
+         text-align: center;
+        }
 
-    .custom-button {
-        display: inline-block;
-        width: 150px; /* Ajusta el ancho de los botones según tus preferencias */
-        padding: 10px 0; /* Ajusta el espaciado vertical si es necesario */
-        margin: 0 10px; /* Ajusta el espaciado horizontal entre los botones si es necesario */
-        border: none;
-        border-radius: 3px;
-        font-weight: bold;
-        cursor: pointer;
-        text-align: center;
-    }
+        .custom-button {
+          display: inline-block;
+          width: 150px; /* Ajusta el ancho de los botones según tus preferencias */
+          padding: 10px 0; /* Ajusta el espaciado vertical si es necesario */
+          margin: 0 10px; /* Ajusta el espaciado horizontal entre los botones si es necesario */
+          border: none;
+          border-radius: 3px;
+          font-weight: bold;
+          cursor: pointer;
+          text-align: center;
+        }
 
-    .custom-button.cancel-button {
-        background-color: #ff0000; /* Cambia el color de fondo para el botón "Cancelar" */
-        color: #fff; /* Cambia el color del texto para el botón "Cancelar" */
-    }
+       .custom-button.cancel-button {
+          background-color: gray; /* Cambia el color de fondo para el botón "Cancelar" */
+          color: #fff; /* Cambia el color del texto para el botón "Cancelar" */
+          text-decoration: none; /* Quitar el subrayado */
+        }
 
-    .custom-button {
-        background-color: blue; /* Cambia el color de fondo para el botón "Guardar" */
-        color: #fff; /* Cambia el color del texto para el botón "Guardar" */
-    }
-
-    .custom-button:hover {
-        background-color: #555; /* Cambio de color de fondo al pasar el cursor sobre ambos botones */
-    }
-
+        .custom-button {
+          background-color: blue; /* Cambia el color de fondo para el botón "Guardar" */
+         color: #fff; /* Cambia el color del texto para el botón "Guardar" */
+        }
 
     </style>
 </head>
 <body>
-<div class="container">
-    <form method="POST" action="crear_departamento.php">
-        <h2 style="text-align: center;">Nuevo Departamento</h2>
-        <label for="id_empresa">Empresa:</label>
-        <select name="id_empresa" id="id_empresa" required>
-            <option value="">--Seleccione--</option>
-            <?php foreach ($empresas as $empresa) { ?>
-                <option value="<?php echo $empresa['id_empresa']; ?>"><?php echo $empresa['nombre_empresa']; ?></option>
-            <?php } ?>
-        </select>
+    <div class="container">
+        <form method="POST" action="crear_departamento.php">
+           <h2 style="text-align: center;">Departamento</h2>
+           <label for="id_empresa">Empresa:</label>
+            <select name="id_empresa" id="id_empresa" required>
+               <option value="">--Seleccione--</option>
+               <?php foreach ($empresas as $empresa) { ?>
+                  <option value="<?php echo $empresa['id_empresa']; ?>"><?php echo $empresa['nombre_empresa']; ?></option>
+                <?php } ?>
+            </select>
 
-        <label for="nombre_departamento">Departamento:</label>
-        <input type="text" name="nombre_departamento" id="nombre_departamento" required>
+            <label for="nombre_departamento">Departamento:</label>
+            <input type="text" name="nombre_departamento" id="nombre_departamento" required>
 
-        <label for="estado_departamento">Estado:</label>
-        <select name="estado_departamento" id="estado_departamento" required>
-            <option value="">--Seleccione--</option>
-            <option value="A">Activo</option>
-            <option value="I">Inactivo</option>
-            <option value="B">Bloqueado</option>
-        </select>
+            <label for="estado_departamento">Estado:</label>
+            <select name="estado_departamento" id="estado_departamento" required>
+             <option value="">--Seleccione--</option>
+             <option value="A">Activo</option>
+             <option value="I">Inactivo</option>
+             <option value="B">Bloqueado</option>
+            </select>
 
-        <label for="fecha_creacion">Fecha de Creación:</label>
-        <input type="text" name="fecha_creacion" id="fecha_creacion" value="<?php echo date('Y-m-d'); ?>" readonly>
+            <label for="fecha_creacion">Fecha de Creación:</label>
+            <input type="text" name="fecha_creacion" id="fecha_creacion" value="<?php echo date('Y-m-d'); ?>" readonly>
 
-        <label for="creado">Creado por:</label>
-        <input type="text" name="creado" id="creado" required>
+            <label for="creado">Creado por:</label>
+            <input type="text" name="creado" id="creado" required>
 
-        <br><br>
-        <div class="button-container">
-          <button type="submit" class="custom-button">Guardar</button>
-          <a href="listar_departamentos.php" class="custom-button cancel-button">Cancelar</a>
-        </div>
-    </form>
-</div>
+            <br><br>
+            <div class="button-container">
+              <button type="submit" class="custom-button">Guardar</button>
+              <a href="listar_departamentos.php" class="custom-button cancel-button">Cancelar</a>
+            </div>
+       </form>
+    </div>
 </body>
 </html>
 
