@@ -50,47 +50,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
         }
 
         /* Estilos para centrar el título */
-h2 {
-    text-align: center; /* Centrar el texto horizontalmente */
-}
+        h2 {
+         text-align: center; /* Centrar el texto horizontalmente */
+        }
 
         /* Estilos para el contenedor del formulario (el cuadro) */
-.form-container {
-    width: 80%; /* Ancho del contenedor */
-    margin: 0 auto; /* Centrar horizontalmente en la página */
-    padding: 20px; /* Espacio interno alrededor del formulario */
-    border: 1px solid #ccc; /* Borde del cuadro */
-    border-radius: 5px; /* Bordes redondeados */
-    background-color: #f9f9f9; /* Color de fondo del cuadro */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
-    opacity: 0.8; /* Valor de opacidad (menos transparente) */
-}
+       .form-container {
+         width: 80%; /* Ancho del contenedor */
+         margin: 0 auto; /* Centrar horizontalmente en la página */
+          padding: 20px; /* Espacio interno alrededor del formulario */
+          border: 1px solid #ccc; /* Borde del cuadro */
+         border-radius: 5px; /* Bordes redondeados */
+         background-color: #f9f9f9; /* Color de fondo del cuadro */
+         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+         opacity: 0.8; /* Valor de opacidad (menos transparente) */
+        }
 
+      /* Estilos para la columna del formulario */
+       .form-column {
+         float: left; /* Flotar las columnas a la izquierda */
+          width: 50%; /* Ancho del 50% para ambas columnas */
+          box-sizing: border-box; /* Incluir el relleno y el borde en el ancho */
+          padding: 10px; /* Espacio interno entre elementos dentro de la columna */
+        }
 
-       
+        /* Estilos para los campos de entrada (input) en la columna */
+        .form-column input {
+          width: 100%; /* Ancho del 100% para llenar la columna completa */
+           padding: 10px; /* Espaciado dentro de los campos de entrada */
+          margin-bottom: 10px; /* Espacio inferior entre campos de entrada */
+        }
 
-/* Estilos para la columna del formulario */
-.form-column {
-    float: left; /* Flotar las columnas a la izquierda */
-    width: 50%; /* Ancho del 50% para ambas columnas */
-    box-sizing: border-box; /* Incluir el relleno y el borde en el ancho */
-    padding: 10px; /* Espacio interno entre elementos dentro de la columna */
-}
+        /* Estilos para las etiquetas (label) en la columna */
+       .form-column label {
+         display: block; /* Mostrar las etiquetas en una nueva línea */
+          margin-bottom: 5px; /* Espacio inferior entre etiquetas */
+        }
 
-/* Estilos para los campos de entrada (input) en la columna */
-.form-column input {
-    width: 100%; /* Ancho del 100% para llenar la columna completa */
-    padding: 10px; /* Espaciado dentro de los campos de entrada */
-    margin-bottom: 10px; /* Espacio inferior entre campos de entrada */
-}
-
-/* Estilos para las etiquetas (label) en la columna */
-.form-column label {
-    display: block; /* Mostrar las etiquetas en una nueva línea */
-    margin-bottom: 5px; /* Espacio inferior entre etiquetas */
-}
-
-select{
+        select{
             width: 100%;
             padding: 10px;
             margin-top: 5px;
@@ -98,85 +95,74 @@ select{
             border-radius: 3px;
         }
 
-/* Estilos para la sección de botones */
-.button-section {
-    clear: both; /* Limpiar el flotado para que los elementos debajo no floten */
-    text-align: left; /* Alinear los botones a la izquierda */
-    margin-top: 20px; /* Espacio superior para separar de las columnas */
-}
+        /* Estilos para los botones */
+        button, .cancel-button {
+           border: none; /* Sin borde */
+           cursor: pointer;
+           text-decoration: none; /* Quitar el subrayado */
+        }
 
-/* Estilos para los botones */
-button, .custom-button {
-    padding: 10px 20px; /* Espaciado dentro de los botones */
-    background-color: #007bff; /* Color de fondo del botón principal */
-    color: #fff; /* Color de texto para el botón principal */
-    border: none; /* Sin borde */
-    cursor: pointer;
-}
+        /* Estilos para el botón "Guardar" */
+       .custom-button {
+          padding: 12px 20px; /* Ajustar el espaciado dentro de los botones */
+           background-color: #007bff; /* Color de fondo del botón "Guardar" */
+          color: #fff; /* Color de texto para el botón "Guardar" */
+        }
 
-.cancel-button {
-    background-color: #dc3545; /* Color de fondo para el botón de cancelar */
-}
-
-/* Agregar estilos de botón cuando se pasa el mouse sobre ellos */
-button:hover, .custom-button:hover {
-    background-color: #0056b3;
-}
-
-
-
-      
+        /* Estilos para el botón "Cancelar" */
+        .cancel-button {
+          padding: 15px 20px; /* Mantener el espaciado en el botón "Cancelar" */
+          background-color: gray; /* Color de fondo para el botón "Cancelar" */
+          color: #fff; /* Color de texto para el botón "Cancelar" */
+        }
+ 
     </style>
 </head>
 <body>
-<br><br>
-<div class="form-container">
+    <br><br>
+    <div class="form-container">
 
-<h2>Editar Departamento</h2>
+      <h2> Departamento</h2>
 
-<form method="POST" action="actualizar_departamento.php">
-    <input type="hidden" name="id" value="<?php echo $departamento['id_departamento']; ?>">
+       <form method="POST" action="actualizar_departamento.php">
+         <input type="hidden" name="id" value="<?php echo $departamento['id_departamento']; ?>">
 
-    <div class="form-column">
-        <label for="nombre_empresa">Empresa:</label>
-        <input type="text" name="nombre_empresa" id="nombre_empresa" value="<?php echo $departamento['nombre_empresa']; ?>" required>
+          <div class="form-column">
+              <label for="nombre_empresa">Empresa:</label>
+              <input type="text" name="nombre_empresa" id="nombre_empresa" value="<?php echo $departamento['nombre_empresa']; ?>" required>
 
-        <label for="nombre_departamento">Departamento:</label>
-        <input type="text" name="nombre_departamento" id="nombre_departamento" value="<?php echo $departamento['nombre_departamento']; ?>" required>
+              <label for="nombre_departamento">Departamento:</label>
+              <input type="text" name="nombre_departamento" id="nombre_departamento" value="<?php echo $departamento['nombre_departamento']; ?>" required>
         
-        <label for="estado_departamento">Estado:</label>
-        <select name="estado_departamento" id="estado_departamento">
-    <option value="" <?php if (empty($departamento['estado_departamento'])) echo 'selected'; ?>>--Seleccione--</option>
-    <option value="A" <?php if ($departamento['estado_departamento'] === 'A') echo 'selected'; ?>>Activo</option>
-    <option value="I" <?php if ($departamento['estado_departamento'] === 'I') echo 'selected'; ?>>Inactivo</option>
-    <option value="B" <?php if ($departamento['estado_departamento'] === 'B') echo 'selected'; ?>>Bloqueado</option>
-</select><br>
+              <label for="estado_departamento">Estado:</label>
+              <select name="estado_departamento" id="estado_departamento">
+                  <option value="" <?php if (empty($departamento['estado_departamento'])) echo 'selected'; ?>>--Seleccione--</option>
+                  <option value="A" <?php if ($departamento['estado_departamento'] === 'A') echo 'selected'; ?>>Activo</option>
+                  <option value="I" <?php if ($departamento['estado_departamento'] === 'I') echo 'selected'; ?>>Inactivo</option>
+                  <option value="B" <?php if ($departamento['estado_departamento'] === 'B') echo 'selected'; ?>>Bloqueado</option>
+               </select><br>
 
+            </div>
+
+           <div class="form-column">
+             <label for="creado">Creado por:</label>
+              <input type="text" name="creado" id="creado" value="<?php echo $departamento['creado']; ?>" readonly>
+
+              <label for="fecha_creacion">Fecha de Creación:</label>
+              <input type="text" name="fecha_creacion" id="fecha_creacion" value="<?php echo date('d/m/Y', strtotime($departamento['fecha_creacion'])); ?>" readonly>
+
+              <label for="modificado_por">Modificado por:</label>
+               <input type="text" name="modificado_por" id="modificado_por" value="<?php echo $departamento['modificado_por']; ?>" required>
+
+              <label for="fecha_modificacion">Fecha de Modificación:</label>
+              <input type="text" name="fecha_modificacion" id="fecha_modificacion" value="<?php echo date('d/m/Y', strtotime($departamento['fecha_modificacion'])); ?>" readonly>
+           </div>
+
+           <div class="button-section">
+                <button type="submit" class="custom-button save-button">Guardar</button>
+                <a href="listar_departamentos.php" class="custom-button cancel-button">Cancelar</a>
+            </div>
+       </form>
     </div>
-
-    <div class="form-column">
-        <label for="creado">Creado por:</label>
-        <input type="text" name="creado" id="creado" value="<?php echo $departamento['creado']; ?>" readonly>
-
-        <label for="fecha_creacion">Fecha de Creación:</label>
-        <input type="text" name="fecha_creacion" id="fecha_creacion" value="<?php echo date('d/m/Y', strtotime($departamento['fecha_creacion'])); ?>" readonly>
-
-        <label for="modificado_por">Modificado por:</label>
-        <input type="text" name="modificado_por" id="modificado_por" value="<?php echo $departamento['modificado_por']; ?>" required>
-
-        <label for="fecha_modificacion">Fecha de Modificación:</label>
-        <input type="text" name="fecha_modificacion" id="fecha_modificacion" value="<?php echo date('d/m/Y', strtotime($departamento['fecha_modificacion'])); ?>" readonly>
-    </div>
-
-    <div class="button-section">
-        <button type="submit">Guardar</button>
-        <a href="listar_departamentos.php" class="custom-button cancel-button">Cancelar</a>
-    </div>
-</form>
-
-
-
-
-</div>
 </body>
 </html>
