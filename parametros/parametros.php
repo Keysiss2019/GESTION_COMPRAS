@@ -1,10 +1,10 @@
 <?php
-// Incluye el archivo de conexión a la base de datos
-include('../conexion/conexion.php');
+  // Incluye el archivo de conexión a la base de datos
+  include('../conexion/conexion.php');
 
-// Consulta SQL para obtener todos los parámetros
-$sql = "SELECT * FROM tbl_ms_parametros";
-$result = $conn->query($sql);
+  // Consulta SQL para obtener todos los parámetros
+  $sql = "SELECT * FROM tbl_ms_parametros";
+  $result = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -49,6 +49,30 @@ $result = $conn->query($sql);
             cursor: pointer;
             float: right; /* Alinea a la derecha */
         }
+
+        .edit-link {
+          background-color: #28a745; /* Estilo para Editar */
+          color: #fff;
+          padding: 5px 10px;
+          text-decoration: none;
+          border-radius: 5px;
+           margin-right: 5px; /* Agregamos margen derecho para separar los enlaces */
+        }
+
+       .delete-link {
+          background-color: #dc3545; /* Estilo para Eliminar */
+          color: #fff;
+          padding: 5px 10px;
+           text-decoration: none;
+          border-radius: 5px;
+          margin-right: 5px;
+          border: none; /* Elimina el borde */
+        }
+
+        .delete-link:focus {
+          outline: none; /* Elimina el contorno al hacer clic en el botón */
+        }
+
     </style>
 </head>
 <body>
@@ -57,38 +81,39 @@ $result = $conn->query($sql);
     <h2><i class="fas fa-sliders-h"></i>Parámetros</h2>
     <a href="crear.php" class="create-button"><i class='fas fa-plus'></i></a>
     <?php
-    if ($result->num_rows > 0) {
-        echo '<table border="1">';
-        echo '<tr><th>PARAMETRO</th><th>VALOR</th><th>FECHA_CREACION</th><th>FECHA_MODIFICACION</th><th>ACCIONES</th></tr>';
+         if ($result->num_rows > 0) {
+              echo '<table border="1">';
+               echo '<tr><th>PARAMETRO</th><th>VALOR</th><th>FECHA_CREACION</th><th>FECHA_MODIFICACION</th><th>ACCIONES</th></tr>';
         
-        while ($row = $result->fetch_assoc()) {
-            echo '<tr>';
-            echo '<td>' . $row['PARAMETRO'] . '</td>';
-            echo '<td>' . $row['VALOR'] . '</td>';
-            echo '<td>' . date('Y-m-d', strtotime($row['FECHA_CREACION'])) . '</td>';
-            echo '<td>' . date('Y-m-d', strtotime($row['FECHA_MODIFICACION'])) . '</td>';
-            // Agregar la columna de acciones con los botones de editar y eliminar
-            echo '<td>';
-            echo '<a href="editar.php?id=' . $row['ID_PARAMETRO'] . '" class="btn btn-primary"><i class="fas fa-edit"></i></a>';
+               while ($row = $result->fetch_assoc()) {
+                echo '<tr>';
+                echo '<td>' . $row['PARAMETRO'] . '</td>';
+                echo '<td>' . $row['VALOR'] . '</td>';
+                echo '<td>' . date('Y-m-d', strtotime($row['FECHA_CREACION'])) . '</td>';
+                echo '<td>' . date('Y-m-d', strtotime($row['FECHA_MODIFICACION'])) . '</td>';
+               // Agregar la columna de acciones con los botones de editar y eliminar
+               echo '<td>';
+               echo '<a href="editar.php?id=' . $row['ID_PARAMETRO'] . '" class="edit-link"><i class="fas fa-edit"></i></a>';
+
+
             
-            // Agregar el botón de eliminar con el evento onclick
-            echo '<button class="btn btn-danger" onclick="eliminarParametro(' . $row['ID_PARAMETRO'] . ')"><i class="fas fa-trash"></i></button>';
-            echo '</td>';
-            echo '</tr>';
+              // Agregar el botón de eliminar con el evento onclick
+             echo '<button class="delete-link " onclick="eliminarParametro(' . $row['ID_PARAMETRO'] . ')"><i class="fas fa-trash"></i></button>';
+             echo '</td>';
+             echo '</tr>';
+            }
+
+            echo '</table>';
+        } else {
+          echo 'No hay parámetros registrados.';
         }
 
-        echo '</table>';
-    } else {
-        echo 'No hay parámetros registrados.';
-    }
-
-    // Cierra la conexión
-    $conn->close();
+      // Cierra la conexión
+      $conn->close();
     ?>
-<button class="styled-button" onclick="window.location.href='../setting/ajustes.php'" style="background-color: #007bff; color: #fff; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer;">Regresar</button>
+    <button class="styled-button" onclick="window.location.href='../setting/ajustes.php'" style="background-color: #007bff; color: #fff; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer;">Regresar</button>
 
-
-<script>
+    <script>
         // Función para confirmar la eliminación y llamar a la función eliminarParametroAjax
         function eliminarParametro(idParametro) {
             if (confirm('¿Estás seguro de que deseas eliminar este parámetro?')) {
