@@ -50,7 +50,9 @@
             padding: 5px 10px;
             text-decoration: none;
             border-radius: 5px;
+            border: none; /* Elimina el borde */
         }
+
 
         /* Estilos al pasar el ratón sobre los enlaces */
         .edit-link:hover {
@@ -159,7 +161,11 @@
                         <td><?php echo $pregunta['MODIFICADO_POR']; ?></td>
                         <td>
                             <a href="editar.php?id=<?php echo $pregunta['ID_PREGUNTA']; ?>" class="edit-link"><i class="fas fa-edit"></i></a>
-                            <a href="eliminar.php?id=<?php echo $pregunta['ID_PREGUNTA']; ?>" class="delete-link"><i class="fas fa-trash-alt"></i></a>
+                             <!-- Formulario de confirmación para eliminar -->
+                           <form action="eliminar.php" method="post" style="display: inline;">
+                             <input type="hidden" name="ID_PREGUNTA" value="<?php echo $pregunta['ID_PREGUNTA']; ?>">
+                             <button type="submit" name="eliminar" class="delete-link"><i class="fas fa-trash-alt"></i></button>
+                            </form>
                         </td>
                     </tr>
                 <?php } ?>
@@ -230,3 +236,4 @@
 </body>
 
 </html>
+
