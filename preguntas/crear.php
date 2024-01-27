@@ -22,15 +22,15 @@
         }
 
         .container {
-    background-color: rgba(245, 245, 220, 0.9); /* Beige con transparencia */
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-    width: 400px;
-    text-align: center; /* Centra el contenido horizontalmente */
-    margin: 0 auto; /* Centra el formulario en la página */
-}
-</style>
+           background-color: rgba(245, 245, 220, 0.9); /* Beige con transparencia */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center; /* Centra el contenido horizontalmente */
+            margin: 0 auto; /* Centra el formulario en la página */
+        }
+    </style>
 </head>
 
 <body>
@@ -38,56 +38,58 @@
         <h2><i class="fas fa-question"></i> Crear Pregunta</h2>
         
         <?php
-// Procesar el formulario cuando se envía
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Incluir el archivo de conexión a la base de datos
-    include_once('../conexion/conexion.php');
+           // Iniciar la sesión si aún no se ha iniciado
+          session_start();
 
-    // Obtener la pregunta del formulario y normalizarla (convertir a minúsculas)
-    $pregunta = strtolower($_POST["pregunta"]);
+         // Procesar el formulario cuando se envía
+           if ($_SERVER["REQUEST_METHOD"] == "POST") {
+              // Incluir el archivo de conexión a la base de datos
+              include_once('../conexion/conexion.php');
 
-    // El valor de "creado_por" se establecerá automáticamente como "admin" al insertar en la base de datos
-    $creado_por = "admin";
+              // Obtener la pregunta del formulario y normalizarla (convertir a minúsculas)
+              $pregunta = strtolower($_POST["pregunta"]);
 
-    // Consulta SQL para verificar si la pregunta ya existe
-    $verificarDuplicadoSql = "SELECT ID_PREGUNTA FROM tbl_preguntas WHERE LOWER(PREGUNTA) = ?";
-    $stmtVerificarDuplicado = $conn->prepare($verificarDuplicadoSql);
-    $stmtVerificarDuplicado->bind_param("s", $pregunta);
-    $stmtVerificarDuplicado->execute();
-    $stmtVerificarDuplicado->store_result();
+              // Verifica si el usuario está autenticado antes de acceder a $_SESSION['nombre_usuario']
+              $nombre_usuario = isset($_SESSION['nombre_usuario']) ? $_SESSION['nombre_usuario'] : 'Usuario Desconocido';
 
-    if ($stmtVerificarDuplicado->num_rows > 0) {
-        echo "<div class='alert alert-danger' role='alert'>La pregunta ya existe en la base de datos.</div>";
-    } else {
-        // La pregunta no existe, proceder con la inserción
-        // Consulta SQL para insertar la pregunta en la base de datos con la fecha de creación automática
-        $sql = "INSERT INTO tbl_preguntas (PREGUNTA, CREADO_POR, FECHA_CREACION) VALUES (?, ?, NOW())";
+              // Consulta SQL para verificar si la pregunta ya existe
+              $verificarDuplicadoSql = "SELECT ID_PREGUNTA FROM tbl_preguntas WHERE LOWER(PREGUNTA) = ?";
+              $stmtVerificarDuplicado = $conn->prepare($verificarDuplicadoSql);
+              $stmtVerificarDuplicado->bind_param("s", $pregunta);
+              $stmtVerificarDuplicado->execute();
+              $stmtVerificarDuplicado->store_result();
 
-        // Preparar la consulta
-        $stmt = $conn->prepare($sql);
+               if ($stmtVerificarDuplicado->num_rows > 0) {
+                 echo "<div class='alert alert-danger' role='alert'>La pregunta ya existe en la base de datos.</div>";
+                } else {
+                  // La pregunta no existe, proceder con la inserción
+                  // Consulta SQL para insertar la pregunta en la base de datos con la fecha de creación automática
+                  $sql = "INSERT INTO tbl_preguntas (PREGUNTA, CREADO_POR, FECHA_CREACION) VALUES (?, ?, NOW())";
 
-        // Vincular los parámetros
-        $stmt->bind_param("ss", $_POST["pregunta"], $creado_por);
+                  // Preparar la consulta
+                  $stmt = $conn->prepare($sql);
 
-        // Ejecutar la consulta
-        if ($stmt->execute()) {
-            echo "<div class='alert alert-success' role='alert'>Pregunta agregada correctamente.</div>";
-            // Redirigir a preguntas.php después de 2 segundos
-            header("refresh:2;url=preguntas.php");
-        } else {
-            echo "<div class='alert alert-danger' role='alert'>Error al agregar la pregunta: " . $stmt->error . "</div>";
-        }
+                  // Vincular los parámetros
+                  $stmt->bind_param("ss", $_POST["pregunta"], $nombre_usuario);
 
-        // Cerrar la declaración
-        $stmt->close();
-    }
+                 // Ejecutar la consulta
+                   if ($stmt->execute()) {
+                       echo "<div class='alert alert-success' role='alert'>Pregunta agregada correctamente.</div>";
+                      // Redirigir a preguntas.php después de 2 segundos
+                      header("refresh:2;url=preguntas.php");
+                    } else {
+                     echo "<div class='alert alert-danger' role='alert'>Error al agregar la pregunta: " . $stmt->error . "</div>";
+                    }
 
-    // Cerrar la conexión
-    $conn->close();
-}
-?>
+                  // Cerrar la declaración
+                  $stmt->close();
+                }
 
-
+             // Cerrar la conexión
+              $conn->close();
+            }
+        ?>
+        
         <!-- Formulario para crear una nueva pregunta -->
         <form method="POST">
             <div class="mb-3">
@@ -104,5 +106,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </body>
 
 </html>
-
-
