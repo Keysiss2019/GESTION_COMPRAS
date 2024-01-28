@@ -79,62 +79,35 @@
 
         #proveedoresTable tr:nth-child(even) {
           background-color: #f2f2f2;
-        }
-
-        button {
-            background-color: #0078d4;
-            color: #fff;
-            border: none;
-            padding: 15px 20px;
-            cursor: pointer;
-            display: inline-block;
-        }
-
-        button:hover {
-            background-color: #0056b3;
+        
         }
 
         .button-container {
-            display: flex;
-            justify-content: flex-end; /* Cambia space-between a flex-end */
-            align-items: center;
-            margin: -65px 0; /* Ajusta el margen superior para alinear más cerca de la tabla */
-            padding: 20px;
-            margin-right: -25px;
-            
-        }
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px;
+    
+}
+.btn-crear {
+    background-color: blue;
+    color: #fff;
+    padding: 6px 10px;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    right: 0; /* Ajusta la posición hacia la derecha */
+    top: 55px; /* Ajusta la posición relativa hacia abajo */
+    margin-right: -10px; /* Ajusta el margen derecho para separar del borde de la tabla */
+    z-index: 1; /* Asegura que el botón esté por encima de la tabla */
+}
 
-        .button-container label {
-            margin-right: 190px;
-        }
 
-        .button-container input {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-right: -0px;
-        }
 
-        .button-container form {
-            display: flex;
-            align-items: center;
-            margin-right: 1px;
-        }
 
-        .button-container button {
-          margin-left: -0px; /* Ajusta el margen izquierdo */
-          border-radius: 5px; /* Ajusta el valor del border-radius para dar forma ovalada */
-          font-size: 12px; /* Ajusta el tamaño de la fuente para hacer el botón más pequeño */
-        }
 
-        /* Estilo específico para el botón "Crear Nuevo Proveedor" */
-        .btn-crear {
-          background-color: blue; /* Cambia el color del botón a verde */
-          color: #fff; /* Cambia el color del texto a blanco */
-           padding: 10px 15px; /* Ajusta el relleno para darle espacio al ícono y el texto */
-          border: none; /* Quita el borde para que se vea como un botón simple */
-   
-        }
+
+
 
         /* Estilo para los botones de acción */
        .action-link-blue,
@@ -199,7 +172,7 @@
 
     <div class="content">
        <h2><i class="fas fa-truck"></i> Proveedores</h2>
-        <br><br><br><br>
+        
         <div class="button-container" >
             <a href="crear_proveedor.php"><button class="btn-crear"><i class="fas fa-plus"></i></button></a>
         </div>
