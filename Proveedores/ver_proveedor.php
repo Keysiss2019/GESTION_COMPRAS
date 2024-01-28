@@ -105,12 +105,10 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             cursor: pointer;
         }
 
-        button:hover {
-            background-color: #45a049; /* Cambia el color al pasar el mouse sobre el botón */
-        }
-  /* Estilo del botón */
-  button {
-            background-color: #4CAF50; /* Color verde para el botón */
+      
+         /* Estilo del botón */
+        button {
+            background-color: blue; /* Color verde para el botón */
             color: white; /* Texto en color blanco */
             padding: 10px 20px;
             border: none;
