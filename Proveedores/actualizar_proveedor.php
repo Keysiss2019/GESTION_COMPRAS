@@ -136,12 +136,8 @@ button, .custom-button {
 }
 
 .cancel-button {
-    background-color: #dc3545; /* Color de fondo para el botón de cancelar */
-}
-
-/* Agregar estilos de botón cuando se pasa el mouse sobre ellos */
-button:hover, .custom-button:hover {
-    background-color: #0056b3;
+    background-color: gray; /* Color de fondo para el botón de cancelar */
+    text-decoration: none; /* Quita el subrayado */
 }
 
 
