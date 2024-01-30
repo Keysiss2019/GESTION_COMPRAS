@@ -65,63 +65,69 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['siguiente'])) {
         }
 
         .form-header {
-    text-align: center;
-    margin-bottom: 10px; /* Reduce el margen inferior entre los encabezados */
-    font-family: 'TuTipoDeLetra', sans-serif; /* Cambia 'TuTipoDeLetra' por el tipo de letra deseado */
-}
+          text-align: center;
+          margin-bottom: 10px; /* Reduce el margen inferior entre los encabezados */
+          font-family: 'TuTipoDeLetra', sans-serif; /* Cambia 'TuTipoDeLetra' por el tipo de letra deseado */
+        }
 
-.form-header h2 {
-    color: #007BFF; /* Color azul para el primer encabezado */
-    margin: 0; /* Elimina el margen superior e inferior del h2 */
-}
+        .form-header h2 {
+          color: #007BFF; /* Color azul para el primer encabezado */
+          margin: 0; /* Elimina el margen superior e inferior del h2 */
+        }
 
-.form-header h3 {
-    color: #87CEEB; /* Color azul cielo para el segundo encabezado */
-    margin: 0; /* Elimina el margen superior e inferior del h3 */
-}
+       .form-header h3 {
+          color: #87CEEB; /* Color azul cielo para el segundo encabezado */
+          margin: 0; /* Elimina el margen superior e inferior del h3 */
+        }
 
 
-.form-group {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px; /* Aumenta el espacio entre cada grupo a 20px */
-}
+      .form-group {
+         display: flex;
+         align-items: center;
+         margin-bottom: 20px; /* Aumenta el espacio entre cada grupo a 20px */
+        }
 
-.form-group label {
-    width: 100px;
-    color: #555;
-}
+      .form-group label {
+         width: 100px;
+         color: #555;
+        }
 
-.form-group input[type="text"],
-.form-group input[type="email"],
-.form-group input[type="password"] {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-}
+       .form-group input[type="text"],
+       .form-group input[type="email"],
+       .form-group input[type="password"] {
+           flex: 1;
+           padding: 10px;
+            border: 1px solid #ccc;
+           border-radius: 4px;
+           font-size: 16px;
+        }
 
-/* Elementos de envío y cancelación en la misma fila */
-.form-buttons {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+      /* Elementos de envío y cancelación en la misma fila */
+      .form-buttons {
+         display: flex;
+          justify-content: space-between;
+         align-items: center;
+        }
 
-input[type="submit"] {
-    background-color: #FFA500; /* Cambia el color de fondo a anaranjado */
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    font-size: 18px;
-    cursor: pointer;
-}
+       input[type="submit"] {
+          background-color: grey; /* Cambia el color de fondo */
+          color: #fff;
+          border: none;
+           padding: 10px 20px;
+          border-radius: 4px;
+          font-size: 18px;
+          cursor: pointer;
+        }
 
-input[type="submit"]:hover {
-    background-color: #FF8C00; /* Cambia el color de fondo al pasar el cursor */
-}
+        a.cancel-button {
+          background-color: grey;
+          color: #fff;
+          text-decoration: none;
+          padding: 10px 20px;
+          border-radius: 4px;
+          font-size: 18px;
+          margin-right: 10px; /* Añade margen derecho para separar los botones */
+        }
 
 
 
@@ -161,7 +167,7 @@ input[type="submit"]:hover {
         </div>
 
         <input type="submit" name="siguiente" value="Siguiente">
-        <a href="../index.php">Cancelar</a>
+        <a class="cancel-button" href="../index.php">Cancelar</a>
     </form>
 
 
