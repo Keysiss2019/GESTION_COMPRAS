@@ -1,32 +1,32 @@
 <?php
-// Incluir el archivo de conexión
-include('../conexion/conexion.php');
+ // Incluir el archivo de conexión
+ include('../conexion/conexion.php');
 
-// Obtener el número de preguntas de seguridad desde la tabla tbl_ms_parametros
-$sql = "SELECT VALOR FROM tbl_ms_parametros WHERE PARAMETRO = 'preguntas_seguridad'";
-$result = $conn->query($sql);
+  // Obtener el número de preguntas de seguridad desde la tabla tbl_ms_parametros
+   $sql = "SELECT VALOR FROM tbl_ms_parametros WHERE PARAMETRO = 'preguntas_seguridad'";
+   $result = $conn->query($sql);
 
-if ($result->num_rows == 1) {
-    $row = $result->fetch_assoc();
-    $num_preguntas_seguridad = intval($row['VALOR']);
-} else {
-    // Si no se encuentra el valor en la tabla de parámetros, puedes asignar un valor predeterminado
-    $num_preguntas_seguridad = 3; // Por ejemplo, 3 preguntas de seguridad por defecto
-}
+   if ($result->num_rows == 1) {
+      $row = $result->fetch_assoc();
+      $num_preguntas_seguridad = intval($row['VALOR']);
+    } else {
+      // Si no se encuentra el valor en la tabla de parámetros, puedes asignar un valor predeterminado
+      $num_preguntas_seguridad = 3; // Por ejemplo, 3 preguntas de seguridad por defecto
+    }
 
-// Obtener todas las preguntas de seguridad desde la tabla tbl_preguntas
-$sql = "SELECT ID_PREGUNTA, PREGUNTA FROM tbl_preguntas";
-$result = $conn->query($sql);
+    // Obtener todas las preguntas de seguridad desde la tabla tbl_preguntas
+    $sql = "SELECT ID_PREGUNTA, PREGUNTA FROM tbl_preguntas";
+    $result = $conn->query($sql);
 
-// Verificar si se ha enviado el formulario de la segunda página
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar'])) {
-    $id_usuario = $_POST['id_usuario'];
+    // Verificar si se ha enviado el formulario de la segunda página
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar'])) {
+        $id_usuario = $_POST['id_usuario'];
     
-    // Recoger las preguntas de seguridad y respuestas
-    $preguntas_seguridad = $_POST['preguntas_seguridad'];
-    $respuestas = $_POST['respuestas'];
+       // Recoger las preguntas de seguridad y respuestas
+        $preguntas_seguridad = $_POST['preguntas_seguridad'];
+         $respuestas = $_POST['respuestas'];
 
-    // Insertar las preguntas y respuestas en la tabla tbl_user_pregunta
+        // Insertar las preguntas y respuestas en la tabla tbl_user_pregunta
     
         $sql = "INSERT INTO tbl_user_pregunta (ID_USER, ID_PREGUNTA, RESPUESTA) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($sql);
@@ -34,22 +34,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar'])) {
         
 
     
-    foreach ($preguntas_seguridad as $index => $pregunta_id) {
-        $respuesta = $respuestas[$index];
+       foreach ($preguntas_seguridad as $index => $pregunta_id) {
+          $respuesta = $respuestas[$index];
         
-        // Realizar el hash de la respuesta usando SHA-256
-        $respuesta_hash = password_hash($respuesta, PASSWORD_DEFAULT);
+          // Realizar el hash de la respuesta usando SHA-256
+          $respuesta_hash = password_hash($respuesta, PASSWORD_DEFAULT);
 
-        $stmt->execute();
+          $stmt->execute();
+        }
+
+        // Redirigir a una página de éxito o cualquier otra página que desees
+        header("Location: ../index.php");
+        exit;
     }
 
-    // Redirigir a una página de éxito o cualquier otra página que desees
-    header("Location: ../index.php");
-    exit;
-}
-
-// Obtener el ID de usuario de la URL
-$id_usuario = $_GET['id_usuario'];
+    // Obtener el ID de usuario de la URL
+    $id_usuario = $_GET['id_usuario'];
 ?>
 
 <!DOCTYPE html>
@@ -103,53 +103,57 @@ $id_usuario = $_GET['id_usuario'];
         }
 
        /* Elementos de envío y cancelación en la misma fila */
-.form-buttons {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+      .form-buttons {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+        }
 
-input[type="submit"] {
-    background-color: #FFA500; /* Cambia el color de fondo a anaranjado */
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    font-size: 18px;
-    cursor: pointer;
-}
+       input[type="submit"] {
+         background-color: grey; /* Cambia el color de fondo a gris */
+         color: #fff;
+         border: none;
+         padding: 10px 20px;
+         border-radius: 4px;
+          font-size: 18px;
+          cursor: pointer;
+        }
 
-input[type="submit"]:hover {
-    background-color: #FF8C00; /* Cambia el color de fondo al pasar el cursor */
-}
+        a.cancel-button {
+          background-color: grey;
+          color: #fff;
+          text-decoration: none;
+          padding: 10px 20px;
+          border-radius: 4px;
+          font-size: 18px;
+          margin-right: 10px; /* Añade margen derecho para separar los botones */
+        }
 
-       
+       .form-header {
+          text-align: center;
+          margin-bottom: 10px; /* Reduce el margen inferior entre los encabezados */
+          font-family: 'TuTipoDeLetra', sans-serif; /* Cambia 'TuTipoDeLetra' por el tipo de letra deseado */
+        }
 
-.form-header {
-    text-align: center;
-    margin-bottom: 10px; /* Reduce el margen inferior entre los encabezados */
-    font-family: 'TuTipoDeLetra', sans-serif; /* Cambia 'TuTipoDeLetra' por el tipo de letra deseado */
-}
+       .form-header h2 {
+          color: #007BFF; /* Color azul para el primer encabezado */
+            margin: 0; /* Elimina el margen superior e inferior del h2 */
+        }
 
-.form-header h2 {
-    color: #007BFF; /* Color azul para el primer encabezado */
-    margin: 0; /* Elimina el margen superior e inferior del h2 */
-}
-
-.form-header h3 {
-    color: #87CEEB; /* Color azul cielo para el segundo encabezado */
-    margin: 0; /* Elimina el margen superior e inferior del h3 */
-}
+        .form-header h3 {
+          color: #87CEEB; /* Color azul cielo para el segundo encabezado */
+          margin: 0; /* Elimina el margen superior e inferior del h3 */
+        }
 
     </style>
 </head>
 <body>
     
     <form method="POST">
-    <div class="form-header">
-        <h2>Registro de Usuario</h2>
-        <h3>Paso 2</h3>
-    </div>
+        <div class="form-header">
+            <h2>Registro de Usuario</h2>
+           <h3>Paso 2</h3>
+        </div>
 
         <input type="hidden" name="id_usuario" value="<?php echo $id_usuario; ?>">
         <p>Selecciona  <?php echo $num_preguntas_seguridad; ?> preguntas de seguridad:</p>
@@ -175,7 +179,7 @@ input[type="submit"]:hover {
         <?php endfor; ?>
         
         <input type="submit" name="guardar" value="Guardar">
-        <a href="../index.php">Cancelar</a>
+        <a class="cancel-button" href="../index.php">Cancelar</a>
     </form>
 </body>
 </html>
