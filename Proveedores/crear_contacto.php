@@ -108,7 +108,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         .cancel-button {
-            background-color: #dc3545;
+            background-color: gray; /* Color de fondo para el botón de cancelar */
+            text-decoration: none; /* Quita el subrayado */
         }
 
         button:hover, .custom-button:hover {
