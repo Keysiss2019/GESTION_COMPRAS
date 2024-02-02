@@ -88,12 +88,12 @@ if ($resultRolUsuario->num_rows > 0) {
 }
 
 if ($rolUsuario === "Administrador" || $rolUsuario === "Aprobador") {
-    $sql = "SELECT s.id, s.codigo, d.nombre_departamento, u.nombre_usuario, s.estado 
+    $sql = "SELECT s.id, s.codigo, d.nombre_departamento, u.nombre_usuario, s.estado, s.fecha_ingreso 
             FROM tbl_solicitudes s
             JOIN tbl_departamentos d ON s.idDepartamento = d.id_departamento
             JOIN tbl_ms_usuario u ON s.usuario_id = u.id_usuario";
 } else {
-    $sql = "SELECT s.id, s.codigo, d.nombre_departamento, u.nombre_usuario, s.estado 
+    $sql = "SELECT s.id, s.codigo, d.nombre_departamento, u.nombre_usuario, s.estado, s.fecha_ingreso 
             FROM tbl_solicitudes s
             JOIN tbl_departamentos d ON s.idDepartamento = d.id_departamento
             JOIN tbl_ms_usuario u ON s.usuario_id = u.id_usuario
@@ -157,7 +157,7 @@ $paginaActual = isset($_GET['page']) ? $_GET['page'] : 1;
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MVC IHCI</title>
-    <link rel="stylesheet" href="../css/estilos.css">
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/860e3c70ee.js" crossorigin="anonymous"></script>
     <script src="../estilos.js"></script>
@@ -165,7 +165,21 @@ $paginaActual = isset($_GET['page']) ? $_GET['page'] : 1;
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js"></script>
     
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
     <style>
+         .content {
+            margin-left: 10%;
+            transition: margin-left 0.5s;
+            padding: 0px;
+            width: 80%;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
         .menu li {
             margin-bottom: -1px;
         }
@@ -178,15 +192,37 @@ $paginaActual = isset($_GET['page']) ? $_GET['page'] : 1;
     <title>Solicitudes</title>
     
     <style>
-        .solicitud-table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        .solicitud-table th, .solicitud-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
+   .plus-button {
+    float: right; /* Mueve el botón hacia la derecha */
+    position: relative; /* Establece la posición relativa */
+    top: 45px; /* Ajusta el valor según sea necesario para mover el botón hacia abajo */
+    text-decoration: none;
+    padding: 8px 8px;
+    border-radius: 4px;
+    color: #fff;
+    z-index: 1; /* Asegura que el botón esté por encima de la tabla */
+    background-color: blue; /* Ajusta según sea necesario */
+}
+
+form {
+    margin-top: 20px; /* Ajusta el valor según sea necesario */
+}
+
+.solicitud-table {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #ddd !important;
+}
+
+.solicitud-table th,
+.solicitud-table td {
+    border: 1px solid #ddd !important;
+    border-bottom: none !important;
+    padding: 8px;
+    text-align: left;
+}
+
+
 
         /* Estilos para el botón de inicio */
         .boton-inicio {
@@ -232,16 +268,15 @@ $paginaActual = isset($_GET['page']) ? $_GET['page'] : 1;
         }
 
         /* Estilo para enlaces "Ver" (verde) */
-.green-link {
-    background-color: green; /* Color de fondo azul */
+        .green-link {
+          background-color: green; /* Color de fondo azul */
             border: none;
             color: white; /* Color del texto en blanco */
             padding: 10px 10px; /* Espaciado interno */
             border-radius: 5px; /* Borde redondeado */
             cursor: pointer;
-   
-    text-decoration: none; /* Quita el subrayado del enlace, si es necesario */
-}
+         text-decoration: none; /* Quita el subrayado del enlace, si es necesario */
+        }
 
 /* Estilo para enlaces "Editar" (amarillo) */
 .yellow-link {
@@ -265,19 +300,16 @@ $paginaActual = isset($_GET['page']) ? $_GET['page'] : 1;
     text-decoration: none; /* Quita el subrayado del enlace, si es necesario */
 }
 
+
+
+
+
     </style>
 </head>
 <body>
-
+<div class="content">
 <h2><i class="fas fa-book"></i>solicitudes</h2>
    
-    <!-- Formulario de búsqueda por código -->
-    <form method="GET" action="" style="text-align: right;">
-    
-    <input type="text" id="busqueda_general" name="busqueda_general" maxlength="50">
-    
-    <!-- Agregar un botón de búsqueda -->
-    <button type="submit" name="buscar"><i class="fas fa-search"></i> Buscar</button>
     <?php
 // Obtén el ID del objeto específico asociado a la creación de solicitudes desde la base de datos
 // Reemplaza 'tbl_objetos' y 'nombre_objeto_crear_solicitud' con los nombres reales de tu tabla y campo respectivamente
@@ -294,7 +326,8 @@ if ($resultObjetoCrearSolicitud->num_rows > 0) {
     // Ahora puedes utilizar tienePermisos con el ID del objeto obtenido
     if (isset($usuariosRol) && tienePermisos($usuariosRol, $conn, $permisosCrearId, $objetosIdCrearSolicitud)) {
         // El usuario tiene permiso para "Crear" el objeto específico
-        echo "<a href='../solicitudes/crear_solicitudes.php' class='print-button plus-button' onclick='toggleFloatingForm()'><i class='fas fa-plus'></i></a>";
+        echo "<a href='../solicitudes/crear_solicitudes.php' class='plus-button' onclick='toggleFloatingForm()'><i class='fas fa-plus'></i></a>";
+
     }
 } else {
     // Manejar el caso en que no se encuentra el ID del objeto
@@ -314,13 +347,18 @@ if ($resultObjetoCrearSolicitud->num_rows > 0) {
     <br>
     <?php if ($result->num_rows > 0) : ?>
           
-        <table class="solicitud-table">
+        <table id="solicitudesTable" class="solicitud-table">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Código</th>
                     <th>Departamento</th>
                     <th>Usuario</th>
+                    <th>Fecha
+                      <span class="filter-icon" id="filterIcon"><i class="fas fa-filter"></i></span>
+                      <div id="filterContainer" style="display: none;">
+                         <input type="text" id="filterFecha" placeholder="YYYY-MM" />
+                       </div>
+                    </th>
                     <th>Estado</th>
                     <th>Acciones</th>
                     <!-- Agrega más columnas si es necesario -->
@@ -330,10 +368,11 @@ if ($resultObjetoCrearSolicitud->num_rows > 0) {
             <tbody>
                 <?php while ($row = $result->fetch_assoc()) : ?>
                     <tr>
-                        <td><?php echo $row["id"]; ?></td>
                         <td><?php echo $row["codigo"]; ?></td>
                         <td><?php echo $row["nombre_departamento"]; ?></td>
                         <td><?php echo $row["nombre_usuario"]; ?></td>
+                        <td class="fecha-ingreso" data-fecha="<?php echo date("Y-m-d", strtotime($row['fecha_ingreso'])); ?>">
+                        <?php echo date("Y-m-d", strtotime($row['fecha_ingreso'])); ?></td>
                         <td><?php echo $row["estado"]; ?></td>
                         <td> 
                         
@@ -451,7 +490,7 @@ if ($resultObjetoEliminarSolicitud->num_rows > 0) {
     <!-- Agrega más contenido de la página aquí -->
 
     <button class="boton-inicio" onclick="salirDeLaVista();"> Regresar</button>
-
+    </div>
     <script>
         function salirDeLaVista() {
             window.top.location.href = '../pantallas/admin.php'; // Redirige la página principal, no la vista dentro del iframe
@@ -490,6 +529,80 @@ if ($resultObjetoEliminarSolicitud->num_rows > 0) {
         }
     </script>
 
+<script>
+       $(document).ready(function () {
+           var table = $('#solicitudesTable').DataTable({
+              "dom": 'lBfrtip',
+              "buttons": ['copy', 'excel', 'pdf', 'print'],
+              "ordering": false,
+               "paging": false,
+              "info": false,
+              "language": {
+                  "search": "Buscar",
+                  "zeroRecords": "No se encontraron registros",
+                  "infoEmpty": "Mostrando 0 de 0 registros",
+                  "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+                  "emptyTable": "No hay datos disponibles en la tabla",
+                  "infoPostFix": "",
+                  "thousands": ",",
+                  "lengthMenu": "Mostrar _MENU_ registros por página",
+                  "loadingRecords": "Cargando...",
+                  "processing": "Procesando...",
+                  "sEmptyTable": "No hay datos disponibles en la tabla",
+                  "sInfo": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                  "sInfoEmpty": "Mostrando 0 a 0 de 0 registros",
+                   "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                  "sInfoPostFix": "",
+                  "sInfoThousands": ",",
+                  "sLengthMenu": "Mostrar _MENU_ registros",
+                  "sLoadingRecords": "Cargando...",
+                  "sProcessing": "Procesando...",
+                  "sSearch": "Buscar:",
+                  "sZeroRecords": "No se encontraron registros",
+                  "paginate": {
+                      "first": "Primero",
+                      "last": "Último",
+                      "next": "Siguiente",
+                       "previous": "Anterior"
+                    }
+                },
+               "columnDefs": [
+                   {
+                      "targets": 'thead th',
+                      "className": 'header-background'
+                    }
+                ]
+            });
+
+           $('#filterIcon').on('click', function () {
+              $('#filterContainer').toggle();
+            });
+
+            $('#filterFecha').on('keyup', function () {
+               var filterValue = $(this).val();
+               table.column(3).search(filterValue).draw();
+            });
+       
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            setTimeout(function() {
+                $('div.dataTables_filter').css({
+                    'text-align': 'left',
+                    'margin-top': '10px',
+                    'margin-right': '40px'
+                });
+
+                $('.search-bar .print-button').css({
+                    'position': 'absolute',
+                    'right': '1px',
+                    'top': '65px'
+                });
+            }, 100);
+        });
+    </script>
 </body>
 </html>
 
