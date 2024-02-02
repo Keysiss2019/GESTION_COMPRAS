@@ -118,6 +118,7 @@ $conn->close();
 ?>
 
 
+<!-- Este crip sirve para editar la solicitud -->
 
    <script>
         function editarSolicitud(id) {
