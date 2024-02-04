@@ -7,12 +7,12 @@ $query = "SELECT cp.ID_CUENTA_PROVEEDOR, cp.NUMERO_CUENTA, cp.BANCO, cp.DESCRIPC
 
 if (isset($_GET['search'])) {
     $search = $_GET['search'];
-    $query = "SELECT cp.ID_CUENTA_PROVEEDOR, cp.NUMERO_CUENTA, cp.BANCO, cp.DESCRIPCION_CUENTA, cp.SALDO, cp.FECHA_CREACION, cp.FECHA_MODIFICACION, p.NOMBRE as NOMBRE_PROVEEDOR
+    $query = "SELECT cp.ID_CUENTA_PROVEEDOR, cp.NUMERO_CUENTA, cp.BANCO, cp.DESCRIPCION_CUENTA,  cp.FECHA_CREACION, cp.FECHA_MODIFICACION, p.NOMBRE as NOMBRE_PROVEEDOR
               FROM tbl_cuenta_proveedor cp
               INNER JOIN tbl_proveedores p ON cp.ID_PROVEEDOR = p.ID_PROVEEDOR
               WHERE cp.NUMERO_CUENTA LIKE '%$search%' OR cp.BANCO LIKE '%$search%' OR p.NOMBRE LIKE '%$search%'";
 } else {
-    $query = "SELECT cp.ID_CUENTA_PROVEEDOR, cp.NUMERO_CUENTA, cp.BANCO, cp.DESCRIPCION_CUENTA, cp.SALDO, cp.FECHA_CREACION, cp.FECHA_MODIFICACION, p.NOMBRE as NOMBRE_PROVEEDOR
+    $query = "SELECT cp.ID_CUENTA_PROVEEDOR, cp.NUMERO_CUENTA, cp.BANCO, cp.DESCRIPCION_CUENTA,  cp.FECHA_CREACION, cp.FECHA_MODIFICACION, p.NOMBRE as NOMBRE_PROVEEDOR
               FROM tbl_cuenta_proveedor cp
               INNER JOIN tbl_proveedores p ON cp.ID_PROVEEDOR = p.ID_PROVEEDOR";
 }
@@ -27,7 +27,7 @@ $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $offset = ($page - 1) * $resultsPerPage;
 
 // Realizar la consulta SQL con el límite y el desplazamiento
-$query = "SELECT cp.ID_CUENTA_PROVEEDOR, cp.NUMERO_CUENTA, cp.BANCO, cp.DESCRIPCION_CUENTA, cp.SALDO, cp.FECHA_CREACION, cp.FECHA_MODIFICACION, p.NOMBRE as NOMBRE_PROVEEDOR
+$query = "SELECT cp.ID_CUENTA_PROVEEDOR, cp.NUMERO_CUENTA, cp.BANCO, cp.DESCRIPCION_CUENTA,  cp.FECHA_CREACION, cp.FECHA_MODIFICACION, p.NOMBRE as NOMBRE_PROVEEDOR
           FROM tbl_cuenta_proveedor cp
           INNER JOIN tbl_proveedores p ON cp.ID_PROVEEDOR = p.ID_PROVEEDOR";
 $query .= " LIMIT $resultsPerPage OFFSET $offset";
@@ -277,7 +277,6 @@ label[for="por_pagina"] {
             <th>Número de Cuenta</th>
             <th>Banco</th>
             <th>Descripción</th>
-            <th>Saldo</th>
             <th>Fecha de Creación</th>
             <th>Fecha de Modificación</th>
             <th>Proveedor</th>
@@ -291,7 +290,7 @@ label[for="por_pagina"] {
             echo "<td>" . $row['NUMERO_CUENTA'] . "</td>";
             echo "<td>" . $row['BANCO'] . "</td>";
             echo "<td>" . $row['DESCRIPCION_CUENTA'] . "</td>";
-            echo "<td>" . $row['SALDO'] . "</td>";
+            
             // Cambia el formato de las fechas para mostrar solo día, mes y año
            echo "<td>" . date("d/m/Y", strtotime($row['FECHA_CREACION'])) . "</td>";
            echo "<td>" . date("d/m/Y", strtotime($row['FECHA_MODIFICACION'])) . "</td>";
