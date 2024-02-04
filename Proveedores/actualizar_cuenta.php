@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $numero_cuenta = $_POST['NUMERO_CUENTA'];
     $banco = $_POST['BANCO'];
     $descripcion_cuenta = $_POST['DESCRIPCION_CUENTA'];
-    $saldo = $_POST['SALDO'];
+    
 
     // Generar la fecha de modificación automáticamente
     $fechaModificacion = date("Y-m-d"); // Formato "año-mes-día"
@@ -18,12 +18,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
               NUMERO_CUENTA = ?, 
               BANCO = ?, 
               DESCRIPCION_CUENTA = ?, 
-              SALDO = ?, 
+             
               FECHA_MODIFICACION = ?
               WHERE ID_CUENTA_PROVEEDOR = ?";
     
     $stmt = $conexion->prepare($query);
-    $stmt->bind_param("ssdsis", $numero_cuenta, $banco, $descripcion_cuenta, $saldo, $fechaModificacion, $id);
+    $stmt->bind_param("ssdsis", $numero_cuenta, $banco, $descripcion_cuenta,  $fechaModificacion, $id);
 
     if ($stmt->execute()) {
         header('Location: listar_cuentas.php');
@@ -185,8 +185,7 @@ textarea[name="DESCRIPCION_CUENTA"] {
         </div>
        
         <div class="form-column">
-          <label>Saldo:</label>
-          <input type="text" name="SALDO" value="<?php echo $row['SALDO']; ?>"><br>
+          
           <label>Proveedor:</label>
           <input type="text" name="NOMBRE_PROVEEDOR" value="<?php echo $row['NOMBRE_PROVEEDOR']; ?>" readonly>
           <label>Fecha de Creación:</label>
