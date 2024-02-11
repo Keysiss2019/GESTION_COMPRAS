@@ -3,16 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/860e3c70ee.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-Sv9wsMiyH/xuYvBqxxD2TkgD0b3VxxkyKMTl7REpfl1dHstnoqEHfzibhu9z96AdSzFhAwHTqTr9HyffduU2GA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <title>Listado de Órdenes de Compra</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 12px;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f9fa;
-            transition: margin-left 0.3s;
-        }
+       
 
         .container {
             margin-left: 40px;
@@ -40,120 +36,92 @@
         }
 
         th, td {
-            border: 1px solid #dee2e6;
-            padding: 12px;
+            border: 1px solid #ddd;
+            padding: 9px;
             text-align: left;
-            word-wrap: break-word;
+            
         }
 
         th {
-            background-color: #007bff;
-            color: #fff;
+            background-color: #f2f2f2;
+            
         }
 
         tr {
-            background-color: #f8f9fa;
+            background-color: white;
         }
 
-        tr:hover {
-            background-color: #e9ecef;
-        }
 
         a {
             text-decoration: none;
-            color: #007bff;
+           
         }
 
         .pdf-link {
             display: inline-block;
-            background-color: #28a745;
+            background-color: blue;
             color: #fff;
-            padding: 8px 16px;
+            padding: 3px 3px;
             border-radius: 5px;
             text-decoration: none;
         }
+       
     </style>
 </head>
 <body>
 
-<h1>Generar órdenes de pago</h1>
+
 
 <div class="container">
-    <?php
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "gestion_compras2";
+<h1><i class="fas fa-dollar-sign"></i>Orden de Pago</h1>
+<?php
+include '../conexion/conexion.php';
 
-    $conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
+}
 
-    if ($conn->connect_error) {
-        die("Conexión fallida: " . $conn->connect_error);
+$sql = "SELECT op.ID_ORDEN_PAGO, p.NOMBRE AS PROVEEDOR, op.BANCO, op.TIPO_CUENTA, op.FECHA_ORDEN, op.MONTO_TOTAL
+        FROM tbl_orden_pago op
+        INNER JOIN tbl_proveedores p ON op.ID_PROVEEDOR = p.ID_PROVEEDOR";
+
+$result = $conn->query($sql);
+
+echo '<table>';
+echo '<tr>
+        <th>ID Orden de Pago</th>
+        <th>Proveedor</th>
+        <th>Banco</th>
+        <th>Tipo de Cuenta</th>
+        <th>Fecha de la Orden</th>
+        <th>Acciones</th>
+      </tr>';
+
+if ($result !== false && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        echo '<tr>';
+        echo '<td>' . $row["ID_ORDEN_PAGO"] . '</td>';
+        echo '<td>' . $row["PROVEEDOR"] . '</td>';
+        echo '<td>' . $row["BANCO"] . '</td>';
+        echo '<td>' . $row["TIPO_CUENTA"] . '</td>';
+        echo '<td>' . $row["FECHA_ORDEN"] . '</td>';
+        
+
+        // Agregar columna de acciones para generar PDF
+        echo '<td><a class="pdf-link" href="generar_pdf.php?id=' . $row["ID_ORDEN_PAGO"] . '"><i class="fas fa-file-pdf fa-2x"></i></a></td>';
+       
+        echo '</tr>';
     }
+} else {
+    echo '<tr><td colspan="7">No se encontraron datos de órdenes de pago.</td></tr>';
+}
 
-    // Consulta para obtener datos de todas las órdenes de compra y detalles del proveedor, cuentas y cuenta proveedor asociadas
-    $sql = "SELECT ocp.ID, ocp.ID_ORDEN, ocp.CANTIDAD, ocp.DESCRIPCION, ocp.PRECIO, ocp.TOTAL, ocp.SUBTOTAL, ocp.ISV, ocp.MONTO,
-               oc.ID_ORDEN_COMPRA, p.NOMBRE, cp.NUMERO_CUENTA, cp.BANCO, cp.DESCRIPCION_CUENTA
-        FROM tbl_orden_compra_productos ocp
-        LEFT JOIN tbl_orden_compra oc ON ocp.ID_ORDEN = oc.ID_ORDEN_COMPRA
-        LEFT JOIN tbl_proveedores p ON oc.ID_PROVEEDOR = p.ID_PROVEEDOR
-        LEFT JOIN tbl_cuenta_proveedor cp ON p.ID_PROVEEDOR = cp.ID_PROVEEDOR";
+echo '</table>';
+
+$conn->close();
+?>
 
 
-    $result = $conn->query($sql);
-
-    if (!$result) {
-        die("Error en la consulta: " . $conn->error);
-    }
-
-    if ($result->num_rows > 0) {
-        echo '<table>';
-        echo '<tr>
-                <th>ID</th>
-                <th>ID Orden</th>
-                <th>Cantidad</th>
-                <th>Descripción</th>
-                <th>Precio</th>
-                <th>Total</th>
-                <th>Subtotal</th>
-                <th>ISV</th>
-                <th>Monto</th>
-                <th>Proveedor</th>
-                <th>N° Cuenta</th>
-                <th>Banco</th>
-                <th>Tipo de Cuenta</th>
-                <th>Acciones</th>
-              </tr>';
-
-        while ($row = $result->fetch_assoc()) {
-            echo '<tr>';
-            echo '<td>' . $row["ID"] . '</td>';
-            echo '<td>' . $row["ID_ORDEN_COMPRA"] . '</td>';
-            echo '<td>' . $row["CANTIDAD"] . '</td>';
-            echo '<td>' . $row["DESCRIPCION"] . '</td>';
-            echo '<td>' . $row["PRECIO"] . '</td>';
-            echo '<td>' . $row["TOTAL"] . '</td>';
-            echo '<td>' . $row["SUBTOTAL"] . '</td>';
-            echo '<td>' . $row["ISV"] . '</td>';
-            echo '<td>' . $row["MONTO"] . '</td>';
-            echo '<td>' . $row["NOMBRE"] . '</td>';
-            echo '<td>' . $row["NUMERO_CUENTA"] . '</td>';
-            echo '<td>' . $row["BANCO"] . '</td>';
-            echo '<td>' . $row["DESCRIPCION_CUENTA"] . '</td>';
-
-            // Agregar columna de acciones para generar PDF
-            echo '<td><a class="pdf-link" href="generar_pdf.php?id=' . $row["ID"] . '">PDF</a></td>';
-
-            echo '</tr>';
-        }
-
-        echo '</table>';
-    } else {
-        echo '<p>No se encontraron datos de órdenes de compra.</p>';
-    }
-
-    $conn->close();
-    ?>
 </div>
 
 </body>
