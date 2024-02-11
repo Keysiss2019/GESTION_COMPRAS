@@ -1,4 +1,15 @@
 <?php
+// Conectar a la base de datos
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "gestion_compras2";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("Error de conexión: " . $conn->connect_error);
+}
+
 // Verificar si se ha enviado el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtener los datos del formulario
@@ -10,21 +21,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $isv = $_POST["isv"];
     $totalFactura = $_POST["total_factura"];
     $excentos = isset($_POST['excento']) ? $_POST['excento'] : array();
+    $monto = $_POST["monto"];
 
-    // Conectar a la base de datos
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "gestion_compras2";
-
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    if ($conn->connect_error) {
-        die("Error de conexión: " . $conn->connect_error);
+    
+    // Validar si el número de orden ya existe en la base de datos para evitar duplicados
+    $sqlCheckExistence = "SELECT NUMERO_ORDEN FROM tbl_orden_compra WHERE NUMERO_ORDEN = '$numero_orden'";
+    $resultCheckExistence = $conn->query($sqlCheckExistence);
+    if ($resultCheckExistence->num_rows > 0) {
+        echo json_encode(array("success" => false, "message" => "El número de orden ya existe en la base de datos."));
+        exit(); // Salir del script si ya existe un registro con el mismo número de orden
     }
 
     // Insertar la información principal en la tabla tbl_orden_compra
-    $sql = "INSERT INTO tbl_orden_compra (NUMERO_ORDEN, FECHA_ORDEN, ID_PROVEEDOR, ID_CONTACTO)
-            VALUES ('$numero_orden', '$fecha_orden', '$proveedor', '$contacto')";
+$sql = "INSERT INTO tbl_orden_compra (NUMERO_ORDEN, FECHA_ORDEN, ID_PROVEEDOR, ID_CONTACTO, MONTO)
+VALUES ('$numero_orden', '$fecha_orden', '$proveedor', '$contacto', '$totalFactura')";
+
 
     if ($conn->query($sql) === TRUE) {
         // Obtener el ID de la orden recién insertada
@@ -34,7 +45,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $cotizaciones = isset($_POST["cotizaciones"]) ? json_decode($_POST["cotizaciones"], true) : array();
         $precios = isset($_POST["precios"]) ? json_decode($_POST["precios"]) : array();
       
-
         foreach ($cotizaciones as $index => $cotizacion) {
             $cantidad = intval($cotizacion["cantidad"]); // Convertir a entero
             $descripcion = $cotizacion["descripcion"];
@@ -44,10 +54,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Calcular el total (cantidad * precio)
             $total = $cantidad * $precio;
 
-
             // Insertar los datos de cantidad, descripción y precio en la tabla tbl_orden_compra_productos
-            $sqlDetalle = "INSERT INTO tbl_orden_compra_productos (ID_ORDEN, CANTIDAD, DESCRIPCION, PRECIO, TOTAL, SUBTOTAL, ISV, MONTO, EXCENTO)
-                           VALUES ('$orden_id', '$cantidad', '$descripcion', '$precio', '$total',  '$subtotal', ' $isv', ' $totalFactura', '$excento')";
+            $sqlDetalle = "INSERT INTO tbl_orden_compra_productos (ID_ORDEN, CANTIDAD, DESCRIPCION, PRECIO, TOTAL, SUBTOTAL, ISV,  EXCENTO)
+                           VALUES ('$orden_id', '$cantidad', '$descripcion', '$precio', '$total',  '$subtotal', ' $isv',  '$excento')";
 
             $conn->query($sqlDetalle);
         }
@@ -63,9 +72,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo json_encode(array("success" => false, "message" => "No se recibieron datos correctamente."));
 }
 ?>
-
-
-
-
-
-
