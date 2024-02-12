@@ -21,10 +21,32 @@
         }
 
         .btn-eliminar {
-         color: red;
-         border: none; /* Esta propiedad quita los bordes de los botones */
-         background-color: white;
+            color: white; /* Cambié el color del icono a blanco */
+         border: none;
+         background-color: red; /* Cambié el color de fondo a rojo */
+         padding: 5px 10px; /* Añadí padding para mejorar la apariencia */
+         border-radius: 3px; /* Añadí un poco de borde redondeado */
+         cursor: pointer;
         }
+
+        .btn-ver {
+         color: white; /* Cambié el color del icono a blanco */
+         border: none;
+         background-color: blue; /* Cambié el color de fondo a azul */
+         padding: 5px 10px; /* Añadí padding para mejorar la apariencia */
+         border-radius: 3px; /* Añadí un poco de borde redondeado */
+         cursor: pointer;
+        }
+
+        .btn-crear {
+         color: white; /* Cambié el color del icono a blanco */
+         border: none;
+         background-color: purple; /* Cambié el color de fondo a morado */
+         padding: 5px 10px; /* Añadí padding para mejorar la apariencia */
+         border-radius: 3px; /* Añadí un poco de borde redondeado */
+         cursor: pointer;
+        }
+
 
        /* Estilo para el botón "Agregar" */
        .print-button {
@@ -50,7 +72,7 @@
 </head>
 <body>
     <?php
-      include('../conexion/conexion.php');
+     include('../conexion/conexion.php');
 
         // Almacena el contenido del encabezado
         $headerContent = '
@@ -65,6 +87,7 @@
                    </th>
                   <th>Proveedor</th>
                   <th>Contacto</th>
+                  <th>Estado</th>
                   <th>Acciones</th>
                </tr>
         ';
@@ -88,8 +111,10 @@
                 $rowsContent .= '<td>' . date("d/m/Y", strtotime($row["FECHA_ORDEN"])) . '</td>';
                $rowsContent .= '<td>' . obtenerProveedor($conn, $row["ID_PROVEEDOR"]) . '</td>';
                 $rowsContent .= '<td>' . obtenerContacto($conn, $row["ID_CONTACTO"]) . '</td>';
+                $rowsContent .= '<td>' . $row["ESTADO"] . '</td>';
                 $rowsContent .= '<td>';
-                $rowsContent .= '<a href="ver_orden.php?numero_orden=' . $row["NUMERO_ORDEN"] . '" class="btn btn-primary"><i class="fas fa-eye"></i></a>';
+                $rowsContent .= '<a href="ver_orden.php?numero_orden=' . $row["NUMERO_ORDEN"] . '" class="btn btn-ver"><i class="fas fa-eye"></i></a>';
+                $rowsContent .= '<a href="../pagos/crear.php?numero_orden=' . $row["ID_ORDEN_COMPRA"] . '" class="btn btn-crear"><i class="fas fa-dollar-sign"></i></a>';
                 $rowsContent .= '<button class="btn btn-eliminar" onclick="eliminarSolicitud(' . $row["NUMERO_ORDEN"] . ')"><i class="fas fa-trash"></i></button>';
                 $rowsContent .= '</td>';
                 $rowsContent .= '</tr>';
@@ -198,3 +223,26 @@
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
