@@ -68,16 +68,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <meta charset="UTF-8">
     
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            background-image: url('../imagen/solicitud.jpg' ); /* Ruta de la imagen de fondo */
-            background-size: cover;
-            font-family: Arial, sans-serif;
-        }
+       body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-image: url('../imagen/IHCI.jpg');
+    background-size: 30%; /* Cambiar el tamaño de la imagen de fondo */
+    background-repeat: no-repeat;
+    background-position: center;
+    font-family: Arial, sans-serif;
+}
+
  /* Estilos para el formulario */
  .form-container {
     background-color: rgba(245, 245, 220, 0.9); /* Beige con transparencia */
@@ -136,8 +139,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    background-color: #ccc; /* Fondo gris */
-    color: #333; /* Texto oscuro */
+    background-color: gray; /* Fondo gris */
+    color: #fff; /* Texto oscuro */
     text-decoration: none; /* Evita la subrayado del enlace Cancelar */
     text-align: center;
     display: inline-block;
