@@ -202,11 +202,12 @@
             <p><?php echo $message; ?></p>
 
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                <label for="nombre_rol">Rol:</label>
-                <input type="text" name="nombre_rol" required><br><br>
+              <label for="nombre_rol">Rol:</label>
+              <input type="text" name="nombre_rol" value="<?php echo isset($_POST['nombre_rol']) ? htmlspecialchars($_POST['nombre_rol']) : ''; ?>" required><br><br>
 
-                <label for="descripcion_rol">Descripción:</label>
-                <textarea name="descripcion_rol" rows="4" cols="50"></textarea><br><br>
+              <label for="descripcion_rol">Descripción:</label>
+              <textarea name="descripcion_rol" rows="4" cols="50"><?php echo isset($_POST['descripcion_rol']) ? htmlspecialchars($_POST['descripcion_rol']) : ''; ?></textarea><br><br>
+
                 
                 <div class="btn-container">
                     <button type="submit" name="agregar" >Guardar</button>
