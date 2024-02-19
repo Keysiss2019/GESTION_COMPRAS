@@ -104,7 +104,7 @@ justify-content: right; /* Alinea los elementos al centro */
 
 /* Estilo para el botón "Agregar" */
 .search-bar a.print-button {
-    background-color: #28a745; /* Color verde para "Agregar" */
+    background-color: #3b2ad3; /* Color verde para "Agregar" */
     color: #fff;
     padding: 5px 10px;
     border: none;
@@ -190,7 +190,7 @@ download-button:hover {
     transition: background-color 0.3s ease;
     border-radius: 3px;
     text-decoration: none;
-    float: right; /* Alinea los elementos a la derecha */
+    float: left; /* Alinea los elementos a la derecha */
 }
 
 .edit-button { background-color: #15aa2e; }

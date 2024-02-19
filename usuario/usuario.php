@@ -87,6 +87,22 @@
     th {
         background-color: #f2f2f2;
     }
+
+ /* Estilo para el botón "Agregar" */
+.search-bar a.print-button {
+    background-color: #3b2ad3; /* Color verde para "Agregar" */
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+    .print-button.plus-button i {
+        color: white; /* Cambiar el color del icono a blanco */
+    }
+
+
 </style>
 
 </head>
