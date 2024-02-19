@@ -45,25 +45,29 @@ if (isset($_GET['id'])) {
     }
 </style>
 <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            background-image: url('../imagen/solicitud.jpg' ); /* Ruta de la imagen de fondo */
-            background-size: cover;
-            font-family: Arial, sans-serif;
-        }
+         body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-image: url('../imagen/IHCI.jpg');
+    background-size: 30%; /* Cambiar el tamaño de la imagen de fondo */
+    background-repeat: no-repeat;
+    background-position: center;
+    font-family: Arial, sans-serif;
+}
 
-        .form-container {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-            width: 400px;
-            text-align: center; /* Centro el contenido horizontalmente */
-        }
+       /* Estilos para el formulario */
+ .form-container {
+    background-color: rgba(245, 245, 220, 0.9); /* Beige con transparencia */
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center; /* Centra el contenido horizontalmente */
+    margin: 0 auto; /* Centra el formulario en la página */
+}
 
         .form-row {
             display: flex;
