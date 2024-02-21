@@ -108,7 +108,8 @@ if ($result !== false && $result->num_rows > 0) {
         
 
         // Agregar columna de acciones para generar PDF
-        echo '<td><a class="pdf-link" href="generar_pdf.php?id=' . $row["ID_ORDEN_PAGO"] . '"><i class="fas fa-file-pdf fa-2x"></i></a></td>';
+        echo '<td><a class="pdf-link" href="generar_pdf.php?id=' . $row["ID_ORDEN_PAGO"] . '" target="_blank"><i class="fas fa-file-pdf fa-2x"></i></a></td>';
+
        
         echo '</tr>';
     }
