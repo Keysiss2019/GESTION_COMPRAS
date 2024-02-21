@@ -35,33 +35,43 @@
             left: 0;
         }
 
-        .edit-link {
-            background-color: #28a745; /* Estilo para Editar */
-            color: #fff;
-            padding: 5px 10px;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-right: 5px; /* Agregamos margen derecho para separar los enlaces */
-        }
+        .action-buttons {
+    display: flex;
+    gap: 5px; /* Espacio entre los botones */
+}
 
-        .delete-link {
-            background-color: #dc3545; /* Estilo para Eliminar */
-            color: #fff;
-            padding: 5px 10px;
-            text-decoration: none;
-            border-radius: 5px;
-            border: none; /* Elimina el borde */
-        }
+.edit-link,
+.delete-link {
+    padding: 5px 10px; /* Espaciado interno */
+    text-decoration: none; /* Quitar subrayado */
+    border: none; /* Quitar borde */
+    border-radius: 5px; /* Borde redondeado */
+}
+
+.edit-link {
+    background-color: #28a745; /* Color de fondo verde */
+    color: #fff; /* Color del texto */
+}
+
+.delete-link {
+    background-color: #dc3545; /* Color de fondo rojo */
+    color: #fff; /* Color del texto */
+}
+
+.edit-link:hover {
+    background-color: #218838; /* Color de fondo al pasar el ratón */
+}
+
+.delete-link:hover {
+    background-color: #c82333; /* Color de fondo al pasar el ratón */
+}
+
+.delete-link {
+    cursor: pointer; /* Cambiar el cursor al pasar por encima */
+}
 
 
-        /* Estilos al pasar el ratón sobre los enlaces */
-        .edit-link:hover {
-            background-color: #1e7e34;
-        }
 
-        .delete-link:hover {
-            background-color: #c82333;
-        }
 
         /* Estilo para el contenedor de búsqueda y botones */
         .search-bar {
@@ -136,7 +146,6 @@
                 <tr>
                     <th>ID</th>
                     <th>Pregunta</th>
-                    <th>Creado</th>
                     <th>
                         Fecha de Creación
                         <span class="filter-icon" id="filterIcon"><i class="fas fa-filter"></i></span>
@@ -144,6 +153,8 @@
                             <input type="text" id="filterFecha" placeholder="YYYY-MM" />
                         </div>
                     </th>
+                    <th>Fecha de Modificación</th>
+                    <th>Creado</th>
                     <th>Modificado</th>
                     <th>Acciones</th>
                 </tr>
@@ -153,20 +164,23 @@
                     <tr>
                         <td><?php echo $pregunta['ID_PREGUNTA']; ?></td>
                         <td><?php echo strtoupper($pregunta['PREGUNTA']); ?></td>
-                        <td><?php echo strtoupper($pregunta['CREADO_POR']); ?></td>
-
                         <td class="fecha-creacion" data-fecha="<?php echo date("Y-m-d", strtotime($pregunta['FECHA_CREACION'])); ?>">
                             <?php echo date("Y-m-d", strtotime($pregunta['FECHA_CREACION'])); ?>
                         </td>
+                        <td><?php echo date("Y-m-d", strtotime($pregunta['FECHA_MODIFICACION'])); ?></td>
+                        <td><?php echo strtoupper($pregunta['CREADO_POR']); ?></td>
                         <td><?php echo $pregunta['MODIFICADO_POR']; ?></td>
                         <td>
-                            <a href="editar.php?id=<?php echo $pregunta['ID_PREGUNTA']; ?>" class="edit-link"><i class="fas fa-edit"></i></a>
-                             <!-- Formulario de confirmación para eliminar -->
-                           <form action="eliminar.php" method="post" style="display: inline;">
-                             <input type="hidden" name="ID_PREGUNTA" value="<?php echo $pregunta['ID_PREGUNTA']; ?>">
-                             <button type="submit" name="eliminar" class="delete-link"><i class="fas fa-trash-alt"></i></button>
-                            </form>
+                           <div class="action-buttons">
+                               <a href="editar.php?id=<?php echo $pregunta['ID_PREGUNTA']; ?>" class="edit-link"><i class="fas fa-edit"></i> </a>
+                               <!-- Formulario de confirmación para eliminar -->
+                               <form action="eliminar.php" method="post" style="display: inline;">
+                                   <input type="hidden" name="ID_PREGUNTA" value="<?php echo $pregunta['ID_PREGUNTA']; ?>">
+                                   <button type="submit" name="eliminar" class="delete-link"><i class="fas fa-trash-alt"></i> </button>
+                                </form>
+                            </div>
                         </td>
+
                     </tr>
                 <?php } ?>
             </tbody>
@@ -236,4 +250,6 @@
 </body>
 
 </html>
+
+
 
