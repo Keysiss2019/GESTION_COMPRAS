@@ -16,6 +16,7 @@ $idPregunta = '';
 $pregunta = '';
 $fechaCreacion = '';
 $fechaModificacion = '';
+$stmtUpdate = null; // Inicializar la variable
 
 // Verificar si se ha proporcionado un ID válido en la URL
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
@@ -43,6 +44,9 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     exit();
 }
 
+// Inicializar la variable de mensaje de error
+$errorMsg = '';
+
 // Procesar los datos del formulario cuando se envía
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validar y actualizar los datos según sea necesario
@@ -51,17 +55,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtener la fecha y hora actuales
     $fechaModificacion = date("Y-m-d H:i:s");
 
-    // Consulta SQL para actualizar la pregunta
-    $updateSql = "UPDATE tbl_preguntas SET PREGUNTA = '$pregunta', FECHA_MODIFICACION = '$fechaModificacion' WHERE ID_PREGUNTA = $idPregunta";
+    // Convertir la pregunta a minúsculas
+    $preguntaMin = strtolower($pregunta);
 
-    if ($conn->query($updateSql) === TRUE) {
-        // Actualización exitosa
-        // Redirigir a la página principal después de la actualización
-        header("Location: preguntas.php");
-        exit();
+    // Consulta SQL para verificar si la pregunta ya existe (excluyendo la pregunta actual)
+    $verificarDuplicadoSql = "SELECT ID_PREGUNTA FROM tbl_preguntas WHERE LOWER(PREGUNTA) = ? AND ID_PREGUNTA <> ?";
+    $stmtVerificarDuplicado = $conn->prepare($verificarDuplicadoSql);
+    $stmtVerificarDuplicado->bind_param("si", $preguntaMin, $idPregunta);
+    $stmtVerificarDuplicado->execute();
+    $stmtVerificarDuplicado->store_result();
+
+    if ($stmtVerificarDuplicado->num_rows > 0) {
+        $errorMsg = "<div class='alert alert-danger' role='alert'>No se puede actualizar la pregunta porque ya existe en la base de datos.</div>";
     } else {
-        echo "Error al actualizar la pregunta: " . $conn->error;
+        // La pregunta no existe, proceder con la actualización
+        // Consulta SQL para actualizar la pregunta
+        $updateSql = "UPDATE tbl_preguntas SET PREGUNTA = ?, FECHA_MODIFICACION = ? WHERE ID_PREGUNTA = ?";
+        $stmtUpdate = $conn->prepare($updateSql);
+        $stmtUpdate->bind_param("ssi", $pregunta, $fechaModificacion, $idPregunta);
+
+        if ($stmtUpdate->execute()) {
+            // Actualización exitosa
+            // Redirigir a la página principal después de la actualización
+            header("Location: preguntas.php");
+            exit();
+        } else {
+            $errorMsg = "<div class='alert alert-danger' role='alert'>Error al actualizar la pregunta: " . $conn->error . "</div>";
+        }
     }
+
+    // Cerrar la declaración
+    $stmtVerificarDuplicado->close();
 }
 
 // Cerrar la conexión
@@ -82,17 +106,17 @@ $conn->close();
     <script src="../Js/estilos.js"></script>
     <style>
         body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    background-image: url('../imagen/IHCI.jpg');
-    background-size: 30%; /* Cambiar el tamaño de la imagen de fondo */
-    background-repeat: no-repeat;
-    background-position: center;
-    font-family: Arial, sans-serif;
-}
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-image: url('../imagen/IHCI.jpg');
+            background-size: 30%; /* Cambiar el tamaño de la imagen de fondo */
+            background-repeat: no-repeat;
+            background-position: center;
+            font-family: Arial, sans-serif;
+        }
 
         .container {
             background-color: rgba(245, 245, 220, 0.9); /* Beige con transparencia */
@@ -109,6 +133,8 @@ $conn->close();
 <body>
     <div class="container">
         <h2><i class="fas fa-question"></i> Pregunta</h2>
+        <!-- Mostrar mensaje de error aquí -->
+        <?php echo $errorMsg; ?>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id=" . $idPregunta); ?>" method="POST">
             <!-- Campos del formulario -->
             <div class="mb-3">
@@ -117,17 +143,16 @@ $conn->close();
             </div>
 
             <!-- Campo de fecha de creación (solo lectura) -->
-<div class="mb-3">
-    <label for="fechaCreacion" class="form-label">Fecha de Creación:</label>
-    <input class="form-control" type="text" name="fechaCreacion" value="<?php echo date('Y-m-d', strtotime($fechaCreacion)); ?>" readonly>
-</div>
+            <div class="mb-3">
+                <label for="fechaCreacion" class="form-label">Fecha de Creación:</label>
+                <input class="form-control" type="text" name="fechaCreacion" value="<?php echo date('Y-m-d', strtotime($fechaCreacion)); ?>" readonly>
+            </div>
 
-<!-- Campo de fecha de modificación -->
-<div class="mb-3">
-    <label for="fechaModificacion" class="form-label">Fecha de Modificación:</label>
-    <input type="text" class="form-control" name="fechaModificacion" value="<?php echo date('Y-m-d', strtotime($fechaModificacion)); ?>" readonly>
-</div>
-
+            <!-- Campo de fecha de modificación -->
+            <div class="mb-3">
+                <label for="fechaModificacion" class="form-label">Fecha de Modificación:</label>
+                <input type="text" class="form-control" name="fechaModificacion" value="<?php echo date('Y-m-d', strtotime($fechaModificacion)); ?>" readonly>
+            </div>
 
             <!-- Botones de guardar y cancelar -->
             <button type="submit" class="btn btn-primary">Guardar</button>
