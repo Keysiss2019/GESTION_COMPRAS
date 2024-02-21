@@ -154,7 +154,7 @@ $resultProductos = $stmt->get_result();
                 <input type="text" name="codigo" placeholder="Código de búsqueda">
                 <button type="submit" name="buscar"><i class="fas fa-search"></i></button>
             </form>
-            <a href="pdf.php" class="pdf-button"><i class="fas fa-file-pdf"></i></a>
+            <a href="pdf.php" class="pdf-button" target="_blank"><i class="fas fa-file-pdf"></i></a>
            
         </div>
         
