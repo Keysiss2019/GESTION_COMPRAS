@@ -143,7 +143,7 @@
             <a href="../roles/agregar_roles.php" class="print-button plus-button" onclick="toggleFloatingForm()">
                 <i class="fas fa-plus"></i>
             </a>
-            <a href="pdf_roles.php" class="pdf-button">
+            <a href="pdf_roles.php" class="pdf-button" target="_blank">
                 <i class="fas fa-file-pdf"></i>
             </a>
             <a href="excel.php" class="fa-download">
