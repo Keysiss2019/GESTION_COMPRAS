@@ -11,15 +11,17 @@
     <script src="https://kit.fontawesome.com/860e3c70ee.js" crossorigin="anonymous"></script>
     <style>
     body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            background-image: url('../imagen/solicitud.jpg' ); /* Ruta de la imagen de fondo */
-            background-size: cover;
-            font-family: Arial, sans-serif;
-        }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-image: url('../imagen/IHCI.jpg');
+    background-size: 30%; /* Cambiar el tamaño de la imagen de fondo */
+    background-repeat: no-repeat;
+    background-position: center;
+    font-family: Arial, sans-serif;
+}
 
         .container {
            background-color: rgba(245, 245, 220, 0.9); /* Beige con transparencia */
