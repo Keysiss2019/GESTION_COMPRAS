@@ -1,11 +1,11 @@
 <?php
-$conexion = mysqli_connect("localhost", "root", "", "gestion_compras2");
+include "../conexion/conexion.php"; // Agrega el punto y coma al final de esta línea
 
 if (isset($_GET['id'])) {
     $rolId = $_GET['id'];
     
     // Obtener los detalles del rol
-    $consultaRol = mysqli_query($conexion, "SELECT * FROM tbl_ms_roles WHERE ID_ROL = '$rolId'");
+    $consultaRol = mysqli_query($conn, "SELECT * FROM tbl_ms_roles WHERE ID_ROL = '$rolId'");
     
     // Verificar si se encontró el rol
     if (mysqli_num_rows($consultaRol) === 1) {
@@ -17,6 +17,30 @@ if (isset($_GET['id'])) {
 } else {
     echo "ID de rol no especificado.";
     exit();
+}
+
+$message = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Obtener el nuevo nombre del rol desde el formulario
+    $nuevoNombreRol = $_POST['nombre'];
+    
+    // Verificar si el nuevo nombre del rol ya existe en la base de datos para otro rol
+    $consultaExistenciaRol = mysqli_query($conexion, "SELECT * FROM tbl_ms_roles WHERE NOMBRE_ROL = '$nuevoNombreRol' AND ID_ROL != '$rolId'");
+    
+    if (mysqli_num_rows($consultaExistenciaRol) > 0) {
+        $message = "Ya existe un rol con ese nombre.";
+    } else {
+        // Continuar con la actualización del rol
+        
+        // Actualizar el rol en la base de datos
+        $queryActualizarRol = "UPDATE tbl_ms_roles SET NOMBRE_ROL = '$nuevoNombreRol' WHERE ID_ROL = '$rolId'";
+        if (mysqli_query($conexion, $queryActualizarRol)) {
+            $message = "Rol actualizado exitosamente.";
+        } else {
+            $message = "Error al actualizar el rol: " . mysqli_error($conexion);
+        }
+    }
 }
 ?>
 
@@ -45,7 +69,7 @@ if (isset($_GET['id'])) {
     }
 </style>
 <style>
-         body {
+        body {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -58,16 +82,14 @@ if (isset($_GET['id'])) {
     font-family: Arial, sans-serif;
 }
 
-       /* Estilos para el formulario */
- .form-container {
-    background-color: rgba(245, 245, 220, 0.9); /* Beige con transparencia */
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-    width: 400px;
-    text-align: center; /* Centra el contenido horizontalmente */
-    margin: 0 auto; /* Centra el formulario en la página */
-}
+        .form-container {
+            background-color: rgba(245, 245, 220, 0.9); /* Beige con transparencia */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center; /* Centro el contenido horizontalmente */
+        }
 
         .form-row {
             display: flex;
@@ -101,21 +123,18 @@ if (isset($_GET['id'])) {
         /* Otros estilos de tu elección */
     </style>
 </head>
-    <title>Gestión de Roles</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-</head>
-</head>
 <body>
 
     <div class="form-container">
     <h1>Rol</h1>
     
-    <form action="actualizar_roles.php" method="POST">
+    <p><?php echo $message; ?></p>
+    
+    <form action="" method="POST">
         <input type="hidden" name="rol_id" value="<?php echo $rol['ID_ROL']; ?>">
         <div class="form-row">
-        <label class="form-label" for="nombre">Rol:</label>
-        <input class="form-input" type="text" name="nombre" value="<?php echo $rol['NOMBRE_ROL']; ?>">
+            <label class="form-label" for="nombre">Rol:</label>
+            <input class="form-input" type="text" name="nombre" value="<?php echo $rol['NOMBRE_ROL']; ?>">
         </div>
 
         <!-- Deshabilitar el campo de fecha de creación -->
@@ -124,30 +143,32 @@ if (isset($_GET['id'])) {
             <input class="form-input" type="text" name="fecha_creacion" value="<?php echo date('Y-m-d', strtotime($rol['FECHA_CREACION'])); ?>" disabled>
         </div>
 
-       <!-- Mostrar y permitir editar la fecha de modificación -->
-       <div class="form-row">
+        <!-- Mostrar y permitir editar la fecha de modificación -->
+        <div class="form-row">
             <label class="form-label" for="fecha_modificacion">Fecha de Modificación:</label>
             <input class="form-input" type="text" name="fecha_modificacion" value="<?php echo date('Y-m-d', strtotime($rol['FECHA_MODIFICACION'])); ?>">
         </div>
 
         <!-- Mostrar y permitir editar el estado del rol -->
         <div class="form-row">
-    <label class="form-label" for="estado">Estado:</label>
-    <select class="form-input" name="estado">
-        <option value="" <?php if ($rol['ESTADO_ROL'] === '') echo 'selected'; ?>>Sin Estado</option>
-        <option value="A" <?php if ($rol['ESTADO_ROL'] === 'A') echo 'selected'; ?>>Activo</option>
-        <option value="I" <?php if ($rol['ESTADO_ROL'] === 'I') echo 'selected'; ?>>Inactivo</option>
-        <option value="B" <?php if ($rol['ESTADO_ROL'] === 'B') echo 'selected'; ?>>Bloqueado</option>
-    </select>
-</div>
+            <label class="form-label" for="estado">Estado:</label>
+            <select class="form-input" name="estado">
+                <option value="" <?php if ($rol['ESTADO_ROL'] === '') echo 'selected'; ?>>Sin Estado</option>
+                <option value="A" <?php if ($rol['ESTADO_ROL'] === 'A') echo 'selected'; ?>>Activo</option>
+                <option value="I" <?php if ($rol['ESTADO_ROL'] === 'I') echo 'selected'; ?>>Inactivo</option>
+                <option value="B" <?php if ($rol['ESTADO_ROL'] === 'B') echo 'selected'; ?>>Bloqueado</option>
+            </select>
+        </div>
 
         <!-- Otros campos para editar -->
+
         <div class="form-row">
-        <button type="submit">Guardar</button>
-        <a href="roles.php" class="btn btn-secondary">Cancelar</a>
+            <button type="submit">Guardar</button>
+            <a href="roles.php" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
     </div>
     <!-- Otro contenido de la página -->
 </body>
 </html>
+
