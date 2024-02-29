@@ -111,7 +111,7 @@ if (isset($_GET['id'])) {
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    background-image: url('../imagen/IHCI.jpg');
+    background-image: url('../imagen/background.jpg');
     background-size: 30%; /* Cambiar el tamaño de la imagen de fondo */
     background-repeat: no-repeat;
     background-position: center;
