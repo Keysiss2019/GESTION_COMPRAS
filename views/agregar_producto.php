@@ -20,7 +20,7 @@
     <style>
         body {
             
-            background-image: url(../Gestionmain/imagen/imagen1.jpg);
+            background-image: url(../imagen/background.jpg);
             background-repeat: no-repeat;
             background-position: center;
             background-size: cover;
