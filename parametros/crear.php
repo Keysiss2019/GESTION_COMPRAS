@@ -9,7 +9,7 @@
             text-align: center;
             font-family: Arial, sans-serif;
             background: rgba(255, 255, 255, 0.20);
-            background-image: url('../imagen/IHCIS.jpg');
+            background-image: url('../imagen/background.jpg'); 
            background-size: 40%;
           background-position: center;
           background-repeat: no-repeat;
@@ -20,8 +20,8 @@
            align-items: center; /* Centra verticalmente */
          min-height: 100vh;
 
-      }
-
+      padding: 0;
+        }
         .container {
             display: inline-block;
             text-align: center;
