@@ -40,9 +40,9 @@ if (isset($_GET['id'])) {
     <link rel="stylesheet" href="styles.css">
 
     <style>
-        body {
+       body {
             font-family: Arial, sans-serif;
-            background-image: url('../imagen/carpeta.jpeg'); /* Reemplaza con la ruta de tu imagen de fondo */
+            background-image: url('../imagen/background.jpg'); /* Reemplaza con la ruta de tu imagen de fondo */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
