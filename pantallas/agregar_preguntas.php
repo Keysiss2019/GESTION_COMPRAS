@@ -30,7 +30,7 @@ $resultPreguntas = $conn->query($sqlPreguntas);
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-image: url('../imagen/imagen1.jpg'); /* Ruta de tu imagen de fondo */
+            background-image: url('../imagen/background.jpg'); /* Ruta de tu imagen de fondo */
             background-size: cover; /* Ajusta el tamaño de la imagen al contenedor */
             background-position: center; /* Centra la imagen en el contenedor */
             background-repeat: no-repeat; /* Evita que la imagen se repita */

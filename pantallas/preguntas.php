@@ -38,7 +38,7 @@ $tienePreguntas = $resultUsuarioPreguntas->num_rows > 0;
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-image: url('../imagen/imagen1.jpg');
+            background-image: url('../imagen/background.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
