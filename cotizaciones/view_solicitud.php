@@ -70,7 +70,7 @@ if ($resultRolUsuario->num_rows > 0) {
             text-align: center;
             font-family: Arial, sans-serif;
             background: rgba(255, 255, 255, 0.10);
-            background-image: url('../imagen/background.jpg');
+           /* background-image: url('../imagen/background.jpg');*/
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
