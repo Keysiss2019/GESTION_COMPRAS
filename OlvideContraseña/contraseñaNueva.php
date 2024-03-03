@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
        body {
     font-family: Arial, sans-serif;
-    background-image: url('../imagen/background.jpg'); /* Reemplaza 'ruta_de_la_imagen.jpg' con la ruta de tu imagen de fondo */
+    /*background-image: url('../imagen/background.jpg'); /* Reemplaza 'ruta_de_la_imagen.jpg' con la ruta de tu imagen de fondo */
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;

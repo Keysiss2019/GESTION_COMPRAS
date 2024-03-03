@@ -40,7 +40,7 @@ $empresas = $stmt_empresas->fetchAll(PDO::FETCH_ASSOC);
     <style>
        body {
             font-family: Arial, sans-serif;
-            background-image: url('../imagen/background.jpg'); /* Reemplaza con la ruta de tu imagen de fondo */
+            /*background-image: url('../imagen/background.jpg'); /* Reemplaza con la ruta de tu imagen de fondo */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;

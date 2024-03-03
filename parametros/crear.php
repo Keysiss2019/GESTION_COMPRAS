@@ -9,7 +9,7 @@
             text-align: center;
             font-family: Arial, sans-serif;
             background: rgba(255, 255, 255, 0.20);
-            background-image: url('../imagen/background.jpg'); 
+        /*background-image: url('../imagen/background.jpg'); */
            background-size: 40%;
           background-position: center;
           background-repeat: no-repeat;

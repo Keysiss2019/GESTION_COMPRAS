@@ -36,7 +36,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             text-align: center;
             font-family: Arial, sans-serif;
             background: rgba(255, 255, 255, 0.10); /* Cambia el valor de "0.7" para ajustar la transparencia */
-            background-image: url('../imagen/background.jpg'); /* Reemplaza con la ruta de tu imagen de fondo */
+            /*background-image: url('../imagen/background.jpg'); /* Reemplaza con la ruta de tu imagen de fondo */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;

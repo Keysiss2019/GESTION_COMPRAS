@@ -92,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["actualizar"])) {
     <style>
         body {
             
-            background-image: url(../Gestionmain/imagen/imagen1.jpg);
+            /*background-image: url(../Gestionmain/imagen/imagen1.jpg);*/
             background-repeat: no-repeat;
             background-position: center;
             background-size: cover;
