@@ -110,7 +110,7 @@ input[type="button"]:hover {
 <div id="recoveryContainer">
     <h2>Recuperar Contraseña</h2>
     <form method="POST" action="pregunta.php">
-    <label for="nombre_usuario">Nombre de Usuario:</label>
+    <label for="nombre_usuario">Usuario:</label>
     <input type="text" name="nombre_usuario" id="nombre_usuario" required><br><br>
     
     <!-- Etiqueta "Método de Recuperación" centrada -->
@@ -118,7 +118,7 @@ input[type="button"]:hover {
 
     <div class="radio-group">
     <input type="radio" name="metodo" value="preguntas" id="metodo_preguntas" required>
-    <label for="metodo_preguntas">Vìa Pregunta</label>
+    <label for="metodo_preguntas">Pregunta</label>
 
     <input type="radio" name="metodo" value="email" id="metodo_email" required>
     <label for="metodo_email">Correo Electrónico</label><br><br>
