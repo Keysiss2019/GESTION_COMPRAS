@@ -8,8 +8,11 @@ include("../views/conexion.php");
 if (isset($_SESSION["usuarioId"])) {
     $usuarioId = $_SESSION["usuarioId"];
     
-    // Obtén el nombre del usuario desde la base de datos
-    $sql = "SELECT nombre_usuario FROM tbl_ms_usuario WHERE id_usuario = ?";
+    // Obtén el nombre del usuario y el nombre de su rol desde la base de datos
+    $sql = "SELECT u.nombre_usuario, r.NOMBRE_ROL AS nombre_rol
+            FROM tbl_ms_usuario u
+            INNER JOIN tbl_ms_roles r ON u.rol = r.ID_ROL
+            WHERE u.id_usuario = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $usuarioId);
     $stmt->execute();
@@ -18,11 +21,14 @@ if (isset($_SESSION["usuarioId"])) {
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $usuarioNombre = $row["nombre_usuario"];
+        $usuarioRol = $row["nombre_rol"];
         $_SESSION["usuarioNombre"] = $usuarioNombre; // Configura la variable de sesión
+        $_SESSION["usuarioRol"] = $usuarioRol; // Configura el rol del usuario en la variable de sesión
     } else {
         // Manejar el caso en que no se encuentra el nombre del usuario
         $usuarioNombre = "Nombre de Usuario Desconocido"; // Puedes establecer un valor por defecto
         $_SESSION["usuarioNombre"] = $usuarioNombre;
+        $_SESSION["usuarioRol"] = "Rol Desconocido"; // Puedes establecer un valor por defecto para el rol
     }
 } else {
     // El usuario no ha iniciado sesión, puedes redirigirlo a la página de inicio de sesión
@@ -138,6 +144,12 @@ $rutasVistas = array(
     color: blueviolet; /* Cambia el color  */
 }
 
+#content a {
+    float: right;
+    margin-right: 40px;
+}
+
+
 </style>
 </head>
 <body>
@@ -211,6 +223,7 @@ if ($nombreVista === 'Productos') {
 <!-- Contenido principal -->
 <div class="content" id="content">
    
+<a href="#" ><strong><?php echo $usuarioNombre . " " . $usuarioRol; ?></strong></a>
     <!-- Aquí se cargará la vista seleccionada en el iframe -->
     <iframe name="contenido" id="contenido" frameborder="0" scrolling="auto"></iframe>
     
@@ -269,4 +282,6 @@ if ($nombreVista === 'Productos') {
 </script>
 </body>
 </html>
+
+
 
