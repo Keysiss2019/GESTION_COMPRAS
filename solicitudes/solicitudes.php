@@ -87,7 +87,7 @@ if ($resultRolUsuario->num_rows > 0) {
     $rolUsuario = null; // Puedes establecer un valor por defecto o manejarlo según tu lógica
 }
 
-if (strcasecmp($_SESSION["rol"], "Administrador") == 0 || strcasecmp($_SESSION["rol"], "Aprobador") == 0) {
+if ($rolUsuario === "Administrador" || $rolUsuario === "Aprobador") {
     $sql = "SELECT s.id, s.codigo, d.nombre_departamento, u.nombre_usuario, s.estado, s.fecha_ingreso 
             FROM tbl_solicitudes s
             JOIN tbl_departamentos d ON s.idDepartamento = d.id_departamento
@@ -127,30 +127,9 @@ if (isset($_GET["buscar"])) {
 } else {
     // Consulta original sin filtro
     $stmt = $conn->prepare($sql);
-    if (strcasecmp($_SESSION["rol"], "Administrador") == 0 || strcasecmp($_SESSION["rol"], "Aprobador") == 0) {
-        // Acciones para administradores o aprobadores
-    } else {
-        // Filtro por ID de usuario para usuarios normales
-        $usuarioId = $_SESSION["usuarioId"]; // Obtén el ID de usuario de la sesión
-    
-        // Preparar consulta con un parámetro
-        $sql = "SELECT * FROM tabla WHERE id_usuario = ?";
-        $stmt = $conn->prepare($sql);
-        
-        if ($stmt) {
-            // Enlazar el parámetro (en este caso, un entero 'i')
-            $stmt->bind_param("i", $usuarioId);
-            
-            // Ejecutar la consulta
-            $stmt->execute();
-            
-            // Procesar resultados, etc.
-        } else {
-            // Manejar error de preparación de consulta
-            echo "Error al preparar la consulta.";
-        }
+    if ($rolUsuario !== "Administrador" && $rolUsuario !== "Aprobador") {
+        $stmt->bind_param("i", $usuarioId); // Filtro por ID de usuario para usuarios normales
     }
-    
 }
 
 // Ejecutar la consulta
@@ -214,9 +193,10 @@ $paginaActual = isset($_GET['page']) ? $_GET['page'] : 1;
     
     <style>
    .plus-button {
-    float: right; /* Mueve el botón hacia la derecha */
+    float: left; /* Mueve el botón hacia la derecha */
     position: relative; /* Establece la posición relativa */
     top: 45px; /* Ajusta el valor según sea necesario para mover el botón hacia abajo */
+    left: 680px;
     text-decoration: none;
     padding: 8px 8px;
     border-radius: 4px;
@@ -367,146 +347,94 @@ if ($resultObjetoCrearSolicitud->num_rows > 0) {
     
     <br>
     <?php if ($result->num_rows > 0) : ?>
-          
-        <table id="solicitudesTable" class="solicitud-table">
-            <thead>
+    <table id="solicitudesTable" class="solicitud-table">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Departamento</th>
+                <th>Usuario</th>
+                <th>Fecha
+                    <span class="filter-icon" id="filterIcon"><i class="fas fa-filter"></i></span>
+                    <div id="filterContainer" style="display: none;">
+                        <input type="text" id="filterFecha" placeholder="YYYY-MM" />
+                    </div>
+                </th>
+                <th>Estado</th>
+                <th>Acciones</th>
+                <!-- Agrega más columnas si es necesario -->
+            </tr>
+        </thead>
+
+        <tbody>
+            <?php while ($row = $result->fetch_assoc()) : ?>
                 <tr>
-                    <th>Código</th>
-                    <th>Departamento</th>
-                    <th>Usuario</th>
-                    <th>Fecha
-                      <span class="filter-icon" id="filterIcon"><i class="fas fa-filter"></i></span>
-                      <div id="filterContainer" style="display: none;">
-                         <input type="text" id="filterFecha" placeholder="YYYY-MM" />
-                       </div>
-                    </th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                    <!-- Agrega más columnas si es necesario -->
-                </tr>
-            </thead>
-            
-            <tbody>
-                <?php while ($row = $result->fetch_assoc()) : ?>
-                    <tr>
-                        <td><?php echo $row["codigo"]; ?></td>
-                        <td><?php echo $row["nombre_departamento"]; ?></td>
-                        <td><?php echo $row["nombre_usuario"]; ?></td>
-                        <td class="fecha-ingreso" data-fecha="<?php echo date("Y-m-d", strtotime($row['fecha_ingreso'])); ?>">
-                        <?php echo date("Y-m-d", strtotime($row['fecha_ingreso'])); ?></td>
-                        <td><?php echo $row["estado"]; ?></td>
-                        <td> 
-                        
+                    <td><?php echo $row["codigo"]; ?></td>
+                    <td><?php echo $row["nombre_departamento"]; ?></td>
+                    <td><?php echo $row["nombre_usuario"]; ?></td>
+                    <td class="fecha-ingreso" data-fecha="<?php echo date("Y-m-d", strtotime($row['fecha_ingreso'])); ?>">
+                        <?php echo date("Y-m-d", strtotime($row['fecha_ingreso'])); ?>
+                    </td>
+                    <td><?php echo $row["estado"]; ?></td>
+                    <td>
                         <div class="button-container">
-                        
 
-                        <?php
-                            if (isset($usuariosRol) && tienePermisos($usuariosRol, $conn, $permisosVerId, $objetosIdVer)) {
-                                
-                            }
+                            <?php
+                            echo "<a href='../cotizaciones/view_solicitud.php?id=" . $row["id"] . "' class='green-link'><i class='fas fa-eye'></i></a>";
 
-                           // Obtener el ID del objeto para editar solicitudes
-$sqlObjetoEditarSolicitud = "SELECT ID_OBJETO FROM tbl_objetos WHERE NOMBRE_OBJETO = 'Solicitudes'";
-$stmtObjetoEditarSolicitud = $conn->prepare($sqlObjetoEditarSolicitud);
-$stmtObjetoEditarSolicitud->execute();
-$resultObjetoEditarSolicitud = $stmtObjetoEditarSolicitud->get_result();
+                            // Convertir el estado a minúsculas para comparación insensible a mayúsculas/minúsculas
+                            $estado = strtolower($row["estado"]);
 
-if ($resultObjetoEditarSolicitud->num_rows > 0) {
-    $rowObjetoEditarSolicitud = $resultObjetoEditarSolicitud->fetch_assoc();
-    $objetosIdEditarSolicitud = $rowObjetoEditarSolicitud["ID_OBJETO"];
-
-    // Verificar permisos para editar
-    if (isset($usuariosRol) && tienePermisos($usuariosRol, $conn, $permisosEditarId, $objetosIdEditarSolicitud)) {
-        // El usuario tiene permiso para "Editar" el objeto específico
-        echo '<button class="btn btn-primary" onclick="editarSolicitud(' . $row["id"] . ')"><i class="fas fa-edit"></i></button>';
-    } else {
-        // Manejar el caso en que el usuario no tiene permisos
-        echo "El usuario no tiene permisos para editar solicitudes.";
-    }
-} else {
-    // Manejar el caso en que no se encuentra el ID del objeto
-    echo "No se pudo obtener el ID del objeto para editar solicitudes.";
-}
-
-// Obtener el ID del objeto para eliminar solicitudes
-$sqlObjetoEliminarSolicitud = "SELECT ID_OBJETO FROM tbl_objetos WHERE NOMBRE_OBJETO = 'Solicitudes'";
-$stmtObjetoEliminarSolicitud = $conn->prepare($sqlObjetoEliminarSolicitud);
-$stmtObjetoEliminarSolicitud->execute();
-$resultObjetoEliminarSolicitud = $stmtObjetoEliminarSolicitud->get_result();
-
-if ($resultObjetoEliminarSolicitud->num_rows > 0) {
-    $rowObjetoEliminarSolicitud = $resultObjetoEliminarSolicitud->fetch_assoc();
-    $objetosIdEliminarSolicitud = $rowObjetoEliminarSolicitud["ID_OBJETO"];
-
-    // Verificar permisos para eliminar
-    if (isset($usuariosRol) && tienePermisos($usuariosRol, $conn, $permisosEliminarId, $objetosIdEliminarSolicitud)) {
-        // El usuario tiene permiso para "Eliminar" el objeto específico
-        echo '<button class="btn btn-danger" onclick="eliminarSolicitud(' . $row["id"] . ')"><i class="fas fa-trash"></i></button>';
-    } else {
-        // Manejar el caso en que el usuario no tiene permisos
-        echo "El usuario no tiene permisos para eliminar solicitudes.";
-    }
-} else {
-    // Manejar el caso en que no se encuentra el ID del objeto
-    echo "No se pudo obtener el ID del objeto para eliminar solicitudes.";
-}
-
-                             // Ahora, puedes colocar el enlace para agregar cotizaciones dentro del bucle
-                             
-                             echo "<a href='../cotizaciones/view_solicitud.php?id=" . $row["id"] . "' class='green-link'><i class='fas fa-eye'></i></a>";
-                            
-                             if (strcasecmp($_SESSION["rol"], "Administrador") == 0 || strcasecmp($_SESSION["rol"], "Aprobador") == 0) {
-                             echo "<a href='../cotizaciones/add_cotizacion.php?id=" . $row["id"] . "' class='yellow-link'><i class='fas fa-shopping-cart'></i></a>";
-                             echo "<a href='../cotizaciones/detalle_solicitud.php?id=" . $row["id"] . "' class='orange-link'><i class='fas fa-file-alt'></i></a>";
+                            // Verificar el estado de la solicitud para habilitar/deshabilitar botones
+                            if (strcasecmp($estado, "nueva") === 0) {
+                                // Habilitar el botón de agregar cotización
+                                echo "<a href='../cotizaciones/add_cotizacion.php?id=" . $row["id"] . "' class='yellow-link'><i class='fas fa-shopping-cart'></i></a>";
+                                // Deshabilitar el botón de detalle de solicitud
+                                echo "<a href='#' class='orange-link disabled'><i class='fas fa-file-alt'></i></a>";
+                            } elseif (strcasecmp($estado, "proceso") === 0) {
+                                // Deshabilitar el botón de agregar cotización
+                                echo "<a href='#' class='yellow-link disabled'><i class='fas fa-shopping-cart'></i></a>";
+                                // Habilitar el botón de detalle de solicitud
+                                echo "<a href='../cotizaciones/detalle_solicitud.php?id=" . $row["id"] . "' class='orange-link'><i class='fas fa-file-alt'></i></a>";
                             } else {
-                                //echo '<p>No tienes permisos para cambiar o seleccionar la cotización.</p>';
+                                // Otros estados, deshabilitar ambos botones
+                                echo "<a href='#' class='yellow-link disabled'><i class='fas fa-shopping-cart'></i></a>";
+                                echo "<a href='#' class='orange-link disabled'><i class='fas fa-file-alt'></i></a>";
                             }
-                              // Consulta para verificar si hay una cotización aprobada
-                $sqlCotizacionAprobada = "SELECT COUNT(*) AS num_cotizaciones FROM tbl_cotizacion WHERE id = ? AND estado = 'Aprobada'";
-                $stmtCotizacionAprobada = $conn->prepare($sqlCotizacionAprobada);
-                $stmtCotizacionAprobada->bind_param("i", $row["id"]);
-                $stmtCotizacionAprobada->execute();
-                $resultCotizacionAprobada = $stmtCotizacionAprobada->get_result();
 
-                if ($resultCotizacionAprobada->num_rows > 0) {
-                    $rowCotizacionAprobada = $resultCotizacionAprobada->fetch_assoc();
-
-                    if ($rowCotizacionAprobada['num_cotizaciones'] > 0) {
-                        // Hay al menos una cotización aprobada, actualiza el estado de la solicitud a "Aprobada"
-                        $sqlActualizarSolicitud = "UPDATE tbl_solicitudes SET estado = 'Aprobada' WHERE id = ?";
-                        $stmtActualizarSolicitud = $conn->prepare($sqlActualizarSolicitud);
-
-                        if ($stmtActualizarSolicitud) {
-                            $stmtActualizarSolicitud->bind_param("i", $row["id"]);
-                            $stmtActualizarSolicitud->execute();
-                        }
-                    }
-                }     
+                            // Botón de editar
+                            echo '<button class="btn btn-primary" onclick="editarSolicitud(' . $row["id"] . ')"><i class="fas fa-edit"></i></button>';
+                            // Botón de eliminar
+                            echo '<button class="btn btn-danger" onclick="eliminarSolicitud(' . $row["id"] . ')"><i class="fas fa-trash"></i></button>';
                             ?>
 
-                            </div>
-                            
-                        </td>
-                       
-                    </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
-        
-        <!-- Numeración de páginas -->
-        <div class="pagination-container">
-            <ul>
-                <?php for ($i = 1; $i <= $totalPaginas; $i++) : ?>
-                    <li <?php if ($i === $paginaActual) echo 'class="active"'; ?>>
-                        <a href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                    </li>
-                <?php endfor; ?>
-            </ul>
-        </div>
-        
-    <?php else : ?>
-        <p>No se encontraron solicitudes.</p>
-    <?php endif; ?>
+                        </div>
+                    </td>
+                </tr>
+            <?php endwhile; ?>
+        </tbody>
+    </table>
+
+    <!-- Numeración de páginas -->
+    <div class="pagination-container">
+        <ul>
+            <?php for ($i = 1; $i <= $totalPaginas; $i++) : ?>
+                <li <?php if ($i === $paginaActual) echo 'class="active"'; ?>>
+                    <a href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                </li>
+            <?php endfor; ?>
+        </ul>
+    </div>
+
+<?php else : ?>
+    <p>No se encontraron solicitudes.</p>
+<?php endif; ?>
+
+
+
+
+
+
+
 
     <!-- Agrega más contenido de la página aquí -->
 
@@ -613,7 +541,7 @@ if ($resultObjetoEliminarSolicitud->num_rows > 0) {
                 $('div.dataTables_filter').css({
                     'text-align': 'left',
                     'margin-top': '10px',
-                    'margin-right': '40px'
+                    'margin-right': '1px'
                 });
 
                 $('.search-bar .print-button').css({
