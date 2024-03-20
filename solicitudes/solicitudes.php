@@ -196,7 +196,7 @@ $paginaActual = isset($_GET['page']) ? $_GET['page'] : 1;
     float: left; /* Mueve el botón hacia la derecha */
     position: relative; /* Establece la posición relativa */
     top: 45px; /* Ajusta el valor según sea necesario para mover el botón hacia abajo */
-    left: 680px;
+    left: 580px;
     text-decoration: none;
     padding: 8px 8px;
     border-radius: 4px;

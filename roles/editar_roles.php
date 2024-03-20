@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         // Actualizar el rol en la base de datos
         $queryActualizarRol = "UPDATE tbl_ms_roles SET NOMBRE_ROL = '$nuevoNombreRol' WHERE ID_ROL = '$rolId'";
-        if (mysqli_query($conexion, $queryActualizarRol)) {
+        if (mysqli_query($conn, $queryActualizarRol)) {
             $message = "Rol actualizado exitosamente.";
         } else {
             $message = "Error al actualizar el rol: " . mysqli_error($conexion);
