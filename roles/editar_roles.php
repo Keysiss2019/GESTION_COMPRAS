@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nuevoNombreRol = $_POST['nombre'];
     
     // Verificar si el nuevo nombre del rol ya existe en la base de datos para otro rol
-    $consultaExistenciaRol = mysqli_query($conexion, "SELECT * FROM tbl_ms_roles WHERE NOMBRE_ROL = '$nuevoNombreRol' AND ID_ROL != '$rolId'");
+    $consultaExistenciaRol = mysqli_query($conn, "SELECT * FROM tbl_ms_roles WHERE NOMBRE_ROL = '$nuevoNombreRol' AND ID_ROL != '$rolId'");
     
     if (mysqli_num_rows($consultaExistenciaRol) > 0) {
         $message = "Ya existe un rol con ese nombre.";

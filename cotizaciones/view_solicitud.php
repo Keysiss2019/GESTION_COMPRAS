@@ -70,7 +70,7 @@ if ($resultRolUsuario->num_rows > 0) {
             text-align: center;
             font-family: Arial, sans-serif;
             background: rgba(255, 255, 255, 0.10);
-           /* background-image: url('../imagen/background.jpg');*/
+            background-image: url('../imagen/background.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -194,6 +194,7 @@ table.solicitud-info tr:last-child td {
 
            if (isset($_GET['id'])) {
                 $idSolicitud = $_GET['id'];
+               
 
                if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['aprobar'])) {
                  // Manejo de aprobación de cotización
@@ -224,13 +225,13 @@ table.solicitud-info tr:last-child td {
                     }
                 }
 
-              // Recuperar y mostrar información de la solicitud
-               $sqlSolicitud = "SELECT s.id,  s.idDepartamento, s.codigo,  u.nombre_usuario, d.nombre_departamento 
+              // Obtener información de la solicitud
+               $sqlSolicitud = "SELECT s.id, s.idDepartamento, s.codigo, u.nombre_usuario, d.nombre_departamento 
                FROM tbl_solicitudes s
-                LEFT JOIN tbl_departamentos d ON s.idDepartamento = d.id_departamento
-                LEFT JOIN tbl_ms_usuario u ON s.usuario_id = u.id_usuario
-                WHERE s.id = $idSolicitud";
-                $resultSolicitud = $conn->query($sqlSolicitud);
+               LEFT JOIN tbl_departamentos d ON s.idDepartamento = d.id_departamento
+               LEFT JOIN tbl_ms_usuario u ON s.usuario_id = u.id_usuario
+               WHERE s.id = $idSolicitud";
+               $resultSolicitud = $conn->query($sqlSolicitud);
 
                if ($resultSolicitud->num_rows > 0) {
                     $rowSolicitud = $resultSolicitud->fetch_assoc();
@@ -245,8 +246,31 @@ table.solicitud-info tr:last-child td {
                   
                   echo '</table>';
                   echo '</div>';
-        
-                  echo '<br>';        
+                 // Mostrar tabla de productos asociados a la solicitud
+                  $sqlProductos = "SELECT p.id_solicitud, p.cantidad, p.descripcion, p.categoria 
+                  FROM tbl_productos p
+                  WHERE p.id_solicitud = $idSolicitud";
+                  $resultProductos = $conn->query($sqlProductos);
+
+                  if ($resultProductos->num_rows > 0) {
+                       echo '<h3>Productos de la Solicitud</h3>';
+                        echo '<table>';
+                       echo '<tr><th>Cantidad</th><th>Descripción</th><th>Categoría</th></tr>';
+
+                       while ($rowProducto = $resultProductos->fetch_assoc()) {
+                          echo '<tr>';
+                          echo '<td>' . $rowProducto['cantidad'] . '</td>';
+                          echo '<td>' . $rowProducto['descripcion'] . '</td>';
+                           echo '<td>' . $rowProducto['categoria'] . '</td>';
+                           echo '</tr>';
+                        }
+
+                       echo '</table>';
+                    } else {
+                            echo '<p>No hay productos asociados a esta solicitud.</p>';
+                        }
+                    }
+                    echo '<br>';        
         
 
                   // Lógica para verificar si la solicitud ya tiene una cotización aprobada
@@ -256,7 +280,7 @@ table.solicitud-info tr:last-child td {
                    if ($resultVerificarAprobacion->num_rows > 0) {
                       $rowVerificarAprobacion = $resultVerificarAprobacion->fetch_assoc();
                       $numCotizacionesAprobadas = $rowVerificarAprobacion['num_aprobadas'];
-                      if ($_SESSION["rol"] === "Administrador" || $_SESSION["rol"] === "Aprobador") {
+                      if ($_SESSION["rol"] === "ADMINISTRADOR" || $_SESSION["rol"] === "APROBADOR") {
                        if ($numCotizacionesAprobadas > 0) {
                            // Ya tiene cotizaciones aprobadas, preguntar si desea cambiarlas
                           
@@ -305,9 +329,10 @@ table.solicitud-info tr:last-child td {
                     } else {
                         echo '<p>No tienes permisos para cambiar o seleccionar la cotización.</p>';
                     }
-                    }
                 }
             }
+            
+            
         ?>
 
        <div id="cotizaciones-section" style="display: none;">

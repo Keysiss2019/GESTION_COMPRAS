@@ -87,7 +87,7 @@ if ($resultRolUsuario->num_rows > 0) {
     $rolUsuario = null; // Puedes establecer un valor por defecto o manejarlo según tu lógica
 }
 
-if ($rolUsuario === "Administrador" || $rolUsuario === "Aprobador") {
+if (strcasecmp($_SESSION["rol"], "Administrador") == 0 || strcasecmp($_SESSION["rol"], "Aprobador") == 0) {
     $sql = "SELECT s.id, s.codigo, d.nombre_departamento, u.nombre_usuario, s.estado, s.fecha_ingreso 
             FROM tbl_solicitudes s
             JOIN tbl_departamentos d ON s.idDepartamento = d.id_departamento
@@ -127,9 +127,30 @@ if (isset($_GET["buscar"])) {
 } else {
     // Consulta original sin filtro
     $stmt = $conn->prepare($sql);
-    if ($rolUsuario !== "Administrador" && $rolUsuario !== "Aprobador") {
-        $stmt->bind_param("i", $usuarioId); // Filtro por ID de usuario para usuarios normales
+    if (strcasecmp($_SESSION["rol"], "Administrador") == 0 || strcasecmp($_SESSION["rol"], "Aprobador") == 0) {
+        // Acciones para administradores o aprobadores
+    } else {
+        // Filtro por ID de usuario para usuarios normales
+        $usuarioId = $_SESSION["usuarioId"]; // Obtén el ID de usuario de la sesión
+    
+        // Preparar consulta con un parámetro
+        $sql = "SELECT * FROM tabla WHERE id_usuario = ?";
+        $stmt = $conn->prepare($sql);
+        
+        if ($stmt) {
+            // Enlazar el parámetro (en este caso, un entero 'i')
+            $stmt->bind_param("i", $usuarioId);
+            
+            // Ejecutar la consulta
+            $stmt->execute();
+            
+            // Procesar resultados, etc.
+        } else {
+            // Manejar error de preparación de consulta
+            echo "Error al preparar la consulta.";
+        }
     }
+    
 }
 
 // Ejecutar la consulta
@@ -434,7 +455,7 @@ if ($resultObjetoEliminarSolicitud->num_rows > 0) {
                              
                              echo "<a href='../cotizaciones/view_solicitud.php?id=" . $row["id"] . "' class='green-link'><i class='fas fa-eye'></i></a>";
                             
-                             if ($_SESSION["rol"] === "Administrador" || $_SESSION["rol"] === "Aprobador") {
+                             if (strcasecmp($_SESSION["rol"], "Administrador") == 0 || strcasecmp($_SESSION["rol"], "Aprobador") == 0) {
                              echo "<a href='../cotizaciones/add_cotizacion.php?id=" . $row["id"] . "' class='yellow-link'><i class='fas fa-shopping-cart'></i></a>";
                              echo "<a href='../cotizaciones/detalle_solicitud.php?id=" . $row["id"] . "' class='orange-link'><i class='fas fa-file-alt'></i></a>";
                             } else {
