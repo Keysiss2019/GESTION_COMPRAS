@@ -1,17 +1,5 @@
 <?php
-// Configuración de la conexión a la base de datos
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "gestion_compras2";
-
-// Crear la conexión
-$conexion = mysqli_connect($servername, $username, $password, $dbname);
-
-// Verificar si la conexión fue exitosa
-if (!$conexion) {
-    die("Error al conectar a la base de datos: " . mysqli_connect_error());
-}
+include '../conexion/conexion.php'; // Asegúrate de incluir correctamente el archivo de conexión
 
 // Definir la función mostrarMensaje()
 function mostrarMensaje($mensaje, $tipo) {
@@ -29,7 +17,7 @@ if (isset($_GET['id'])) {
         // Realizar la eliminación en la base de datos
         $sql = "DELETE FROM tbl_cotizacion WHERE ID_COTIZACION='$idcotizacion'";
 
-        if (mysqli_query($conexion, $sql)) {
+        if (mysqli_query($conn, $sql)) {
             // Respuesta JSON indicando que la eliminación fue exitosa
             header('Content-Type: application/json');
             echo json_encode(array('success' => true, 'message' => 'Registro eliminado exitosamente.'));
@@ -37,14 +25,12 @@ if (isset($_GET['id'])) {
         } else {
             // Respuesta JSON indicando que hubo un error en la eliminación
             header('Content-Type: application/json');
-            echo json_encode(array('success' => false, 'message' => 'Error al eliminar el registro: ' . mysqli_error($conexion)));
+            echo json_encode(array('success' => false, 'message' => 'Error al eliminar el registro: ' . mysqli_error($conn)));
             exit(); // Terminar la ejecución del script después de la respuesta JSON
         }
     }
 }
 
-// Cerrar la conexión
-mysqli_close($conexion);
+// Cerrar la conexión (opcional si no se realiza ninguna operación adicional)
+mysqli_close($conn);
 ?>
-
-
