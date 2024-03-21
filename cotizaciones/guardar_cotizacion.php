@@ -44,6 +44,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmtActualizarSolicitud->bind_param("i", $idSolicitud);
 
         if ($stmtActualizarSolicitud->execute()) {
+            // Recuperar datos del detalle de la cotización del formulario
+            $cantidades = $_POST['cantidad'];
+            $descripciones = $_POST['descripcion'];
+
+            // Iterar sobre los datos del detalle y guardar en tbl_cotizacion_detalle
+            for ($i = 0; $i < count($cantidades); $i++) {
+                $cantidad = $cantidades[$i];
+                $descripcion = $descripciones[$i];
+                $categoria = obtenerCategoria($descripcion);
+
+                // Preparar la consulta SQL para insertar en tbl_cotizacion_detalle
+                $sqlInsertDetalle = "INSERT INTO tbl_cotizacion_detalle (ID_COTIZACION, CANTIDAD, DESCRIPCION, ID_CATEGORIA)
+                                    VALUES (?, ?, ?, ?)";
+
+                $stmtDetalle = $conn->prepare($sqlInsertDetalle);
+                $stmtDetalle->bind_param("iisi", $idCotizacion, $cantidad, $descripcion, $categoria);
+
+                if (!$stmtDetalle->execute()) {
+                    // Imprimir el contenido de $stmtDetalle->error
+                    echo "Error al guardar el detalle de la cotización en tbl_cotizacion_detalle: ";
+                    print_r($stmtDetalle->error);
+
+                    // O también puedes registrar el error en el log
+                    error_log("Error al guardar el detalle de la cotización en tbl_cotizacion_detalle: " . print_r($stmtDetalle->error, true));
+                }
+            }
+
             // Redirigir a cotizaciones.php
             header("Location: ../solicitudes/solicitudes.php");
             exit();
@@ -73,7 +100,10 @@ function obtenerCategoria($descripcion) {
         $row = $result->fetch_assoc();
         return $row['ID'];
     } else {
-        return 0; // Puedes cambiar esto según tus requisitos, por ejemplo, devolver un valor predeterminado o lanzar una excepción.
+        return 0; // Puedes cambiar esto según tus requisitos
     }
 }
 ?>
+
+
+
