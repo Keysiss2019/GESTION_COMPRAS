@@ -16,8 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $idSolicitud = isset($_GET['id']) ? $_GET['id'] : '';
 
     $URL = $_POST['url'];
-// Resto del código...
-
 
     // Guardar la primera letra del estado en mayúsculas en la base de datos
     $estadoPrimeraLetra = strtoupper(substr($estado, 0, 1));
@@ -40,37 +38,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Obtener el ID de la cotización recién insertada
         $idCotizacion = $stmtCotizacion->insert_id;
 
-        // Iterar sobre los arrays y procesar los datos en tbl_cotizacion_detalle
-        for ($i = 0; $i < count($_POST['descripcion']); $i++) {
-            $descripcion = $_POST['descripcion'][$i];
-            $cantidad = $_POST['cantidad'][$i];
+        // Actualizar el estado de la solicitud a 'Proceso' en tbl_solicitudes
+        $sqlActualizarSolicitud = "UPDATE tbl_solicitudes SET estado = 'Proceso' WHERE id = ?";
+        $stmtActualizarSolicitud = $conn->prepare($sqlActualizarSolicitud);
+        $stmtActualizarSolicitud->bind_param("i", $idSolicitud);
 
-            // Obtener la categoría correspondiente a la descripción
-            $categoria = obtenerCategoria($descripcion);
-
-            // Preparar la consulta SQL para insertar en tbl_cotizacion_detalle
-            $sqlInsertDetalle = "INSERT INTO tbl_cotizacion_detalle (ID_COTIZACION, CANTIDAD, DESCRIPCION, ID_CATEGORIA)
-                                VALUES (?, ?, ?, ?)";
-
-            $stmtDetalle = $conn->prepare($sqlInsertDetalle);
-            $stmtDetalle->bind_param("isss", $idCotizacion, $cantidad, $descripcion, $categoria);
-
-            if (!$stmtDetalle->execute()) {
-                // Imprimir el contenido de $stmtDetalle->error
-                echo "Error al guardar el detalle de la cotización en tbl_cotizacion_detalle: ";
-                print_r($stmtDetalle->error);
-
-                // O también puedes registrar el error en el log
-                error_log("Error al guardar el detalle de la cotización en tbl_cotizacion_detalle: " . print_r($stmtDetalle->error, true));
-            }
+        if ($stmtActualizarSolicitud->execute()) {
+            // Redirigir a cotizaciones.php
+            header("Location: ../solicitudes/solicitudes.php");
+            exit();
+        } else {
+            // Error al actualizar el estado de la solicitud
+            echo "Error al actualizar el estado de la solicitud en tbl_solicitudes: " . $stmtActualizarSolicitud->error;
+            // También puedes redirigir o mostrar un mensaje de error específico
         }
-
-        // Cerrar la conexión después de insertar todas las cotizaciones
-        $conn->close();
-
-        // Redirigir a cotizaciones.php
-        header("Location: ../solicitudes/solicitudes.php");
-        exit();
     }
 } else {
     echo "Acceso no permitido.";
