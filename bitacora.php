@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bitácora de Usuarios</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <!-- Agregar Font Awesome para los íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -23,6 +25,12 @@
         }
         th {
             background-color: #f2f2f2;
+        }
+        .export-icons {
+            margin-bottom: 10px;
+        }
+        .export-icons a {
+            margin-right: 10px;
         }
         .pagination-container, .search-container {
             display: flex;
@@ -55,6 +63,11 @@
 <div class="container">
     <h2>Bitácora de Usuarios</h2>
 
+    <div class="export-icons">
+        <a href="export_excel.php"><i class="fas fa-file-excel"></i> Exportar a Excel</a>
+        <a href="export_pdf.php"><i class="fas fa-file-pdf"></i> Exportar a PDF</a>
+    </div>
+
     <?php
     // Incluir el archivo de conexión a la base de datos
     require_once('conexion/conexion.php');
@@ -78,7 +91,6 @@
 
     // Calcular el total de páginas
     $totalPages = ceil($totalRecords / $resultsPerPage);
-
     ?>
 
     <!-- Mostrar el número de registros -->
