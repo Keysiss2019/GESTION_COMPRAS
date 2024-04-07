@@ -18,9 +18,10 @@
         table {
             width: 100%;
             margin-top: 20px;
+            font-size: 14px; /* Tamaño de letra más pequeño */
         }
         th, td {
-            padding: 10px;
+            padding: 8px; /* Reducir el espacio alrededor del contenido */
             text-align: left;
         }
         th {
