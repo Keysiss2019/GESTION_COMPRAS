@@ -11,7 +11,7 @@ if(isset($_SESSION['nombre_usuario']) && !empty($_SESSION['nombre_usuario'])) {
     $nombre_usuario_php = $_SESSION['nombre_usuario'];
 
     // Número de registros por página
-    $resultsPerPage = 10;
+    $resultsPerPage = isset($_GET['resultsPerPage']) ? $_GET['resultsPerPage'] : 10; // Obtener el número de registros por página desde el parámetro GET o establecerlo en 10 por defecto
 
     // Calcular la página actual y el índice de inicio
     $page = isset($_GET['page']) ? $_GET['page'] : 1;
@@ -85,6 +85,7 @@ if(isset($_SESSION['nombre_usuario']) && !empty($_SESSION['nombre_usuario'])) {
         }
         .search-container {
             margin-bottom: 20px;
+            margin-top: -45px;
         }
         .pagination-container a {
             padding: 6px 12px;
@@ -102,6 +103,20 @@ if(isset($_SESSION['nombre_usuario']) && !empty($_SESSION['nombre_usuario'])) {
             color: #6c757d;
             border-color: #6c757d;
         }
+        /* Estilo personalizado para el contenedor del select */
+        .select-container {
+            margin-bottom: 20px;
+            display: inline-flex; /* Mostrar en línea */
+            border-radius: 0;
+            width: 90px; /* Ajustar el ancho según sea necesario */
+            height: 20px; /* Ajustar la altura según sea necesario */
+        
+        }
+        
+
+        
+        
+
     </style>
 </head>
 <body>
@@ -112,6 +127,17 @@ if(isset($_SESSION['nombre_usuario']) && !empty($_SESSION['nombre_usuario'])) {
     <div class="export-icons">
         <a href="export_excel.php"><i class="fas fa-file-excel"></i> Exportar a Excel</a>
         <a href="export_pdf.php"><i class="fas fa-file-pdf"></i> Exportar a PDF</a>
+    </div>
+
+    <!-- Agregar el select para seleccionar el número de registros por página -->
+    <div class="select-container">
+        <label for="resultsPerPage">Registros:</label>
+        <select class="form-control" id="resultsPerPage" name="resultsPerPage" onchange="changeResultsPerPage()">
+            <option value="5" <?php if($resultsPerPage == 5) echo "selected"; ?>>5</option>
+            <option value="10" <?php if($resultsPerPage == 10) echo "selected"; ?>>10</option>
+            <option value="20" <?php if($resultsPerPage == 20) echo "selected"; ?>>20</option>
+            <option value="50" <?php if($resultsPerPage == 50) echo "selected"; ?>>50</option>
+        </select>
     </div>
 
     <?php if ($resultBitacora->num_rows > 0): ?>
@@ -152,11 +178,11 @@ if(isset($_SESSION['nombre_usuario']) && !empty($_SESSION['nombre_usuario'])) {
 
         <div class="pagination-container">
             <?php if ($page > 1): ?>
-                <a href="?page=<?php echo ($page - 1); ?>">&lt; Anterior</a>
+                <a href="?page=<?php echo ($page - 1); ?>&resultsPerPage=<?php echo $resultsPerPage; ?>">&lt; Anterior</a>
             <?php endif; ?>
 
             <?php if ($page < $totalPages): ?>
-                <a href="?page=<?php echo ($page + 1); ?>">Siguiente &gt;</a>
+                <a href="?page=<?php echo ($page + 1); ?>&resultsPerPage=<?php echo $resultsPerPage; ?>">Siguiente &gt;</a>
             <?php endif; ?>
         </div>
     <?php else: ?>
@@ -193,8 +219,16 @@ if(isset($_SESSION['nombre_usuario']) && !empty($_SESSION['nombre_usuario'])) {
         function goBack() {
             window.history.back();
         }
+
+        // Función para cambiar el número de registros por página
+        function changeResultsPerPage() {
+            var resultsPerPage = document.getElementById("resultsPerPage").value;
+            window.location.href = "?page=1&resultsPerPage=" + resultsPerPage;
+        }
     </script>
 </div>
 
 </body>
+</html>
+
 </html>
