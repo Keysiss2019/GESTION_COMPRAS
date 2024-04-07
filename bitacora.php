@@ -1,3 +1,48 @@
+<?php
+// Incluir el archivo de conexión a la base de datos
+require_once('conexion/conexion.php');
+
+// Iniciar sesión para acceder a la variable de sesión
+session_start();
+
+// Verificar si el nombre de usuario está definido en la sesión
+if(isset($_SESSION['nombre_usuario']) && !empty($_SESSION['nombre_usuario'])) {
+    // Obtener el nombre de usuario de la sesión PHP
+    $nombre_usuario_php = $_SESSION['nombre_usuario'];
+
+    // Número de registros por página
+    $resultsPerPage = 10;
+
+    // Calcular la página actual y el índice de inicio
+    $page = isset($_GET['page']) ? $_GET['page'] : 1;
+    $startIndex = ($page - 1) * $resultsPerPage;
+
+    // Consulta SQL para obtener registros de la bitácora
+    $sqlBitacora = "SELECT *, (SELECT nombre_usuario FROM tbl_ms_usuario WHERE id_usuario = auditoria_tbl_ms_usuario.id_usuario_operacion) AS nombre_usuario_operacion FROM auditoria_tbl_ms_usuario ORDER BY fecha_operacion DESC LIMIT $startIndex, $resultsPerPage";
+
+    // Preparar la consulta con el nombre de usuario de PHP
+    $stmt = $conn->prepare("SET @usuario_php = ?");
+    $stmt->bind_param("s", $nombre_usuario_php);
+    $stmt->execute();
+
+    // Ejecutar la consulta para obtener los registros de la bitácora
+    $resultBitacora = $conn->query($sqlBitacora);
+
+    // Consulta SQL para obtener el total de registros en la bitácora
+    $sqlTotalRecords = "SELECT COUNT(*) as total FROM auditoria_tbl_ms_usuario";
+    $resultTotalRecords = $conn->query($sqlTotalRecords);
+    $rowTotalRecords = $resultTotalRecords->fetch_assoc();
+    $totalRecords = $rowTotalRecords['total'];
+
+    // Calcular el total de páginas
+    $totalPages = ceil($totalRecords / $resultsPerPage);
+} else {
+    // Si el nombre de usuario no está definido en la sesión, redirigir al usuario a la página de inicio de sesión
+    header("Location: login.php");
+    exit(); // Detener la ejecución del script después de redirigir
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -69,34 +114,6 @@
         <a href="export_pdf.php"><i class="fas fa-file-pdf"></i> Exportar a PDF</a>
     </div>
 
-    <?php
-    // Incluir el archivo de conexión a la base de datos
-    require_once('conexion/conexion.php');
-
-    // Número de registros por página
-    $resultsPerPage = 10;
-
-    // Calcular la página actual y el índice de inicio
-    $page = isset($_GET['page']) ? $_GET['page'] : 1;
-    $startIndex = ($page - 1) * $resultsPerPage;
-
-    // Consulta SQL para obtener registros de la bitácora
-    $sqlBitacora = "SELECT * FROM auditoria_tbl_ms_usuario ORDER BY fecha_operacion DESC LIMIT $startIndex, $resultsPerPage";
-    $resultBitacora = $conn->query($sqlBitacora);
-
-    // Consulta SQL para obtener el total de registros en la bitácora
-    $sqlTotalRecords = "SELECT COUNT(*) as total FROM auditoria_tbl_ms_usuario";
-    $resultTotalRecords = $conn->query($sqlTotalRecords);
-    $rowTotalRecords = $resultTotalRecords->fetch_assoc();
-    $totalRecords = $rowTotalRecords['total'];
-
-    // Calcular el total de páginas
-    $totalPages = ceil($totalRecords / $resultsPerPage);
-    ?>
-
-    <!-- Mostrar el número de registros -->
-    <div>Total de Registros: <?php echo $totalRecords; ?></div>
-
     <?php if ($resultBitacora->num_rows > 0): ?>
         <div class="search-container">
             <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Buscar...">
@@ -108,7 +125,6 @@
                     <th>ID Auditoría</th>
                     <th>Tipo de Operación</th>
                     <th>Fecha de Operación</th>
-                    <th>ID Usuario Operador</th>
                     <th>Usuario Operador</th>
                     <th>ID Usuario Afectado</th>
                     <th>Usuario Afectado</th>
@@ -123,8 +139,7 @@
                         <td><?php echo $row['id_auditoria']; ?></td>
                         <td><?php echo $row['tipo_operacion']; ?></td>
                         <td><?php echo $row['fecha_operacion']; ?></td>
-                        <td><?php echo $row['id_usuario_operacion']; ?></td>
-                        <td><?php echo $row['nombre_usuario_operacion']; ?></td>
+                        <td><?php echo $nombre_usuario_php; ?></td> <!-- Reemplazar con $nombre_usuario_php -->
                         <td><?php echo $row['id_usuario_afectado']; ?></td>
                         <td><?php echo $row['nombre_usuario_afectado']; ?></td>
                         <td><?php echo $row['tabla_afectada']; ?></td>
@@ -147,11 +162,6 @@
     <?php else: ?>
         <p>No hay registros en la bitácora.</p>
     <?php endif; ?>
-
-    <?php
-    // Cerrar la conexión a la base de datos
-    $conn->close();
-    ?>
 
     <button onclick="goBack()">Regresar</button>
 
