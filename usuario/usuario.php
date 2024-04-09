@@ -110,11 +110,14 @@
 <body>
 <div class="content">
 
-    <h1><span class="fas fa-users"></span>Usuarios</h1>
+    <h1 style="display: flex; align-items: center;">
+        <span class="fas fa-users"></span>Usuarios
+    <a href="../usuario/agregar_usuario.php" class="print-button" style="margin-left: 10px; padding: 5px 10px; border-radius: 5px; background-color: #3b2ad3; color: #fff; font-size: 14px;"><i class="fas fa-plus"></i> </a>
+</h1>
     <br>
 
     <form method="get" style="display: inline-block; margin-left: 10px;">
-            <label for="resultsPerPage">Página</label>
+            <label for="resultsPerPage">Mostrar</label>
             <select name="resultsPerPage" id="resultsPerPage" onchange="this.form.submit()">
                 <option value="5" <?php if ($resultsPerPage == 5) echo "selected"; ?>>5</option>
                 <option value="10" <?php if ($resultsPerPage == 10) echo "selected"; ?>>10</option>
@@ -128,7 +131,7 @@
             <button type="submit"><i class="fas fa-search"></i></button>
         </form>
         
-        <a href="../usuario/agregar_usuario.php" class="print-button plus-button" onclick="toggleFloatingForm()"><i class="fas fa-plus"></i></a>
+      
         <a href="pdf_usuario.php" class="pdf-button" target="_blank"><i class="fas fa-file-pdf"></i></a>
 
         <!-- Agrega el enlace al archivo PDF dentro del atributo "href" del botón -->
@@ -186,26 +189,30 @@
         </table>
 
         <div class="pagination pagination-links" style="clear:both;">
-            <!-- Enlaces de paginación -->
-            <?php
-            // Agrega el enlace para la página anterior si no estás en la primera página
-            if ($page > 1) {
-                echo "<a href='?page=" . ($page - 1) . "&resultsPerPage=$resultsPerPage'>&lt;</a> ";
-            }
+    <!-- Enlaces de paginación -->
+    <?php
+    // Agrega el enlace para la página anterior si no estás en la primera página
+    if ($page > 1) {
+        echo "<a href='?page=" . ($page - 1) . "&resultsPerPage=$resultsPerPage&buscar=$buscar&nombre_usuario=$nombreUsuario'>&lt; Anterior</a> ";
+    }
 
-            // Agrega la numeración de página actual
-            echo "<span  style='color: blue;'>&lt;$page&gt;</span>";
+    // Agrega la numeración de página actual
+    echo "<span  style='color: blue;'> $page de $totalPages </span>";
 
-            // Agrega el enlace para la página siguiente si no estás en la última página
-            if ($page < $totalPages) {
-                echo " <a href='?page=" . ($page + 1) . "&resultsPerPage=$resultsPerPage'>&gt;</a>";
-            }
-            ?>
-        </div>
+    // Agrega el enlace para la página siguiente si no estás en la última página
+    if ($page < $totalPages) {
+        echo " <a href='?page=" . ($page + 1) . "&resultsPerPage=$resultsPerPage&buscar=$buscar&nombre_usuario=$nombreUsuario'>Siguiente &gt;</a>";
+    }
+    ?>
+</div>
 
-        <button class="styled-button"
-            onclick="window.location.href='../setting/ajustes.php'"
-            style="background-color: #007bff; color: #fff; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; float: left;">Regresar</button>
+
+
+   <!-- Botón de regreso -->
+   <div style="position: absolute; bottom: 20px; left: 10px;">
+        <a href="../setting/ajustes.php" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Regresar</a>
     </div>
+
+        </div>
 </body>
 </html>
