@@ -43,6 +43,7 @@
         #objetosTable {
           border-collapse: collapse;
           width: 100%;
+          margin-bottom: 20px; /* Dar espacio entre la tabla y el botón de agregar */
         }
 
         #objetosTable th, #objetosTable td {
@@ -63,7 +64,7 @@
        .search-bar {
           display: flex;
           align-items: center;
-          justify-content: flex-end;
+          justify-content: space-between; /* Alinear elementos con espacio entre ellos */
           margin-top: 20px;
         }
 
@@ -75,7 +76,6 @@
          border-radius: 5px;
          cursor: pointer;
          text-decoration: none;
-         margin-right: 10px;
         }
 
         .back-link {
@@ -111,10 +111,6 @@
           border: none;
           border-radius: 5px;
           cursor: pointer;
-          text-decoration: none;
-          margin-right: 20px;
-          margin-top: 18px;
-          margin-left: 0; /* Ajusta el valor de margin-left según sea necesario */
         }
 
         .actions-cell {
@@ -150,7 +146,12 @@
             }
         ?>
 
-        <h1><i class="fas fa-cube"></i> Objetos</h1>
+<h1 style="display: flex; align-items: center;">
+    <span class="fas fa-question"></span>  Objetos
+        <a href="crear_objeto.php" class="print-button" style="margin-left: 10px; padding: 5px 10px; border-radius: 5px; background-color: #3b2ad3; color: #fff; font-size: 14px;"><i class="fas fa-plus"></i> </a>
+</h1>
+
+        
 
         <table id="objetosTable" class="display">
             <thead>
@@ -193,56 +194,76 @@
         </table>
 
         <div class="search-bar">
-            <a href="crear_objeto.php" class="print-button"><i class="fas fa-plus"></i></a>
+            <div>
+                <button class="print-button" onclick="window.print()"><i class="fas fa-print"></i> </button>
+            </div>
+            
         </div>
+<br>
 
-        <div class="actions-cell">
-            <a href="../admin/administrar.php" class="back-link"><i class="fas fa-arrow-left"></i> Regresar</a>
-        </div>
+<!-- Botón de regreso -->
+<tfoot>
+    <tr>
+        <td colspan="7">
+        </td>
+    </tr>
+    <tr>
+        <td colspan="7">
+           
+            <div style="text-align: left;">
+                <a href="../admin/administrar.php" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Regresar</a>
+            </div>
+        </td>
+    </tr>
+</tfoot>
 
+ <!-- Paginación -->
         <script>
             
             $(document).ready(function() {
-                var table = $('#objetosTable').DataTable({
-                    "dom": 'lBfrtip',
-                    "buttons": ['copy', 'excel', 'pdf', 'print'],
-                    "ordering": false,
-                    "paging": false,
-                    "info": false,
-                    "language": {
-                        "search": "Buscar"
-                    },
-                    "columnDefs": [
-                        {
-                            "targets": 'thead th',
-                            "className": 'header-background'
-                        }
-                    ]
-                });
+    var table = $('#objetosTable').DataTable({
+        "dom": 'lBfrtip',
+        "buttons": ['copy', 'excel', 'pdf', 'print'],
+        "ordering": false,
+        "paging": true, // Habilitar paginación
+        "info": false,
+        "language": {
+            "search": "Buscar",
+            "paginate": {
+                "previous": "Anterior",
+                "next": "Siguiente"
+            },
+            "lengthMenu": "Mostrar _MENU_ " // Aquí cambiamos "Show _MENU_ entries" a español
+        },
+        "columnDefs": [
+            {
+                "targets": 'thead th',
+                "className": 'header-background'
+            }
+        ]
+    });
 
-              
-            
-                // Configuración del filtro de fecha
-                $('#fecha_filtro').on('change', function () {
-                    var filterValue = $(this).val();
-                    table.column(2).search(filterValue).draw();
-                });
+    // Configuración del filtro de fecha
+    $('#fecha_filtro').on('change', function () {
+        var filterValue = $(this).val();
+        table.column(2).search(filterValue).draw();
+    });
 
-                // Ajustes de estilo
-                setTimeout(function() {
-                    $('div.dataTables_filter').css({
-                        'text-align': 'left',
-                        'margin-top': '10px',
-                        'margin-right': '40px'
-                    });
+    // Ajustes de estilo
+    setTimeout(function() {
+        $('div.dataTables_filter').css({
+            'text-align': 'left',
+            'margin-top': '10px',
+            'margin-right': '40px'
+        });
 
-                    $('.search-bar .print-button').css({
-                        'position': 'absolute',
-                        'right': '1px',
-                        'top': '65px'
-                    });
-                }, 100);
-            });
+        $('.search-bar .print-button').css({
+            'position': 'absolute',
+            'right': '1px',
+            'top': '65px'
+        });
+    }, 100);
+});
 
           function toggleFechaFiltro() {
              $('#filterContainer').toggle();
@@ -251,4 +272,3 @@
     </div>
 </body>
 </html>
-
