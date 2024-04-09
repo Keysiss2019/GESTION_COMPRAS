@@ -139,7 +139,35 @@ if(isset($_SESSION['nombre_usuario']) && !empty($_SESSION['nombre_usuario'])) {
             <option value="50" <?php if($resultsPerPage == 50) echo "selected"; ?>>50</option>
         </select>
     </div>
+    <script>
+    // Función para restablecer los cambios en la bitácora
+    function resetChanges(auditoriaId) {
+        // Confirmar con el usuario antes de restablecer los cambios
+        var confirmation = confirm("¿Estás seguro de que deseas restablecer los cambios? Esto revertirá la entrada de la bitácora.");
 
+        if (confirmation) {
+            // Realizar la solicitud AJAX al servidor para restablecer los cambios
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        // Actualizar la tabla después de recibir la confirmación del servidor
+                        // Puedes implementar esta función según tu lógica específica
+                        // Por ejemplo, puedes recargar la página para actualizar la tabla
+                        window.location.reload(); // Recargar la página para actualizar la tabla
+                    } else {
+                        // Manejar errores en la solicitud AJAX
+                        console.error('Error en la solicitud AJAX:', xhr.statusText);
+                    }
+                }
+            };
+
+            // Configurar la solicitud AJAX
+            xhr.open('GET', 'reset_changes.php?auditoriaId=' + auditoriaId, true);
+            xhr.send();
+        }
+    }
+</script>
     <?php if ($resultBitacora->num_rows > 0): ?>
         <div class="search-container">
             <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Buscar...">
@@ -171,6 +199,9 @@ if(isset($_SESSION['nombre_usuario']) && !empty($_SESSION['nombre_usuario'])) {
                         <td><?php echo $row['tabla_afectada']; ?></td>
                         <td><?php echo $row['detalle_anterior']; ?></td>
                         <td><?php echo $row['detalle_posterior']; ?></td>
+                        <td>
+                        <button onclick="resetChanges(<?php echo $row['id_auditoria']; ?>)">Restablecer</button>
+                        </td>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
