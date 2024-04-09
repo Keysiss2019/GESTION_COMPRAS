@@ -178,7 +178,7 @@
             $(document).ready(function() {
                 var table = $('#categoriasTable').DataTable({
                     "paging": true, // Habilitar la paginación
-                    "lengthMenu": [10, 25, 50, 100], // Opciones de longitud
+                    "lengthMenu": [5, 10, 20, 50], // Opciones de longitud
                     "dom": 'lBfrtip',
                     "buttons": ['copy', 'excel', 'pdf', 'print'],
                     "ordering": false, // Deshabilitar la ordenación inicial
