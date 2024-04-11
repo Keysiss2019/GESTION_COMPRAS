@@ -110,25 +110,31 @@ input[type="button"]:hover {
 <div id="recoveryContainer">
     <h2>Recuperar Contraseña</h2>
     <form method="POST" action="pregunta.php">
-    <label for="nombre_usuario">Usuario:</label>
-    <input type="text" name="nombre_usuario" id="nombre_usuario" required><br><br>
-    
-    <!-- Etiqueta "Método de Recuperación" centrada -->
-    <label class="method-label">Método de Recuperación:</label><br><br>
+        <label for="nombre_usuario">Usuario:</label>
+        <input type="text" name="nombre_usuario" id="nombre_usuario" required><br><br>
+        
+        <!-- Etiqueta "Método de Recuperación" centrada -->
+        <label class="method-label">Método de Recuperación:</label><br><br>
 
-    <div class="radio-group">
-    <input type="radio" name="metodo" value="preguntas" id="metodo_preguntas" required>
-    <label for="metodo_preguntas">Pregunta</label>
+        <div class="radio-group">
+            <input type="radio" name="metodo" value="preguntas" id="metodo_preguntas" required>
+            <label for="metodo_preguntas">Pregunta</label>
 
-    <input type="radio" name="metodo" value="email" id="metodo_email" required>
-    <label for="metodo_email">Correo Electrónico</label><br><br>
-    </div>
+            <input type="radio" name="metodo" value="email" id="metodo_email" required onclick="redirectToEmailRecovery()">
+            <label for="metodo_email">Correo Electrónico</label><br><br>
+        </div>
 
-    <input type="submit" name="iniciar" value="Iniciar">
-    <input type="button" value="Cancelar" onclick="window.location.href='../index.php';">
-
+        <input type="submit" name="iniciar" value="Iniciar">
+        <input type="button" value="Cancelar" onclick="window.location.href='../index.php';">
     </form>
 </div>
+
+<script>
+    function redirectToEmailRecovery() {
+        window.location.href = '../Recup_contraseña/index1.php';
+    }
+</script>
+
 
 </body>
 </html>
