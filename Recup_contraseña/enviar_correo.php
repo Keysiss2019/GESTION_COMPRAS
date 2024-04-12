@@ -10,6 +10,9 @@ require 'PHPMailer\src\Exception.php';
 // Crear una nueva instancia de PHPMailer
 $mail = new PHPMailer(true);
 
+// Establecer la codificación de caracteres a UTF-8
+$mail->CharSet = PHPMailer::CHARSET_UTF8;
+
 try {
     // Configuración del servidor SMTP
     $mail->SMTPDebug = SMTP::DEBUG_OFF; // Puedes cambiarlo a DEBUG_SERVER o DEBUG_CLIENT para depuración
