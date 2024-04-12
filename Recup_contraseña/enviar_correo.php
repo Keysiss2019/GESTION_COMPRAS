@@ -30,10 +30,13 @@ try {
     $mail->Subject = 'Recuperación de Contraseña';
     $mail->Body = 'Su nueva contraseña es: ' . $nuevaContrasena;
 
-    // Enviar el correo
+ // Enviar el correo
     $mail->send();
-    echo "Se ha enviado una nueva contraseña a su correo electrónico.";
-} catch (Exception $e) {
-    echo "Error al enviar el correo: {$mail->ErrorInfo}";
-}
+    $mensaje = "Se ha enviado una nueva contraseña a su correo electrónico.";
+ } catch (Exception $e) {
+    $mensaje = "Error al enviar el correo: {$mail->ErrorInfo}";
+ }
+ 
+ // Incluir el HTML del modal
+ include 'modal.php';
 ?>
