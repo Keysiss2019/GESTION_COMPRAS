@@ -289,7 +289,10 @@
             });
        </script>
 
-
+        <button class="styled-button" 
+    onclick="window.location.href='../admin/administrar.php'"  
+    style="background-color: #007bff; color: #fff; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; float: left; margin-top: 20px;">Regresar</button>
+    
     </div>
    
 </body>
