@@ -128,7 +128,11 @@
         }
         ?>
 
-        <h1><span class="fas fa-folder"></span>Categorías</h1>
+         <!-- ETIQUETA -->
+        <h1 style="display: flex; align-items: center;">
+    <span class="fas fa-question"></span> Categorías
+    <a href="crear_categoria.php" class="print-button" style="margin-left: 10px; padding: 5px 10px; border-radius: 5px; background-color: #3b2ad3; color: #fff; font-size: 14px;"><i class="fas fa-plus"></i> </a>
+</h1>
 
         <!-- Tu tabla HTML -->
         <table id="categoriasTable" class="display">
@@ -168,44 +172,47 @@
             </tbody>
         </table>
 
-        <!-- Botón "plus" pegado a la tabla -->
-        <div class="search-bar">
-            <a href="crear_categoria.php" class="print-button" onclick="toggleFloatingForm()"><i class="fas fa-plus"></i></a>
-        </div>
+        
+<!-- Script para inicializar DataTables y agregar la funcionalidad de filtrado y paginación -->
+<script>
+    $(document).ready(function() {
+        var table = $('#categoriasTable').DataTable({
+            "paging": true, // Habilitar la paginación
+            "lengthMenu": [5, 10, 20, 50], // Opciones de longitud
+            "dom": '<"top"f<"length-menu-container"l>>rt<"bottom"p><"clear">', // Estructura personalizada del DOM
+            "buttons": ['copy', 'excel', 'pdf', 'print'],
+            "ordering": false, // Deshabilitar la ordenación inicial
+            "info": false, // Deshabilitar el mensaje de información
+            "language": {
+                "search": "Buscar", // Cambiar el texto del cuadro de búsqueda
+                "lengthMenu": "Mostrar _MENU_ ", // Cambiar el texto del menú desplegable de cantidad de entradas
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            },
+            "columnDefs": [
+                {
+                    "targets": 'thead th', // Aplicar a todas las celdas del encabezado
+                    "className": 'header-background' // Clase de estilo para el fondo
+                }
+            ]
+        });
 
-        <!-- Script para inicializar DataTables y agregar la funcionalidad de filtrado y paginación -->
-        <script>
-            $(document).ready(function() {
-                var table = $('#categoriasTable').DataTable({
-                    "paging": true, // Habilitar la paginación
-                    "lengthMenu": [5, 10, 20, 50], // Opciones de longitud
-                    "dom": 'lBfrtip',
-                    "buttons": ['copy', 'excel', 'pdf', 'print'],
-                    "ordering": false, // Deshabilitar la ordenación inicial
-                    "info": false, // Deshabilitar el mensaje de información
-                    "language": {
-                        "search": "Buscar" // Cambiar el texto del cuadro de búsqueda
-                    },
-                    "columnDefs": [
-                        {
-                            "targets": 'thead th', // Aplicar a todas las celdas del encabezado
-                            "className": 'header-background' // Clase de estilo para el fondo
-                        }
-                    ]
-                });
+        // Mostrar/ocultar el campo de filtro al hacer clic en el icono
+        $('#filterIcon').on('click', function () {
+            $('#filterContainer').toggle();
+        });
 
-                // Mostrar/ocultar el campo de filtro al hacer clic en el icono
-                $('#filterIcon').on('click', function () {
-                    $('#filterContainer').toggle();
-                });
-
-                // Aplicar el filtro al cambiar el valor del campo de entrada
-                $('#filterFecha').on('keyup', function () {
-                    var filterValue = $(this).val();
-                    table.column(3).search(filterValue).draw();
-                });
-            });
-        </script>
+        // Aplicar el filtro al cambiar el valor del campo de entrada
+        $('#filterFecha').on('keyup', function () {
+            var filterValue = $(this).val();
+            table.column(3).search(filterValue).draw();
+        });
+    });
+</script>
 
         <script>
             // Espera a que el documento esté completamente cargado
@@ -228,10 +235,12 @@
                 }, 100);
             });
         </script>
-        
-        <button class="styled-button" 
-    onclick="window.location.href='../admin/administrar.php'"  
-    style="background-color: #007bff; color: #fff; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; float: left; margin-top: 20px;">Regresar</button>
+        <!-- Botón de regreso -->
+   <div style="position: absolute; bottom: 20px; left: 10px;">
+        <a href="../admin/administrar.php'" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Regresar</a>
     </div>
+</div>
+</div>
+
 </body>
 </html>
