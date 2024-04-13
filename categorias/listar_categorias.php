@@ -171,6 +171,11 @@
                 <?php } ?>
             </tbody>
         </table>
+        
+ <!-- Botón de regreso -->
+ <div style="position: absolute; bottom: 20px; left: 10px;">
+        <a href="../admin/administrar.php" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Regresar</a>
+    </div>
 
         
 <!-- Script para inicializar DataTables y agregar la funcionalidad de filtrado y paginación -->
@@ -235,10 +240,7 @@
                 }, 100);
             });
         </script>
-        <!-- Botón de regreso -->
-   <div style="position: absolute; bottom: 20px; left: 10px;">
-        <a href="../admin/administrar.php'" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Regresar</a>
-    </div>
+        
 </div>
 </div>
 
