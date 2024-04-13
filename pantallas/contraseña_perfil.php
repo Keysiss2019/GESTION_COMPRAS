@@ -116,14 +116,14 @@ $hasSecurityQuestions = $result->num_rows > 0;
 
        /* Estilos para el formulario */
        form {
-            background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente para el formulario */
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            width: 400px;
-            margin: 20px auto; /* Ajusta el margen para centrar el formulario */
-            text-align: left;
-        }
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 450px;
+    margin: 150px auto; /* Cambia el margen superior e inferior para centrar verticalmente */
+    text-align: left;
+}
 
         .form-header {
     text-align: center;
