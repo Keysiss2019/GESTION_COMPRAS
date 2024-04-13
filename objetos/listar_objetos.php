@@ -211,7 +211,7 @@
         <td colspan="7">
            
             <div style="text-align: left;">
-                <a href="../admin/administrar.php" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Regresar</a>
+                <a href="../setting/ajustes.php" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Regresar</a>
             </div>
         </td>
     </tr>
