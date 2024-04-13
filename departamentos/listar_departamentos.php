@@ -22,145 +22,143 @@
         }
         
         /* Estilo para el contenido principal */
-      .content {
-         margin-left: 10%;
-         transition: margin-left 0.5s;
-          padding: 0px;
-         width: 80%;
-          position: absolute;
-          top: 0;
-         right: 0;
-           bottom: 0;
-          left: 0;
+        .content {
+            margin-left: 10%;
+            transition: margin-left 0.5s;
+            padding: 0px;
+            width: 80%;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
         }
         
         .actions-cell {
-    display: flex;
-    align-items: center;
-}
+            display: flex;
+            align-items: center;
+        }
 
-/* Estilo para los enlaces de editar y eliminar */
-.edit-link {
-    background-color: #28a745; /* Estilo para Editar */
-    color: #fff;
-    padding: 5px 10px;
-    text-decoration: none;
-    border-radius: 5px;
-    margin-right: 5px; /* Agregamos margen derecho para separar los enlaces */
-}
+        /* Estilo para los enlaces de editar y eliminar */
+        .edit-link {
+            background-color: #28a745; /* Estilo para Editar */
+            color: #fff;
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-right: 5px; /* Agregamos margen derecho para separar los enlaces */
+        }
 
-.delete-link {
-    background-color: #dc3545; /* Estilo para Eliminar */
-    color: #fff;
-    padding: 5px 10px;
-    text-decoration: none;
-    border-radius: 5px;
-}
+        .delete-link {
+            background-color: #dc3545; /* Estilo para Eliminar */
+            color: #fff;
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
 
-
-       
         /* Estilo para el contenedor de búsqueda y botones */
         .search-bar {
-         display: flex;
-          align-items: center;
-         justify-content: flex-end; /* Alinea los elementos a la derecha */
-         margin-top: -25px;
-         margin-bottom: -10px;
-
+            display: flex;
+            align-items: center;
+            justify-content: flex-end; /* Alinea los elementos a la derecha */
+            margin-top: -25px;
+            margin-bottom: -10px;
         }
 
         .search-bar a.print-button {
-          background-color: #3b2ad3; /* Color verde para "Agregar" */
-           color: #fff;
-           padding: 5px 10px;
-          border: none;
-          border-radius: 5px;
-           cursor: pointer;
+            background-color: #3b2ad3; /* Color verde para "Agregar" */
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
-       /* Estilo para el fondo de los encabezados */
-       .header-background {
-         background-color: #f2f2f2 !important; /* !important para forzar el estilo */
-        
+        /* Estilo para el fondo de los encabezados */
+        .header-background {
+            background-color: #f2f2f2 !important; /* !important para forzar el estilo */
         }
 
         #departamentosTable {
-          border-collapse: collapse;
-          width: 100%;
+            border-collapse: collapse;
+            width: 100%;
         }
 
         #departamentosTable th, #departamentosTable td {
-         border: 1px solid #f2f2f2;
-         padding: 8px;
-         text-align: left;
-         background-color: white; /* Fondo blanco en todas las celdas */
+            border: 1px solid #f2f2f2;
+            padding: 8px;
+            text-align: left;
+            background-color: white; /* Fondo blanco en todas las celdas */
         }
 
         #departamentosTable th {
-          background-color: #f2f2f2;
+            background-color: #f2f2f2;
         }
 
         #departamentosTable tr:nth-child(even) {
-          background-color: #f2f2f2;
+            background-color: #f2f2f2;
         }
 
-      /* Estilo para el enlace de regresar fuera de la tabla */
-      .back-link {
-         display: block;
-         text-align: center;
-         margin-top: 220px; /* Ajusta el espacio entre la tabla y el enlace según sea necesario */
-         background-color: #007bff; /* Estilo para Regresar */
-         color: #fff;
-         padding: 10px 20px;
-          text-decoration: none;
-          border-radius: 5px;
+        /* Estilo para el enlace de regresar fuera de la tabla */
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 220px; /* Ajusta el espacio entre la tabla y el enlace según sea necesario */
+            background-color: #007bff; /* Estilo para Regresar */
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
     <div class="content">
-       <?php
-          include 'db_connect.php';
+        <?php
+            include 'db_connect.php';
 
-           // Procesar la búsqueda
-           if (isset($_GET['busqueda'])) {
-             $busqueda = $_GET['busqueda'];
+            // Procesar la búsqueda
+            if (isset($_GET['busqueda'])) {
+                $busqueda = $_GET['busqueda'];
 
-              // Verificar si la búsqueda es un estado específico
-              if (in_array($busqueda, ['Activo', 'Inactivo', 'Bloqueado', 'Nuevo'])) {
-                 $stmt = $conn->prepare("SELECT d.id_departamento, e.nombre_empresa, d.nombre_departamento, d.estado_departamento, d.creado, d.fecha_creacion, d.fecha_modificacion, d.modificado_por 
+                // Verificar si la búsqueda es un estado específico
+                if (in_array($busqueda, ['Activo', 'Inactivo', 'Bloqueado', 'Nuevo'])) {
+                    $stmt = $conn->prepare("SELECT d.id_departamento, e.nombre_empresa, d.nombre_departamento, d.estado_departamento, d.creado, d.fecha_creacion, d.fecha_modificacion, d.modificado_por 
                                FROM tbl_departamentos d 
                                JOIN tbl_empresa e ON d.id_empresa = e.id_empresa 
                                WHERE d.estado_departamento = :estado_busqueda");
                     $stmt->bindValue(':estado_busqueda', $busqueda);
                 } else {
-                  // Si no es un estado específico, buscar por id o nombre
-                   $stmt = $conn->prepare("SELECT d.id_departamento, e.nombre_empresa, d.nombre_departamento, d.estado_departamento, d.creado, d.fecha_creacion, d.fecha_modificacion, d.modificado_por 
+                    // Si no es un estado específico, buscar por id o nombre
+                    $stmt = $conn->prepare("SELECT d.id_departamento, e.nombre_empresa, d.nombre_departamento, d.estado_departamento, d.creado, d.fecha_creacion, d.fecha_modificacion, d.modificado_por 
                                FROM tbl_departamentos d 
                                JOIN tbl_empresa e ON d.id_empresa = e.id_empresa 
                                WHERE d.id_departamento = :busqueda OR d.nombre_departamento LIKE :busqueda");
                     $stmt->bindValue(':busqueda', $busqueda);
-               }
+                }
 
-              $stmt->execute();
-              $departamentos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $stmt->execute();
+                $departamentos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             } else {
-               // Si no se ha realizado una búsqueda, muestra todos los departamentos
-               $stmt = $conn->query("SELECT d.id_departamento, e.nombre_empresa, d.nombre_departamento, d.estado_departamento, d.creado, d.fecha_creacion, d.fecha_modificacion, d.modificado_por 
+                // Si no se ha realizado una búsqueda, muestra todos los departamentos
+                $stmt = $conn->query("SELECT d.id_departamento, e.nombre_empresa, d.nombre_departamento, d.estado_departamento, d.creado, d.fecha_creacion, d.fecha_modificacion, d.modificado_por 
                         FROM tbl_departamentos d 
                         JOIN tbl_empresa e ON d.id_empresa = e.id_empresa");
                 $departamentos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
-
         ?>
 
-        <h1><span class="fas fa-folder"></span>Departamentos</h1>
+        <!-- ETIQUETA -->
+        <h1 style="display: flex; align-items: center;">
+            <span class="fas fa-question"></span> Departamentos
+            <a href="crear_departamento.php" class="print-button" style="margin-left: 10px; padding: 5px 10px; border-radius: 5px; background-color: #3b2ad3; color: #fff; font-size: 14px;"><i class="fas fa-plus"></i> </a>
+        </h1>
 
         <!-- Tu tabla HTML -->
         <table id="departamentosTable" class="display">
             <thead>
                 <tr>
-                    
                     <th>Empresa</th>
                     <th>Departamento</th>
                     <th>Estado</th>
@@ -183,117 +181,117 @@
                         <td><?php echo $departamento['nombre_empresa']; ?></td>
                         <td><?php echo $departamento['nombre_departamento']; ?></td>
                         <td>
-                         <?php
-                              $estadoCodigo = $departamento['estado_departamento'];
-                              $estadoCompleto = '';
-                              switch ($estadoCodigo) {
-                                  case 'A':
-                                     $estadoCompleto = 'Activos';
-                                      break;
-                                  case 'I':
-                                      $estadoCompleto = 'Inactivo';
-                                      break;
+                            <?php
+                                $estadoCodigo = $departamento['estado_departamento'];
+                                $estadoCompleto = '';
+                                switch ($estadoCodigo) {
+                                    case 'A':
+                                        $estadoCompleto = 'Activos';
+                                        break;
+                                    case 'I':
+                                        $estadoCompleto = 'Inactivo';
+                                        break;
                                     case 'B':
-                                       $estadoCompleto = 'Bloqueado';
-                                       break;
+                                        $estadoCompleto = 'Bloqueado';
+                                        break;
                                     case 'N':
-                                      $estadoCompleto = 'Nuevo';
+                                        $estadoCompleto = 'Nuevo';
                                         break;
                                     default:
-                                     $estadoCompleto = 'Desconocido';
+                                        $estadoCompleto = 'Desconocido';
                                 }
-           
                                 echo $estadoCompleto;
-                           ?>
-                       </td>
+                            ?>
+                        </td>
                         <td><?php echo $departamento['creado']; ?></td>
-
                         <td class="fecha-creacion" data-fecha="<?php echo date("Y-m-d", strtotime($departamento['fecha_creacion'])); ?>">
                             <?php echo date("Y-m-d", strtotime($departamento['fecha_creacion'])); ?>
                         </td>
                         <td><?php echo date("Y-m-d", strtotime($departamento['fecha_modificacion'])); ?></td>
                         <td><?php echo $departamento['modificado_por']; ?></td>
                         <td>
-                        <div class="actions-cell">
-                          <a href="editar_departamento.php?id=<?php echo $departamento['id_departamento']; ?>" class="edit-link"><i class="fas fa-edit"></i></a>
-                          <a href="eliminar_departamento.php?id=<?php echo $departamento['id_departamento']; ?>" class="delete-link"><i class="fas fa-trash-alt"></i></a>
-                      </div>
+                            <div class="actions-cell">
+                                <a href="editar_departamento.php?id=<?php echo $departamento['id_departamento']; ?>" class="edit-link"><i class="fas fa-edit"></i></a>
+                                <a href="eliminar_departamento.php?id=<?php echo $departamento['id_departamento']; ?>" class="delete-link"><i class="fas fa-trash-alt"></i></a>
+                            </div>
                         </td>
                     </tr>
                 <?php } ?>
             </tbody>
         </table>
 
-        <!-- Botón "plus" pegado a la tabla -->
-        <div class="search-bar" style="text-align: right; margin-top: -207px;">
-            <a href="crear_departamento.php" class="print-button" onclick="toggleFloatingForm()"><i class="fas fa-plus"></i></a>
+        <!-- Botón de regreso -->
+        <div style="position: absolute; bottom: 20px; left: 10px;">
+            <a href="../admin/administrar.php" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Regresar</a>
         </div>
-
-        
-        <div class="actions-cell">
-          <a href="../admin/administrar.php" class="back-link"><i class="fas fa-arrow-left"></i> Regresar</a>
-        </div>
-        
-        <!-- Script para inicializar DataTables y agregar la funcionalidad de filtrado -->
-        <script>
-          $(document).ready(function() {
-               var table = $('#departamentosTable').DataTable({
-                  "dom": 'lBfrtip',
-                  "buttons": ['copy', 'excel', 'pdf', 'print'],
-                  "ordering": false, // Deshabilitar la ordenación inicial
-                  "paging": false, // Deshabilitar la paginación
-                  "info": false, // Deshabilitar el mensaje de información
-                   "language": {
-                     "search": "Buscar" // Cambiar el texto del cuadro de búsqueda
-                    },
-                  "columnDefs": [
-                        {
-                         "targets": 'thead th', // Aplicar a todas las celdas del encabezado
-                         "className": 'header-background' // Clase de estilo para el fondo
-                        }
-                    ]
-                });
-
-                // Mostrar/ocultar el campo de filtro al hacer clic en el icono
-                $('#filterIcon').on('click', function () {
-                  $('#filterContainer').toggle();
-                });
-
-               // Aplicar el filtro al cambiar el valor del campo de entrada
-               $('#filterFecha').on('keyup', function () {
-                  var filterValue = $(this).val();
-                  table.column(5).search(filterValue).draw();
-                });
-            });
-        </script>
-
-        <script>
-           // Espera a que el documento esté completamente cargado
-          $(document).ready(function() {
-             // Espera un breve momento para asegurarte de que DataTables haya terminado de inicializarse
-               setTimeout(function() {
-                  // Ajusta la posición del cuadro de búsqueda
-                  $('div.dataTables_filter').css({
-                      'text-align': 'left',
-                      'margin-top': '10px',
-                      'margin-right': '40px' // Puedes ajustar este valor según tus necesidades
-                    });
-
-                  // Ajusta la posición del icono plus
-                  $('.search-bar .print-button').css({
-                      'position': 'absolute',
-                      'right': '1px', // Ajusta este valor según tus necesidades
-                      'top': '65px' // Ajusta este valor según tus necesidades
-                   });
-                }, 100);
-            });
-       </script>
-
-        <button class="styled-button" 
-    onclick="window.location.href='../admin/administrar.php'"  
-    style="background-color: #007bff; color: #fff; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; float: left; margin-top: 20px;">Regresar</button>
-    
     </div>
-   
+    
+    <!-- Script para inicializar DataTables y agregar la funcionalidad de filtrado -->
+    <script>
+    $(document).ready(function() {
+        var table = $('#departamentosTable').DataTable({
+            "dom": 'lBfrtip',
+            "buttons": ['copy', 'excel', 'pdf', 'print'],
+            "ordering": false, // Deshabilitar la ordenación inicial
+            "paging": true, // Habilitar la paginación
+            "pagingType": "full_numbers", // Tipo de paginación
+            "pageLength": 5, // Cantidad de registros por página
+            "language": {
+    "search": "Buscar", // Cambiar el texto del cuadro de búsqueda
+    "lengthMenu": "Mostrar _MENU_ ", // Cambiar el texto del menú desplegable de cantidad de entradas por página
+    "zeroRecords": "No se encontraron resultados",
+    "info": "", // Eliminar el texto "Showing 1 to 4 of 4 entries"
+    "infoEmpty": "No hay registros disponibles",
+    "infoFiltered": "(filtrado de _MAX_ registros totales)",
+    "paginate": {
+        "first": "",
+        "last": "",
+        "next": "Siguiente",
+        "previous": "Anterior"
+    }
+},
+            "columnDefs": [
+                {
+                    "targets": 'thead th', // Aplicar a todas las celdas del encabezado
+                    "className": 'header-background' // Clase de estilo para el fondo
+                }
+            ]
+        });
+
+        // Mostrar/ocultar el campo de filtro al hacer clic en el icono
+        $('#filterIcon').on('click', function () {
+            $('#filterContainer').toggle();
+        });
+
+        // Aplicar el filtro al cambiar el valor del campo de entrada
+        $('#filterFecha').on('keyup', function () {
+            var filterValue = $(this).val();
+            table.column(5).search(filterValue).draw();
+        });
+    });
+</script>
+
+
+    <script>
+        // Espera a que el documento esté completamente cargado
+        $(document).ready(function() {
+            // Espera un breve momento para asegurarte de que DataTables haya terminado de inicializarse
+            setTimeout(function() {
+                // Ajusta la posición del cuadro de búsqueda
+                $('div.dataTables_filter').css({
+                    'text-align': 'left',
+                    'margin-top': '10px',
+                    'margin-right': '40px' // Puedes ajustar este valor según tus necesidades
+                });
+
+                // Ajusta la posición del icono plus
+                $('.search-bar .print-button').css({
+                    'position': 'absolute',
+                    'right': '1px', // Ajusta este valor según tus necesidades
+                    'top': '65px' // Ajusta este valor según tus necesidades
+                });
+            }, 100);
+        });
+    </script>
 </body>
 </html>
