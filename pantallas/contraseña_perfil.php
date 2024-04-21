@@ -115,8 +115,8 @@ $hasSecurityQuestions = $result->num_rows > 0;
         }
 
        /* Estilos para el formulario */
-       form {
-    background-color: rgba(255, 255, 255, 0.8);
+        form {
+    background-color: #f2f2f2; /* Cambia el color de fondo a un tono de gris */
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);

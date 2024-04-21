@@ -46,16 +46,16 @@ $tienePreguntas = $resultUsuarioPreguntas->num_rows > 0;
             margin: 0;
             padding: 0;
         }
-
+/* Cambia el cuadro mas al centro */
         form {
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            width: 400px;
-            margin: 20px auto;
-            text-align: left;
-        }
+    background-color: #f2f2f2; /* Cambia el color de fondo a un tono de gris */
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 450px;
+    margin: 200px auto; /* Cambia el margen superior e inferior para centrar verticalmente */
+    text-align: left;
+}
 
         .form-group {
             display: flex;
@@ -123,6 +123,11 @@ $tienePreguntas = $resultUsuarioPreguntas->num_rows > 0;
         /* Estilo para el botón "Cancelar" en la segunda pregunta */
         .cancel-button-2 {
             background-color: #FF5733; /* Color de fondo para el botón "Cancelar" de la segunda pregunta */
+        }
+
+        /* Estilo para el botón de regresar */
+        .back-button {
+            background-color: #808080;
         }
     </style>
 </head>
@@ -245,9 +250,14 @@ $tienePreguntas = $resultUsuarioPreguntas->num_rows > 0;
                     <input type="button" value="Cancelar" class="cancel-button-2" onclick="regresarAPregunta1();">
                 </div>
             </div>
+            
         <?php endif; ?>
        
     </form>
+    
+    <!-- Botón de regresar -->
+    <input type="button" value="Regresar" onclick="window.history.back();" class="back-button">
+    
     <script>
         var preguntaActual = 1;
 
@@ -308,17 +318,6 @@ $tienePreguntas = $resultUsuarioPreguntas->num_rows > 0;
         function mostrarPreguntas() {
             document.getElementById('preguntas_container').style.display = 'block';
         }
-
-       
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-

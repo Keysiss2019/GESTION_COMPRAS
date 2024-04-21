@@ -206,7 +206,7 @@
         
    <!-- Botón de regreso -->
    <div style="position: absolute; bottom: 20px; left: 10px;">
-        <a href="../pantallas/admin.php" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Regresar</a>
+        <a href="../setting/ajustes.php" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Regresar</a>
     </div>
 </div>
 

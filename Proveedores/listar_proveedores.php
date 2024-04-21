@@ -171,11 +171,10 @@
 <body>
 
     <div class="content">
-       <h2><i class="fas fa-truck"></i> Proveedores</h2>
-        
-        <div class="button-container" >
-            <a href="crear_proveedor.php"><button class="btn-crear"><i class="fas fa-plus"></i></button></a>
-        </div>
+       <h1 style="display: flex; align-items: center;">
+    <span class="fas fa-question"></span> Proveedores
+    <a href="crear_proveedor.php" class="print-button" style="margin-left: 10px; padding: 5px 10px; border-radius: 5px; background-color: #3b2ad3; color: #fff; font-size: 14px;"><i class="fas fa-plus"></i> </a>
+</h1>
    
       <table id="proveedoresTable" class="display">
            <thead>
@@ -225,68 +224,51 @@
            </tbody>
       </table>
 
-    
+     <!-- Script para inicializar DataTables y agregar la funcionalidad de filtrado -->
 
-      <script>
-            $(document).ready(function() {
-              var table = $('#proveedoresTable').DataTable({
-                 "dom": 'lBfrtip',
-                  "buttons": ['copy', 'excel', 'pdf', 'print'],
-                  "ordering": false, // Deshabilitar la ordenación inicial
-                 "paging": true, // Habilitar la paginación
-                   "info": false, // Mostrar el mensaje de información
-                  "lengthMenu": [20, 25, 50, 100], // Opciones de longitud
-                  "language": {
-                     "search": "Buscar", // Cambiar el texto del cuadro de búsqueda
-                      "paginate": {
-                         "next": "&#9654;", // Código de la flecha derecha para "Siguiente"
-                         "previous": "&#9664;" // Código de la flecha izquierda para "Anterior"
-                        },
-                       "lengthMenu": "Mostrar _MENU_", // Texto para la longitud del menú         
-               
-                    },
-                    "columnDefs": [
-                       {
-                          "targets": 'thead th', // Aplicar a todas las celdas del encabezado
-                          "className": 'header-background' // Clase de estilo para el fondo
-                        }
-                    ]
-               });
+     <script>
+    $(document).ready(function() {
+        var table = $('#proveedoresTable').DataTable({
+            "dom": 'lBfrtip',
+            "buttons": ['copy', 'excel', 'pdf', 'print'],
+            "ordering": false, // Deshabilitar la ordenación inicial
+            "paging": true, // Habilitar la paginación
+            "info": false, // Mostrar el mensaje de información
+            "lengthMenu": [5,10,20, 25, 50, 100], // Opciones de longitud
+            "language": {
+                "search": "Buscar", // Cambiar el texto del cuadro de búsqueda
+                "paginate": {
+                    "next": "Siguiente", // Texto para el botón "Siguiente"
+                    "previous": "Anterior", // Texto para el botón "Anterior"
+                    "first": "", // Eliminar el texto del botón "Primero"
+                    "last": "" // Eliminar el texto del botón "Último"
+                },
+                "lengthMenu": "Mostrar _MENU_", // Texto para el menú de longitud
+            },
+            "columnDefs": [
+                {
+                    "targets": 'thead th', // Aplicar a todas las celdas del encabezado
+                    "className": 'header-background' // Clase de estilo para el fondo
+                }
+            ]
+        });
 
-               $('#filterIcon').on('click', function() {
-                  $('#filterContainer').toggle();
-                });
+        $('#filterIcon').on('click', function() {
+            $('#filterContainer').toggle();
+        });
 
-                $('#filterFecha').on('keyup', function() {
-                  var filterValue = $(this).val();
-                   table.column(3).search(filterValue).draw();
-                });
-            });
-        </script>
+        $('#filterFecha').on('keyup', function() {
+            var filterValue = $(this).val();
+            table.column(3).search(filterValue).draw();
+        });
+    });
+</script>
 
-
-        <script>
-            $(document).ready(function() {
-                setTimeout(function() {
-                    $('div.dataTables_filter').css({
-                        'text-align': 'left',
-                        'margin-top': '10px',
-                        'margin-right': '40px'
-                    });
-
-                    $('.search-bar .print-button').css({
-                        'position': 'absolute',
-                        'right': '1px',
-                        'top': '65px'
-                    });
-                }, 100);
-            });
-        </script>
-
-       <button class="styled-button" 
-    onclick="window.location.href='../admin/administrar.php'"  
-    style="background-color: #007bff; color: #fff; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; float: left; margin-top: 20px;">Regresar</button>
-
+    <!-- Botón de regreso -->
+   <div style="position: absolute; bottom: 20px; left: 10px;">
+        <a href="../admin/administrar.php" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Regresar</a>
+    </div>
+</div>
     </div>
 </body>
 </html>
