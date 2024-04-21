@@ -110,7 +110,17 @@
         <div class="draggable-box pink" id="box5">
             <i class="fas fa-sliders-h"></i>
             <i class="fas fa-lock lock-icon" id="lock5" onclick="toggleLock('box5')"></i>
-            <a href="../parametros/parametros.php" class="black-link">Paràmetros</a>
+            <a href="../parametros/parametros.php" class="black-link">Parámetros</a>
+        </div>
+        <div class="draggable-box violet" id="box4">
+            <i class="fas fa-book"></i>
+            <i class="fas fa-lock lock-icon" id="lock4" onclick="toggleLock('box4')"></i>
+            <a href="../bitacora.php" class="black-link">Bitácora</a>
+        </div>
+        <div class="draggable-box pink" id="box5">
+            <i class="fas fa-database"></i>
+            <i class="fas fa-lock lock-icon" id="lock5" onclick="toggleLock('box5')"></i>
+            <a href="../Respaldos/backup_restore.php" class="black-link">Respaldo BD</a>
         </div>
     </div>
 
