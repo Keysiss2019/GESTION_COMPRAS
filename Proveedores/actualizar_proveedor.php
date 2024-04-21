@@ -2,6 +2,7 @@
 include('db.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Manejar datos del proveedor
     $id = $_POST['ID_PROVEEDOR'];
     $nombre = $_POST['NOMBRE'];
     $direccion = $_POST['DIRECCION'];
@@ -9,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $correo = $_POST['CORREO_ELECTRONICO'];
     $estadoSeleccionado = $_POST['ESTADO_PROVEEDOR'];
 
-    // Asigna la letra correspondiente al estado
+    // Asignar la letra correspondiente al estado
     $estado = '';
     switch ($estadoSeleccionado) {
         case 'Sin estado':
@@ -23,26 +24,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             break;
     }
     
-    // Verifica si el estado es "Sin estado" y establece el valor en NULL si es así
+    // Verificar si el estado es "Sin estado" y establecer el valor en NULL si es así
     if ($estado == "Sin estado") {
         $estado = NULL;
     }
     
-     // Establecer el valor "ADMIN" para el campo que debe llenarse automáticamente
-     $modificado_por = "ADMIN";
+    // Establecer el valor "ADMIN" para el campo que debe llenarse automáticamente
+    $modificado_por = "ADMIN";
 
-    $query = "UPDATE tbl_proveedores SET NOMBRE = ?, DIRECCION = ?, TELEFONO = ?, CORREO_ELECTRONICO = ?, ESTADO_PROVEEDOR = ?, MODIFICADO_POR = ? WHERE ID_PROVEEDOR = ?";
-    $stmt = $conexion->prepare($query);
-    $stmt->bind_param("ssssssi", $nombre, $direccion, $telefono, $correo, $estado, $modificado_por, $id);
+    // Actualizar los datos del proveedor
+    $query_proveedor = "UPDATE tbl_proveedores SET NOMBRE = ?, DIRECCION = ?, TELEFONO = ?, CORREO_ELECTRONICO = ?, ESTADO_PROVEEDOR = ?, MODIFICADO_POR = ? WHERE ID_PROVEEDOR = ?";
+    $stmt_proveedor = $conexion->prepare($query_proveedor);
+    $stmt_proveedor->bind_param("ssssssi", $nombre, $direccion, $telefono, $correo, $estado, $modificado_por, $id);
 
-    if ($stmt->execute()) {
+    // Manejar datos de la cuenta del proveedor
+    $numero_cuenta = $_POST['NUMERO_CUENTA'];
+    $banco = $_POST['BANCO'];
+    $descripcion_cuenta = $_POST['DESCRIPCION_CUENTA'];
+
+    // Actualizar los datos de la cuenta del proveedor
+    $query_cuenta = "UPDATE tbl_cuenta_proveedor SET NUMERO_CUENTA = ?, BANCO = ?, DESCRIPCION_CUENTA = ? WHERE ID_PROVEEDOR = ?";
+    $stmt_cuenta = $conexion->prepare($query_cuenta);
+    $stmt_cuenta->bind_param("sssi", $numero_cuenta, $banco, $descripcion_cuenta, $id);
+
+    // Ejecutar ambas consultas
+    if ($stmt_proveedor->execute() && $stmt_cuenta->execute()) {
         header('Location: listar_proveedores.php');
         exit;
     } else {
-        echo "Error al actualizar el proveedor: " . $stmt->error;
+        echo "Error al actualizar el proveedor: " . $stmt_proveedor->error;
+        echo "Error al actualizar la cuenta del proveedor: " . $stmt_cuenta->error;
     }
 
-    $stmt->close();
+    $stmt_proveedor->close();
+    $stmt_cuenta->close();
 }
 
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
@@ -50,8 +65,13 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $query = "SELECT * FROM tbl_proveedores WHERE ID_PROVEEDOR = $id";
     $result = $conexion->query($query);
     $row = $result->fetch_assoc();
+    // También necesitas obtener los datos de la cuenta del proveedor
+    $query_cuenta = "SELECT * FROM tbl_cuenta_proveedor WHERE ID_PROVEEDOR = $id";
+    $result_cuenta = $conexion->query($query_cuenta);
+    $row_cuenta = $result_cuenta->fetch_assoc();
 }
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -60,7 +80,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         body {
             font-family: Arial, sans-serif;
             background: rgba(255, 255, 255, 0.10); /* Cambia el valor de "0.7" para ajustar la transparencia */
-            /*background-image: url('../imagen/background.jpg'); /* Reemplaza con la ruta de tu imagen de fondo */
+            background-image: url('../imagen/background.jpg'); /* Reemplaza con la ruta de tu imagen de fondo */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -143,46 +163,58 @@ button, .custom-button {
 
 
 
+
+
     </style>
 </head>
 <body>
-<div class="form-container">
-    <h2 style="text-align: center;">Proveedor</h2>
+    <div class="form-container">
+        <h2 style="text-align: center;">Proveedor</h2>
 
-    <form method="POST" action="actualizar_proveedor.php">
-        <input type="hidden" name="ID_PROVEEDOR" value="<?php echo $row['ID_PROVEEDOR']; ?>">
-        
-        <div class="form-column">
-            <label>Nombre:</label>
-            <input type="text" name="NOMBRE" value="<?php echo strtoupper($row['NOMBRE']); ?>" required><br>
-            <label>Dirección:</label>
-            <input type="text" name="DIRECCION" value="<?php echo $row['DIRECCION']; ?>"><br>
-            <label>Teléfono:</label>
-            <input type="text" name="TELEFONO" value="<?php echo $row['TELEFONO']; ?>"><br>
-        </div>
-        
-        <div class="form-column">
-            <label>Correo Electrónico:</label>
-            <input type="email" name="CORREO_ELECTRONICO" value="<?php echo $row['CORREO_ELECTRONICO']; ?>"><br>
+        <form method="POST" action="actualizar_proveedor.php">
+            <input type="hidden" name="ID_PROVEEDOR" value="<?php echo $row['ID_PROVEEDOR']; ?>">
             
-            <label>Estado:</label>
-            <select name="ESTADO_PROVEEDOR">
-              <option value="" <?php echo empty($row['ESTADO_PROVEEDOR']) ? "selected" : ""; ?>>Seleccionar estado</option>
-              <option value="Activo" <?php echo ($row['ESTADO_PROVEEDOR'] === "A") ? "selected" : ""; ?>>Activo</option>
-              <option value="Inactivo" <?php echo ($row['ESTADO_PROVEEDOR'] === "I") ? "selected" : ""; ?>>Inactivo</option>
-              <!-- Puedes agregar más opciones según sea necesario -->
-            </select>
+            <div class="form-row">
+                <div class="form-column">
+                    <!-- Datos del proveedor -->
+                    <label>Nombre:</label>
+                    <input type="text" name="NOMBRE" value="<?php echo strtoupper($row['NOMBRE']); ?>" required><br>
+                    <label>Dirección:</label>
+                    <input type="text" name="DIRECCION" value="<?php echo $row['DIRECCION']; ?>"><br>
+                    <label>Teléfono:</label>
+                    <input type="text" name="TELEFONO" value="<?php echo $row['TELEFONO']; ?>"><br>
+                    <label>Correo Electrónico:</label>
+                    <input type="email" name="CORREO_ELECTRONICO" value="<?php echo $row['CORREO_ELECTRONICO']; ?>"><br>
+                    <label>Estado:</label>
+                    <select name="ESTADO_PROVEEDOR">
+                    <option value="" <?php echo empty($row['ESTADO_PROVEEDOR']) ? "selected" : ""; ?>>Seleccionar estado</option>
+                        <option value="Activo" <?php echo ($row['ESTADO_PROVEEDOR'] === "A") ? "selected" : ""; ?>>ACTIVO</option>
+                        <option value="Inactivo" <?php echo ($row['ESTADO_PROVEEDOR'] === "I") ? "selected" : ""; ?>>INACTIVO</option>
+                        <!-- Puedes agregar más opciones según sea necesario -->
+                    </select>
+                </div>
+                
+                <div class="form-column">
+                    <!-- Datos de la cuenta del proveedor -->
+                    <label>Número de Cuenta:</label>
+                    <input type="text" name="NUMERO_CUENTA" value="<?php echo $row_cuenta['NUMERO_CUENTA']; ?>"><br>
+                    <label>Banco:</label>
+                    <input type="text" name="BANCO" value="<?php echo $row_cuenta['BANCO']; ?>"><br>
+                    <label>Descripción de la Cuenta:</label>
+                    <select name="DESCRIPCION_CUENTA">
+                      <option value="Cheques" <?php echo ($row_cuenta['DESCRIPCION_CUENTA'] === "Cheques") ? "selected" : ""; ?>>CHEQUE</option>
+                       <option value="Ahorros" <?php echo ($row_cuenta['DESCRIPCION_CUENTA'] === "Ahorros") ? "selected" : ""; ?>>AHORRO</option>
+                    </select><br>
 
-
-
-        </div>
-
-        <div class="button-section">
-            <button type="submit">Guardar</button>
-            <a href="listar_proveedores.php" class="custom-button cancel-button">Cancelar</a>
-        </div>
-    </form>
-</div>
+                </div>
+            </div>
+            
+            <div class="button-section">
+                <button type="submit">Guardar</button>
+                <a href="listar_proveedores.php" class="custom-button cancel-button">Cancelar</a>
+            </div>
+        </form>
+    </div>
 </body>
 </html>
 
