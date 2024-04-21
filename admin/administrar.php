@@ -95,7 +95,7 @@
         <div class="draggable-box green" id="box2">
             <i class="fas fa-building"></i>
             <i class="fas fa-lock lock-icon" id="lock2" onclick="toggleLock('box2')"></i>
-            <a href="" class="black-link">Empresas</a>
+            <a href="../empresa/listarempresa.php" class="black-link">Empresas</a>
         </div>
         <div class="draggable-box yellow" id="box3">
             <i class="fas fa-sitemap"></i>
