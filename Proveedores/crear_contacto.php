@@ -134,9 +134,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <label>Estado:</label>
                 <select name="ESTADO" required>
                     <option value="">--Seleccione--</option>
-                    <option value="A">Activo</option>
-                    <option value="I">Inactivo</option>
-                    <option value="B">Bloqueado</option>
+                    <option value="A">ACTIVO</option>
+                    <option value="I">INACTIVO</option>
+                    <option value="B">BLOQUEADO</option>
                 </select>
             </div>
             <div class="button-section">

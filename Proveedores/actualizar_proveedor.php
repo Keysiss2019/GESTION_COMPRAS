@@ -200,7 +200,7 @@ button, .custom-button {
                     <input type="text" name="NUMERO_CUENTA" value="<?php echo $row_cuenta['NUMERO_CUENTA']; ?>"><br>
                     <label>Banco:</label>
                     <input type="text" name="BANCO" value="<?php echo $row_cuenta['BANCO']; ?>"><br>
-                    <label>Descripción de la Cuenta:</label>
+                    <label>Tipo de Cuenta:</label>
                     <select name="DESCRIPCION_CUENTA">
                       <option value="Cheques" <?php echo ($row_cuenta['DESCRIPCION_CUENTA'] === "Cheques") ? "selected" : ""; ?>>CHEQUE</option>
                        <option value="Ahorros" <?php echo ($row_cuenta['DESCRIPCION_CUENTA'] === "Ahorros") ? "selected" : ""; ?>>AHORRO</option>

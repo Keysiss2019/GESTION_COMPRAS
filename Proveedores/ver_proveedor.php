@@ -161,7 +161,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                     <tr>
                         <th>Nº de Cuenta</th>
                         <th>Banco</th>
-                        <th>Descripción</th>
+                        <th>Tipo de Cuenta</th>
                     </tr>
                     <?php foreach ($cuentas as $cuenta) { ?>
                     <tr>
