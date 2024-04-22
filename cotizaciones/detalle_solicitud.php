@@ -37,7 +37,7 @@ if ($stmtSolicitud) {
             text-align: center;
             font-family: Arial, sans-serif;
             background: rgba(255, 255, 255, 0.10); /* Cambia el valor de "0.7" para ajustar la transparencia */
-            background-image: url('../imagen/background.jpg'); /* Reemplaza con la ruta de tu imagen de fondo */
+            /*background-image: url('../imagen/background.jpg'); /* Reemplaza con la ruta de tu imagen de fondo */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -53,9 +53,11 @@ if ($stmtSolicitud) {
             border: 1px solid #ccc;
             padding: 20px;
             margin: 20px;
-            background-color: powderblue; /* Color de fondo azul claro (cielo) */
+            background-color: #ddd; /* Color de fondo azul claro (cielo) */
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
             opacity: 0.9; /* Valor de opacidad (menos transparente) */
+            width: 50%; /* Define un ancho para el contenedor */
+            margin: 100px auto 0; /* 100px de margen superior, centrado horizontalmente */
         }
 
         .table-container {
@@ -67,7 +69,7 @@ if ($stmtSolicitud) {
         .table {
             width: 100%; /* El 2% es para el espacio entre las tablas */
             box-sizing: border-box; /* Para evitar que los bordes agreguen más ancho */
-            background-color: cornsilk; /* Color de fondo  para las tablas */
+            background-color: #ddd; /* Color de fondo  para las tablas */
         }
 
         table {
@@ -87,7 +89,7 @@ if ($stmtSolicitud) {
 
 
         th {
-            background-color: bisque;
+            background-color: #ffff;
         }
 
         .button-row {
