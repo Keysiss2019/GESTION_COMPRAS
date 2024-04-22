@@ -80,7 +80,6 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         body {
             font-family: Arial, sans-serif;
             background: rgba(255, 255, 255, 0.10); /* Cambia el valor de "0.7" para ajustar la transparencia */
-            background-image: url('../imagen/background.jpg'); /* Reemplaza con la ruta de tu imagen de fondo */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -96,16 +95,17 @@ h2 {
 }
 
         /* Estilos para el contenedor del formulario (el cuadro) */
-.form-container {
+        .form-container {
     width: 80%; /* Ancho del contenedor */
-    margin: 0 auto; /* Centrar horizontalmente en la página */
+    margin: 5% auto; /* Centrar horizontalmente en la página */
     padding: 20px; /* Espacio interno alrededor del formulario */
     border: 1px solid #ccc; /* Borde del cuadro */
     border-radius: 5px; /* Bordes redondeados */
-    background-color: powderblue; /* Color de fondo del cuadro */
+    background-color: #ddd; /* Color de fondo del cuadro */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
     opacity: 0.9; /* Valor de opacidad (menos transparente) */
 }
+
 
 
        

@@ -49,13 +49,13 @@ $empresas = $stmt_empresas->fetchAll(PDO::FETCH_ASSOC);
         }
 
         .container {
-            max-width: 500px;
-            margin: 0 auto;
+            max-width: 400px;
+            margin: 5% auto; /* Ajusta el margen para centrar verticalmente */
             padding: 20px;
-            background-color: rgba(255, 255, 255, 0.9); /* Fondo semi-transparente */
-            border: 1px solid #ddd;
+            background-color: #ddd; /* Cambia el color de fondo a gris */
+            border: 1px solid #ddd; /* Cambia el color del borde */
             border-radius: 5px;
-            margin-bottom: 10px; /* Agrega margen inferior al formulario */
+            margin-bottom: 10px;
         }
 
         form {

@@ -26,22 +26,23 @@
         text-align: center;
         border: 1px solid #ccc;
         padding: 20px;
-        background-color: powderblue;
+        background-color: #ddd;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         opacity: 0.9;
-        max-width: 800px; /* Ajusta el ancho máximo según tus necesidades */
+        max-width: 400px; /* Ajusta el ancho máximo según tus necesidades */
         margin: 0 auto; /* Centra horizontalmente */
     }
 
     .table {
        
         box-sizing: border-box;
-        background-color: cornsilk;
+        background-color: #ddd;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
     }
+
 
     .centered-message {
         text-align: center;

@@ -27,7 +27,7 @@
             max-width: 400px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #fff;
+            background-color: #ddd;
             border: 1px solid #ddd;
             border-radius: 5px;
             margin-bottom: 10px; /* Agrega margen inferior al formulario */
