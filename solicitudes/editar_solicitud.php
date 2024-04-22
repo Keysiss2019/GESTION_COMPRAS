@@ -7,8 +7,8 @@
     body {
         text-align: center;
         font-family: Arial, sans-serif;
-        background: rgba(255, 255, 255, 0.10);
-        background-image: url('../imagen/background.jpg');
+        background: #ddd(255, 255, 255, 0.10);
+        /*background-image: url('../imagen/background.jpg');*/
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -25,7 +25,7 @@
         text-align: center;
         border: 1px solid #ccc;
         padding: 20px;
-        background-color: powderblue;
+        background-color: #ddd;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         opacity: 0.9;
         max-width: 800px; /* Ajusta el ancho máximo según tus necesidades */
@@ -39,8 +39,8 @@
     .table {
         width: 100%;
         border-collapse: collapse; /* Fusiona los bordes de la tabla */
-        background-color: cornsilk;
-        border: 1px solid #ddd !important;
+        background-color: #ddd;
+        border: 1px solid #FFFFFF !important;
     }
 
     .table th,
@@ -63,7 +63,7 @@
     /* CSS para el área de texto */
     .table textarea {
         resize: vertical; /* Permitir redimensionar verticalmente */
-        min-height: 100px; /* Altura mínima */
+        min-height: 50px; /* Altura mínima */
     }
 
 
