@@ -414,7 +414,8 @@ form {
                             <td class="fecha-ingreso" data-fecha="<?php echo date("Y-m-d", strtotime($row['fecha_ingreso'])); ?>">
                                 <?php echo date("Y-m-d", strtotime($row['fecha_ingreso'])); ?>
                             </td>
-                            <td><?php echo $row["estado"]; ?></td>
+                            <td><?php echo strtoupper($row["estado"]); ?></td>
+
                             <td>
 
                                 <div class="button-container">
@@ -576,3 +577,4 @@ if (isset($rolUsuario) && strcasecmp($rolUsuario, "Administrador") === 0 || strc
 $stmt->close();
 $conn->close();
 ?>
+

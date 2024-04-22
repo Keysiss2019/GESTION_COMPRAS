@@ -151,7 +151,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["id"])) {
         $idDepartamento = $row["idDepartamento"];
         $usuario_id = $row["usuario_id"];
         $codigo = $row["codigo"];
-        $estado = $row["estado"];
+        $estado = strtoupper($row["estado"]); // Convertir estado a mayúsculas
 
         // Consultas para obtener información de departamentos y categorías
         $sql_departamentos = "SELECT id_departamento, nombre_departamento FROM tbl_departamentos";

@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $URL = $_POST['url'];
 
     // Guardar la primera letra del estado en mayúsculas en la base de datos
-    $estadoPrimeraLetra = strtoupper(substr($estado, 0, 1));
+    $estadoPrimeraLetra = strtoupper(substr($estado, 0, 2));
 
     // Preparar la consulta SQL para insertar la cotización en tbl_cotizacion
     $sqlInsertCotizacion = "INSERT INTO tbl_cotizacion (ID_PROVEEDOR, NUMERO_COTIZACION, DEPARTAMENTO, FECHA_COTIZACION, ESTADO, ID, url)
@@ -38,8 +38,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Obtener el ID de la cotización recién insertada
         $idCotizacion = $stmtCotizacion->insert_id;
 
-        // Actualizar el estado de la solicitud a 'Proceso' en tbl_solicitudes
-        $sqlActualizarSolicitud = "UPDATE tbl_solicitudes SET estado = 'Proceso' WHERE id = ?";
+        // Actualizar el estado de la solicitud a 'Pendiente' en tbl_solicitudes
+        $sqlActualizarSolicitud = "UPDATE tbl_solicitudes SET estado = 'Pendiente' WHERE id = ?";
         $stmtActualizarSolicitud = $conn->prepare($sqlActualizarSolicitud);
         $stmtActualizarSolicitud->bind_param("i", $idSolicitud);
 
@@ -104,6 +104,10 @@ function obtenerCategoria($descripcion) {
     }
 }
 ?>
+
+
+
+
 
 
 

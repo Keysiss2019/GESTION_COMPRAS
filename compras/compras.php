@@ -256,6 +256,7 @@
                  <option value="">Selecciona un contacto</option>
                </select>
            </p>
+           <input type="hidden" name="cotizacion_id" value="<?php echo $cotizacionId; ?>">
 
     </div>
     <!-- Tabla para mostrar detalles de cotización -->
@@ -296,7 +297,11 @@
                     <td style=" border: none;  text-align: right; font-weight: bold;"><label>Total Factura:</label></td>
                     <td><span id="totalValue" style="font-weight: bold;">0.00</span></td>
                     <input type="hidden" id="total_factura_input" name="total_factura" value="0.00">
-                </tr>
+                    <input type="hidden" id="montoInput" name="monto" value="">
+
+
+                  </tr>
+                
             </tbody>
         </table>
     </div>
@@ -306,7 +311,8 @@
     <br><br>
     <div class="botones-container">
       
-     <input type="button" id="btnGuardarOrden" class="boton-verde" value="Guardar Orden">
+    <input type="submit" id="btnGuardarOrden" class="boton-verde" value="Guardar Orden">
+
       <a href="../solicitudes/solicitudes.php" class="boton-azul">Regresar</a>
     </div>
     </form>
@@ -460,7 +466,8 @@
 
        // Función para enviar los datos al servidor
         $("#btnGuardarOrden").on("click", function() {
-       
+    
+
           console.log("Botón Guardar clickeado");
           // Obtener los datos del formulario
           var formData = $("form").serialize();
@@ -469,6 +476,11 @@
           var cotizaciones = [];
           var precios = [];
 
+          // Calcula el monto basado en tus necesidades (por ejemplo, suma de los precios totales de los productos)
+    var monto = parseFloat($("#totalValue").text());
+
+// Asigna el valor del monto al campo oculto
+$("#montoInput").val(monto);
           $("#cotizacionesTable tr").each(function(index, row) {
               var cantidad = $(row).find("td:eq(0)").text();
               var descripcion = $(row).find("td:eq(1)").text();
