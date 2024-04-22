@@ -355,7 +355,7 @@ function obtenerNuevoCodigoSolicitud($conn) {
                             <input type="text" name="fecha_ingreso" value="<?php echo date("Y-m-d"); ?>" readonly><br>
 
                             <label for="estado">Estado:</label>
-                            <input type="text" name="estado" value="Proceso" class="estado-input"required>
+                            <input type="text" name="estado" value="NUEVA" class="estado-input"required>
                             <div class="text-right">
                               <button class="btn btn-danger custom-button " onclick="agregarProducto()">
                                  <i class="fas fa-plus-circle "></i>
