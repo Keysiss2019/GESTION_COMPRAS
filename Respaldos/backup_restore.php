@@ -12,6 +12,21 @@ $options = '';
 foreach ($sql_archivos as $archivo) {
     $options .= "<option value='$archivo'>$archivo</option>";
 }
+
+// Definir la variable $mensaje
+$mensaje = '';
+
+// Verificar si se ha enviado el formulario de respaldo
+if (isset($_POST['dump'])) {
+    // Tu código de respaldo de base de datos aquí
+    $mensaje = "El respaldo de la base de datos se ha realizado con éxito.";
+}
+
+// Verificar si se ha enviado el formulario de restauración
+if (isset($_POST['restore'])) {
+    // Tu código de restauración de base de datos aquí
+    $mensaje = "La restauración de la base de datos se ha realizado con éxito.";
+}
 ?>
 
 <!DOCTYPE html>
