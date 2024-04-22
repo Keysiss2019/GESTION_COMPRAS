@@ -523,13 +523,13 @@ DELIMITER ;;
     DECLARE usuario_operacion_id INT; 
     DECLARE usuario_operacion_nombre VARCHAR(255); 
 
-    -- Obtener el ID del usuario actual
-    SET usuario_operacion_id = (SELECT id_usuario FROM tbl_ms_usuario WHERE nombre_usuario = @usuario_php); -- @usuario_php es un parámetro que pasaremos desde PHP
+    
+    SET usuario_operacion_id = (SELECT id_usuario FROM tbl_ms_usuario WHERE nombre_usuario = @usuario_php); 
 
-    -- Obtener el nombre del usuario actual
+    
     SET usuario_operacion_nombre = @usuario_php;
 
-    -- Insertar en la tabla de auditoría
+    
     INSERT INTO auditoria_tbl_ms_usuario (tipo_operacion, id_usuario_afectado, nombre_usuario_afectado, id_usuario_operacion, nombre_usuario_operacion, tabla_afectada, detalle_anterior, detalle_posterior) 
     VALUES ('INSERT', NEW.id_usuario, NEW.nombre_usuario, usuario_operacion_id, @usuario_php, 'tbl_ms_usuario', NULL, CONCAT('Nuevo usuario creado: ', NEW.nombre_usuario)); 
 END */;;
@@ -553,13 +553,13 @@ BEGIN
     DECLARE usuario_operacion_id INT;
     DECLARE usuario_operacion_nombre VARCHAR(255);
     
-    -- Obtener el ID del usuario actual
+    
     SET usuario_operacion_id = (SELECT id_usuario FROM tbl_ms_usuario WHERE nombre_usuario = CURRENT_USER());
     
-    -- Obtener el nombre del usuario actual
+    
     SET usuario_operacion_nombre = CURRENT_USER();
     
-    -- Insertar en la tabla de auditoría
+    
     INSERT INTO auditoria_tbl_ms_usuario (tipo_operacion, id_usuario_afectado, nombre_usuario_afectado, tabla_afectada, detalle_anterior, detalle_posterior, id_usuario_operacion)
     VALUES ('UPDATE', NEW.id_usuario, NEW.nombre_usuario, 'tbl_ms_usuario', CONCAT('Detalle antes de la actualización: ', OLD.nombre_usuario), CONCAT('Detalle después de la actualización: ', NEW.nombre_usuario), usuario_operacion_id);
 END */;;
@@ -583,13 +583,13 @@ BEGIN
     DECLARE usuario_operacion_id INT;
     DECLARE usuario_operacion_nombre VARCHAR(255);
     
-    -- Obtener el ID del usuario actual
+    
     SET usuario_operacion_id = (SELECT id_usuario FROM tbl_ms_usuario WHERE nombre_usuario = USER());
     
-    -- Obtener el nombre del usuario actual
+    
     SET usuario_operacion_nombre = USER();
     
-    -- Insertar en la tabla de auditoría
+    
     INSERT INTO auditoria_tbl_ms_usuario (tipo_operacion, id_usuario_afectado, nombre_usuario_afectado, tabla_afectada, detalle_anterior, detalle_posterior, id_usuario_operacion, nombre_usuario_operacion)
     VALUES ('DELETE', OLD.id_usuario, OLD.nombre_usuario, 'tbl_ms_usuario', CONCAT('Detalle antes de la eliminación: ', OLD.nombre_usuario), NULL, usuario_operacion_id, usuario_operacion_nombre);
 END */;;
@@ -979,4 +979,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-13 23:12:14
+-- Dump completed on 2024-04-20 22:42:18
