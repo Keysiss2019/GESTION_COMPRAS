@@ -15,7 +15,7 @@ if ($stmtSolicitud) {
     // Consulta para recuperar información de la cotización aprobada
     $sqlCotizacionAprobada = "SELECT c.ID_COTIZACION, c.NUMERO_COTIZACION, p.NOMBRE AS NOMBRE_PROVEEDOR, c.ESTADO,  c.URL FROM tbl_cotizacion c
                          INNER JOIN tbl_proveedores p ON c.ID_PROVEEDOR = p.ID_PROVEEDOR
-                         WHERE c.id = ? AND c.ESTADO = 'Aprobada'";
+                         WHERE c.id = ? AND c.ESTADO = 'Proceso'";
 
     $stmtCotizacionAprobada = $conn->prepare($sqlCotizacionAprobada);
 

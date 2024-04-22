@@ -2,6 +2,7 @@
 // Inicializar la variable de mensaje de error
 $error_message = "";
 
+
 // Verificar si se recibieron los datos del formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recibir y sanitizar los datos del formulario
@@ -32,11 +33,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($conn->query($sql_insertar_pago) === TRUE) {
             // Consulta SQL para actualizar el estado de la orden de compra a "pagado"
-            $sql_actualizar_estado = "UPDATE tbl_orden_compra SET ESTADO = 'pagado' WHERE ID_ORDEN_COMPRA = '$numero_orden'";
+            $sql_actualizar_estado_orden = "UPDATE tbl_orden_compra SET ESTADO = 'pagado' WHERE ID_ORDEN_COMPRA = '$numero_orden'";
 
             // Ejecutar la consulta SQL
-            if ($conn->query($sql_actualizar_estado) === TRUE) {
-                // Estado actualizado correctamente
+            if ($conn->query($sql_actualizar_estado_orden) === TRUE) {
+                // Consulta SQL para obtener el ID de la solicitud a través de la cotización asociada a la orden de compra
+                $sql_obtener_id_solicitud = "SELECT id FROM tbl_solicitudes WHERE id IN (SELECT ID FROM tbl_cotizacion WHERE ID_COTIZACION IN (SELECT ID_COTIZACION FROM tbl_orden_compra WHERE ID_ORDEN_COMPRA = '$numero_orden'))";
+
+
+
+
+                $result_obtener_id_solicitud = $conn->query($sql_obtener_id_solicitud);
+
+                if ($result_obtener_id_solicitud->num_rows > 0) {
+                    // Obtener el ID de la solicitud
+                    $row = $result_obtener_id_solicitud->fetch_assoc();
+                    $id_solicitud = $row['id'];
+
+                    // Consulta SQL para actualizar el estado de la solicitud a "PAGADO"
+                    $sql_actualizar_estado_solicitud = "UPDATE tbl_solicitudes SET estado = 'PAGADO' WHERE id = '$id_solicitud'";
+
+                    // Ejecutar la consulta SQL
+                    if ($conn->query($sql_actualizar_estado_solicitud) === TRUE) {
+                        // Estado de la solicitud actualizado correctamente
+                    } else {
+                        $error_message .= "Error al actualizar el estado de la solicitud: " . $conn->error;
+                    }
+                } else {
+                    $error_message .= "No se encontró ninguna solicitud asociada a esta orden de compra.";
+                }
             } else {
                 $error_message .= "Error al actualizar el estado de la orden de compra: " . $conn->error;
             }

@@ -1,5 +1,5 @@
 <?php
-include 'db_connection.php';
+include '../conexion/conexion.php';
 
 $idSolicitud = $_GET['id']; // Obtener el ID de solicitud desde la URL
 
@@ -36,6 +36,36 @@ while ($rowDescripcion = $resultDescripciones->fetch_assoc()) {
     $descripciones[] = $descripcion;
 }
 
+// Obtener los datos de la cotización existente
+$sqlCotizacion = "SELECT * FROM tbl_cotizacion WHERE id = $idSolicitud";
+$resultCotizacion = $conn->query($sqlCotizacion);
+
+if ($resultCotizacion->num_rows > 0) {
+    // Existe una cotización para esta solicitud
+    $rowCotizacion = $resultCotizacion->fetch_assoc();
+    $numeroCotizacion = $rowCotizacion['NUMERO_COTIZACION'];
+    $fechaCotizacion = $rowCotizacion['FECHA_COTIZACION'];
+    $urlCotizacion = $rowCotizacion['URL'];
+    $estadoCotizacion = $rowCotizacion['ESTADO'];
+
+     // Obtener el nombre del proveedor asociado con la cotización
+     $idProveedor = $rowCotizacion['ID_PROVEEDOR']; // Asegúrate de que este sea el nombre correcto del campo en tu base de datos
+     $sqlProveedor = "SELECT NOMBRE FROM tbl_proveedores WHERE ID_PROVEEDOR = $idProveedor";
+     $resultProveedor = $conn->query($sqlProveedor);
+     
+     if ($resultProveedor->num_rows > 0) {
+         $rowProveedor = $resultProveedor->fetch_assoc();
+         $nombreProveedor = $rowProveedor['NOMBRE'];
+     } else {
+         $nombreProveedor = "Proveedor no encontrado";
+     }
+} else {
+    // No hay cotización para esta solicitud
+    $numeroCotizacion = "";
+    $fechaCotizacion = "";
+    $urlCotizacion = "";
+    $estadoCotizacion = "";
+}
 
 ?>
 
@@ -230,50 +260,39 @@ if ($resultProductos->num_rows > 0) {
         <div class="table" style="margin: 0 auto; text-align: center;">
     <h2 style="text-align: center;">Cotización</h2>
    
-    <form  method="post" action="guardar_cotizacion.php?id=<?php echo $idSolicitud; ?>">
+    <form  method="post" action="actualizar_cotizacion.php?id=<?php echo $idSolicitud; ?>">
 
     <table style="width: 80%; margin: 0 auto;">
-            <tr>
-                <th>Proveedor:</th>
-                <td>
-                    <select name="id_proveedor" required >
-                        <option value="">--Seleccione--</option>
-                        <?php
-                        // Ajusta la consulta para buscar proveedores con estado "A" (activo)
-                        $sql = "SELECT ID_PROVEEDOR, NOMBRE FROM tbl_proveedores WHERE ESTADO_PROVEEDOR = 'A'";
-                        $result = $conn->query($sql);
-                        if ($result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                                echo "<option value='" . $row["ID_PROVEEDOR"] . "'>" . $row["NOMBRE"] . "</option>";
-                            }
-                        } else {
-                            echo "<option value='' disabled>No hay proveedores activos disponibles</option>";
-                        }
-                        ?>
-                    </select>
-                </td>
-                <th>Número:</th>
-                <td><input type="text" name="numero_cotizacion" style="max-width: 100px;  height: 30px;"></td>
-            </tr>
-            <tr>
-                <th>Departamento:</th>
-                <td ><input required type="text" name="departamento"  style="width: 290px;" value="<?php echo $departamentoSolicitud; ?>" ></td>
+    
+    <tr>
+    <th>Proveedor:</th>
+    <td><input type="text" name="nombreProveedor" style="width: 290px; height: 30px;" value="<?php echo $nombreProveedor; ?>"></td>
+    <th>Código:</th>
+    <td><input type="text" name="codigo" style="max-width: 100px; height: 30px;" value="<?php echo $codigo; ?>"></td>
+</tr>
 
-                <th>Fecha:</th>
-                <td><input type="date" name="fecha_cotizacion" style="max-width: 100px;  height: 30px;"></td>
-            </tr>
-            <tr>
-                <th>URL:</th>
-                <td>
-                    <textarea name="url" required class="custom-textarea" rows="2"></textarea>
-                </td>
-                <th>Estado:</th>
-                <td><input type="text" name="ESTADO" value="PENDIENTE" required style="max-width: 100px;  height: 30px;"></td>
-               
-            </tr>
-            
-        </table>
-    <form method="post" action="guardar_cotizacion.php?id=<?php echo $idSolicitud; ?>">
+<tr>
+    <th>Departamento:</th>
+    <td><input required type="text" name="departamento" style="width: 290px;" value="<?php echo $departamentoSolicitud; ?>"></td>
+    <th>Fecha:</th>
+    <td><input type="date" name="fecha_cotizacion" style="max-width: 100px; height: 30px;" value="<?php echo $fechaCotizacion; ?>" readonly></td>
+</tr>
+<tr>
+    <th>URL:</th>
+    <td><textarea name="url" required class="custom-textarea" rows="2"><?php echo $urlCotizacion; ?></textarea></td>
+    <th>Estado:</th>
+<td><input type="text" name="estado" value="<?php echo $estadoCotizacion; ?>" required style="max-width: 100px; height: 30px;" readonly></td>
+
+</tr>
+
+
+   
+    <!-- Aquí agregamos la información del proveedor -->
+   
+</table>
+
+
+    <form method="post" action="actualizar_cotizacion.php?id=<?php echo $idSolicitud; ?>">
     <div class="table">
     
     <table style="width: 80%; margin: 0 auto;">
@@ -325,20 +344,11 @@ if ($resultProductos->num_rows > 0) {
 <br>
 
         <!-- Botones de Crear y Cancelar -->
-        <input type="submit" value="Crear" class="custom-button create-button">
+        <input type="submit" value="Guardar" class="custom-button create-button">
         <input type="button" value="Cancelar" class="btn btn-warning custom-button cancel-button" onclick="window.location.href='../solicitudes/solicitudes.php';">
     </form>
 </div>
 
 </div>
-
-
 </body>
 </html>
-
-
-
-
-
-
-
