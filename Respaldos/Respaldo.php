@@ -25,7 +25,7 @@ if ($status !== 0) {
 } else {
     // Verificar si se ha creado el archivo de volcado
     if (file_exists($salida_sql) && filesize($salida_sql) > 0) {
-        $mensaje = "Volcado de base de datos completado exitosamente.\n";
+        $mensaje = "Respaldo de base de datos completado exitosamente.\n";
     } else {
         $mensaje = "Error: El archivo de volcado está vacío o no se ha generado.\n";
     }

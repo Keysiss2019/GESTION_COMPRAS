@@ -121,7 +121,7 @@ if (isset($_POST['restore'])) {
         
         <section>
             <h2>Respaldo de Base de Datos:</h2>
-            <form action="" method="post">
+            <form action="Respaldo.php" method="post">
                 <input type="submit" name="dump" value="Respaldo" style="width: auto;"> <!-- Establecer el ancho automático para el botón -->
             </form>
         </section>
