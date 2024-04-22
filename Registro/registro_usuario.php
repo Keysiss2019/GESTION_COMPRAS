@@ -84,12 +84,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
        /* Estilos para el formulario */
        form {
-            background-color:rgba(245, 245, 220, 0.8); /* Fondo semi-transparente para el formulario */
+            background-color:#ddd(245, 245, 220, 0.8); /* Fondo semi-transparente para el formulario */
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
             width: 400px;
-            margin: 20px auto; /* Ajusta el margen para centrar el formulario */
+            margin: 100px auto; /* Ajusta el margen para centrar el formulario */
             text-align: left;
         }
 
