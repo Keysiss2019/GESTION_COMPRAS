@@ -73,9 +73,12 @@ function obtenerNuevoCodigoSolicitud($conn) {
 
 
 <!DOCTYPE html>
+<html lang="en">
+<head>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
    
@@ -90,7 +93,7 @@ function obtenerNuevoCodigoSolicitud($conn) {
             text-align: center;
             font-family: Arial, sans-serif;
             background: rgba(255, 255, 255, 0.20);
-           /* background-image: url('../imagen/background.jpg');*/
+            background-image: url('../imagen/IHCIS.jpg');
            background-size: 40%;
           background-position: center;
           background-repeat: no-repeat;
@@ -106,10 +109,10 @@ function obtenerNuevoCodigoSolicitud($conn) {
         .container {
             display: inline-block;
             text-align: center;
-            border: 1px solid #ddd;
+            border: 1px solid #ccc;
             padding: 40px;
             margin: 20px;
-            background-color: #ddd; /* Color de fondo azul claro (cielo) */
+            background-color: powderblue; /* Color de fondo azul claro (cielo) */
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
             opacity: 0.9; /* Valor de opacidad (menos transparente) */
         }
@@ -118,7 +121,7 @@ function obtenerNuevoCodigoSolicitud($conn) {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
-            background-color: #ddd; /* Color de fondo para las tablas */
+            background-color: cornsilk; /* Color de fondo  para las tablas */
         }
 
         .invoice th, .invoice td {
@@ -161,7 +164,7 @@ function obtenerNuevoCodigoSolicitud($conn) {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
-            background-color: #ddd; /* Color de fondo para las tablas */
+           background-color: cornsilk; /* Color de fondo  para las tablas */
         }
 
 
@@ -345,25 +348,19 @@ function obtenerNuevoCodigoSolicitud($conn) {
                             </select><br>
 
                             <label for="usuario_nombre">Usuario:</label>
-<input type="text" id="usuario_nombre" name="usuario_nombre" class="user-input" value="<?php echo obtenerNombreUsuario($conn, $usuariosId); ?>" required>
-
-
-                        
+                            <input type="text" id="usuario_nombre" name="usuario_nombre" class="user-input" value="<?php echo obtenerNombreUsuario($conn, $usuariosId); ?>" required>
                         </td>
                         <td>
                             <label for="fecha_ingreso">Fecha de Ingreso:</label>
                             <input type="text" name="fecha_ingreso" value="<?php echo date("Y-m-d"); ?>" readonly><br>
 
                             <label for="estado">Estado:</label>
-                            <input type="text" name="estado" value="Proceso" class="estado-input"required>
+                            <input type="text" name="estado" value="NUEVA" class="estado-input"required>
                             <div class="text-right">
                               <button class="btn btn-danger custom-button " onclick="agregarProducto()">
                                  <i class="fas fa-plus-circle "></i>
                               </button>
                             </div>
-
-
-
 
 
 

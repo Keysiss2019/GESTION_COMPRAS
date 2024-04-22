@@ -23,7 +23,7 @@ if ($conn->connect_error) {
 }
 
 // Verificar si el proveedor está asociado con la cotización
-$sqlProveedorCotizacion = "SELECT ID_COTIZACION FROM tbl_cotizacion WHERE ID_PROVEEDOR = $proveedorId AND ESTADO = 'Aprobada' AND ID_COTIZACION = $cotizacionId";
+$sqlProveedorCotizacion = "SELECT ID_COTIZACION FROM tbl_cotizacion WHERE ID_PROVEEDOR = $proveedorId AND ESTADO = 'Proceso' AND ID_COTIZACION = $cotizacionId";
 
 $resultProveedorCotizacion = $conn->query($sqlProveedorCotizacion);
 
@@ -76,3 +76,4 @@ if (empty($cotizacionData)) {
     echo json_encode($cotizacionData);
 }
 ?>
+

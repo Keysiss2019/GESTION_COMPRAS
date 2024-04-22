@@ -70,7 +70,7 @@ if ($resultRolUsuario->num_rows > 0) {
             text-align: center;
             font-family: Arial, sans-serif;
             background: rgba(255, 255, 255, 0.10);
-            background-image: url('../imagen/background.jpg');
+            
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -203,18 +203,27 @@ table.solicitud-info tr:last-child td {
                       $cotizacionesAprobadas = $_POST['cotizaciones_aprobadas'];
 
                       // Marcar todas las cotizaciones como "En Proceso"
-                      $sqlMarcarEnProceso = "UPDATE tbl_cotizacion SET ESTADO = 'Proceso' WHERE ID = $idSolicitud";
+                      $sqlMarcarEnProceso = "UPDATE tbl_cotizacion SET ESTADO = 'Pendiente' WHERE ID = $idSolicitud";
                        if ($conn->query($sqlMarcarEnProceso) !== TRUE) {
                           echo "Error al marcar cotizaciones en proceso: " . $conn->error;
                         }
 
                       // Actualizar el estado de las cotizaciones aprobadas a "Aprobada"
                       foreach ($cotizacionesAprobadas as $cotizacionID) {
-                          $sqlActualizarCotizacion = "UPDATE tbl_cotizacion SET ESTADO = 'Aprobada' WHERE ID_COTIZACION = $cotizacionID";
+                          $sqlActualizarCotizacion = "UPDATE tbl_cotizacion SET ESTADO = 'Proceso' WHERE ID_COTIZACION = $cotizacionID";
                             if ($conn->query($sqlActualizarCotizacion) !== TRUE) {
                              echo "Error al aprobar la cotización ID $cotizacionID: " . $conn->error;
                             }
                         }
+
+                        // Actualizar el estado de la solicitud a "En Proceso"
+$sqlActualizarEstadoSolicitud = "UPDATE tbl_solicitudes SET estado = 'Proceso' WHERE id = ?";
+$stmtActualizarEstadoSolicitud = $conn->prepare($sqlActualizarEstadoSolicitud);
+$stmtActualizarEstadoSolicitud->bind_param("i", $idSolicitud);
+if ($stmtActualizarEstadoSolicitud->execute() !== TRUE) {
+    echo "Error al actualizar el estado de la solicitud: " . $conn->error;
+}
+$stmtActualizarEstadoSolicitud->close();
 
                       echo "Cotización aprobada con éxito.";
                       header('Location: ../solicitudes/solicitudes.php'); // Redirige a la página de solicitudes
