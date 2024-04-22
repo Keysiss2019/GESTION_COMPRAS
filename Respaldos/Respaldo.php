@@ -19,16 +19,30 @@ exec($dump_command, $output, $status);
 
 // Verificar si hubo algún error
 if ($status !== 0) {
-    echo "Error al realizar el volcado de la base de datos.\n";
-    echo "Salida del comando:\n";
-    print_r($output);
+    $mensaje = "Error al realizar el volcado de la base de datos.\n";
+    $mensaje .= "Salida del comando:\n";
+    $mensaje .= implode("\n", $output);
 } else {
     // Verificar si se ha creado el archivo de volcado
     if (file_exists($salida_sql) && filesize($salida_sql) > 0) {
-        echo "Volcado de base de datos completado exitosamente.\n";
+        $mensaje = "Volcado de base de datos completado exitosamente.\n";
     } else {
-        echo "Error: El archivo de volcado está vacío o no se ha generado.\n";
+        $mensaje = "Error: El archivo de volcado está vacío o no se ha generado.\n";
     }
 }
 
 ?>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado del volcado de base de datos</title>
+</head>
+<body>
+    <h1>Resultado del volcado de base de datos</h1>
+    <p><?php echo $mensaje; ?></p>
+</body>
+</html>
+
