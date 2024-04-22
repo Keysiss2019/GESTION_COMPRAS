@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
           padding: 20px; /* Espacio interno alrededor del formulario */
           border: 1px solid #ccc; /* Borde del cuadro */
          border-radius: 5px; /* Bordes redondeados */
-         background-color: #f9f9f9; /* Color de fondo del cuadro */
+         background-color: #ddd; /* Color de fondo del cuadro */
          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
          opacity: 0.8; /* Valor de opacidad (menos transparente) */
         }

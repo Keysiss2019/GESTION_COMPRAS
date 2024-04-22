@@ -10,7 +10,6 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            /*background-image: url('../imagen/background.jpg'); /* Reemplaza con la ruta de tu imagen de fondo */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -18,16 +17,24 @@
             padding: 0;
         }
 
-       
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
         form {
-            max-width: 500px;
-            margin: 0 auto;
+            width: 400px;
             padding: 20px;
-            background-color: #fff;
+            background-color: #ddd;
             border: 1px solid #ddd;
             border-radius: 5px;
-            margin-bottom: 10px; /* Agrega margen inferior al formulario */
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            text-align: center;
         }
 
         label {
@@ -45,36 +52,30 @@
         }
 
         .custom-button {
-    display: inline-block;
-    padding: 10px 20px; /* Ajusta el tamaño del botón según tus preferencias */
-    border: none;
-    border-radius: 3px;
-    font-weight: bold;
-    cursor: pointer;
-}
+            display: inline-block;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
+        .custom-button.cancel-button {
+            background-color: gray;
+            color: #fff;
+            text-decoration: none;
+        }
 
-.custom-button.cancel-button {
-    background-color: gray; /* Cambia el color de fondo para el botón "Cancelar" */
-    color: #fff; /* Cambia el color del texto para el botón "Cancelar" */
-    text-decoration: none; /* Elimina el subrayado del enlace */
-}
-
-.custom-button {
-    background-color: blue; /* Cambia el color de fondo para el botón "Guardar" */
-    color: #fff; /* Cambia el color del texto para el botón "Guardar" */
-}
-
-
-
-      
+        .custom-button {
+            background-color: blue;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <br><br>
     <form action="guardar_categoria.php" method="POST">
-      <h2 style="text-align: center;">Categoría</h2>
+        <h2>Categoría</h2>
         <label for="categoria">Categoría:</label>
         <input type="text" name="categoria" required>
 
@@ -83,13 +84,10 @@
         
         <label for="fecha_creacion">Fecha de Creación:</label>
         <input type="text" name="fecha_creacion" value="<?php echo date("Y-m-d"); ?>" readonly>
-
-
         <br><br>
         <button type="submit" class="custom-button">Guardar</button>
         <a href="listar_categorias.php" class="custom-button cancel-button">Cancelar</a>
     </form>
-   
 </div>
 </body>
 </html>

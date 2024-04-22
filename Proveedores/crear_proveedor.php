@@ -59,20 +59,17 @@ h2 {
     text-align: center; /* Centrar el texto horizontalmente */
 }
 
-        /* Estilos para el contenedor del formulario (el cuadro) */
-.form-container {
-    width: 80%; /* Ancho del contenedor */
-    margin: 0 auto; /* Centrar horizontalmente en la página */
-    padding: 20px; /* Espacio interno alrededor del formulario */
-    border: 1px solid #ccc; /* Borde del cuadro */
-    border-radius: 5px; /* Bordes redondeados */
-    background-color: powderblue; /* Color de fondo del cuadro */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
-    opacity: 0.9; /* Valor de opacidad (menos transparente) */
-}
-
-
-       
+   /* Estilos para el contenedor del formulario */
+   .form-container {
+            width: 80%;
+            margin: 5% auto; /* Ajusta el margen para centrar vertical y horizontalmente */
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #ddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            opacity: 0.9;
+        }    
 
 /* Estilos para la columna del formulario */
 .form-column {

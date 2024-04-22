@@ -73,12 +73,9 @@ function obtenerNuevoCodigoSolicitud($conn) {
 
 
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
    
@@ -109,10 +106,10 @@ function obtenerNuevoCodigoSolicitud($conn) {
         .container {
             display: inline-block;
             text-align: center;
-            border: 1px solid #ccc;
+            border: 1px solid #ddd;
             padding: 40px;
             margin: 20px;
-            background-color: powderblue; /* Color de fondo azul claro (cielo) */
+            background-color: #ddd; /* Color de fondo azul claro (cielo) */
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
             opacity: 0.9; /* Valor de opacidad (menos transparente) */
         }
@@ -121,7 +118,7 @@ function obtenerNuevoCodigoSolicitud($conn) {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
-            background-color: cornsilk; /* Color de fondo  para las tablas */
+            background-color: #ddd; /* Color de fondo para las tablas */
         }
 
         .invoice th, .invoice td {
@@ -164,7 +161,7 @@ function obtenerNuevoCodigoSolicitud($conn) {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
-           background-color: cornsilk; /* Color de fondo  para las tablas */
+            background-color: #ddd; /* Color de fondo para las tablas */
         }
 
 
