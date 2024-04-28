@@ -99,6 +99,7 @@ $hasSecurityQuestions = $result->num_rows > 0;
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cambiar Contraseña</title>
@@ -116,11 +117,11 @@ $hasSecurityQuestions = $result->num_rows > 0;
 
        /* Estilos para el formulario */
         form {
-    background-color: #f2f2f2; /* Cambia el color de fondo a un tono de gris */
+    background-color: #ddd; /* Cambia el color de fondo a un tono de gris */
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    width: 450px;
+    width: 550px;
     margin: 150px auto; /* Cambia el margen superior e inferior para centrar verticalmente */
     text-align: left;
 }
@@ -172,7 +173,7 @@ $hasSecurityQuestions = $result->num_rows > 0;
 
 /* Estilo para el botón "Cambiar Contraseña" */
 .change-password-button {
-    background-color: #FFA500; /* Cambia el color de fondo a anaranjado */
+    background-color: #007BFF; /* Cambia el color de fondo a anaranjado */
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -183,7 +184,7 @@ $hasSecurityQuestions = $result->num_rows > 0;
 
 /* Estilo para el botón "Cancelar" */
 .cancel-button {
-    background-color: #FF0000; /* Cambia el color de fondo a rojo */
+    background-color: gray; /* Cambia el color de fondo a rojo */
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -194,7 +195,7 @@ $hasSecurityQuestions = $result->num_rows > 0;
 
 
 input[type="submit"]:hover {
-    background-color: #FF8C00; /* Cambia el color de fondo al pasar el cursor */
+   /* background-color: #FF8C00; /* Cambia el color de fondo al pasar el cursor */
 }
 
 
@@ -218,27 +219,27 @@ input[type="submit"]:hover {
 
     <form action="contraseña_perfil.php" method="POST">
         <div class="form-header">
-          <h2>Cambio de Contraseña</h2>
+          <h2>CAMBIO DE CONTRASEÑA</h2>
         </div>
 
         <div class="form-group">
-          <label for="contraseña_anterior">Contraseña Anterior:</label>
+          <label for="contraseña_anterior">Contraseña anterior :</label>
           <input type="password" name="contraseña_anterior" placeholder="Contraseña anterior"><br><br>
         </div>
 
         <div class="form-group">
-         <label for="contraseña_nueva">Contraseña Nueva:</label>
+         <label for="contraseña_nueva">Contraseña :</label>
          <input type="password" name="contraseña_nueva" placeholder="Nueva contraseña"><br><br>
         </div>
 
         <div class="form-group">
-          <label for="confirmar_contraseña">Confirmar Contraseña:</label>
+          <label for="confirmar_contraseña">Confirmar:</label>
           <input type="password" name="confirmar_contraseña" placeholder="Confirmar nueva contraseña"><br><br>
         </div>
 
 
         <!-- Botón "Cambiar Contraseña" con la clase CSS "change-password-button" -->
-       <input type="submit" name="Cambiar Contraseña" value="Cambiar Contraseña" class="change-password-button">
+       <input type="submit" name="Cambiar Contraseña" value="Guardar" class="change-password-button">
     
        <!-- Botón "Cancelar" con la clase CSS "cancel-button" -->
        <input type="button" value="Cancelar" onclick="window.location.href='../pantallas/admin.php';" class="cancel-button"><br><br>
