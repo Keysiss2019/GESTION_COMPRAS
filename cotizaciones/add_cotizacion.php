@@ -93,12 +93,15 @@ while ($rowDescripcion = $resultDescripciones->fetch_assoc()) {
         .table-container {
             margin: 0 auto; /* Centra la tabla horizontalmente */
             width: 80%; /* Ancho del contenedor */
+            margin-bottom: 60px; /* Agrega un margen inferior de 20px entre las secciones de cotización */
+    
         }
 
         .table-container table {
-            width: 100%; /* Ajusta el ancho de la tabla al 100% del contenedor */
+            width: 80%; /* Ajusta el ancho de la tabla al 100% del contenedor */
             margin-bottom: 20px; /* Agrega margen inferior */
             background-color: cornsilk; /* Color de fondo para las tablas */
+            margin-left: 64px;
         }
 
         .table-container th, .table-container td {
@@ -112,52 +115,62 @@ while ($rowDescripcion = $resultDescripciones->fetch_assoc()) {
         }
 
         /* Estilo para los botones "Crear" y "Cancelar" */
-    .custom-button {
-        width: 150px;
-        height: 50px;
-        margin-bottom: 15px; /* Ajusta el espacio entre los botones según sea necesario */
-       
-       
-    }
+        .custom-button {
+            width: 150px;
+            height: 50px;
+            margin-bottom: 15px; /* Ajusta el espacio entre los botones según sea necesario */
+        }
 
-    /* Estilo para el botón "Crear" */
-    .custom-button.create-button {
-        background-color: #007bff; /* Azul */
-    color: #fff; /* Texto blanco */
-    border: 1px solid #0056b3; /* Borde azul más oscuro */
-    margin-right: 40px;
+        /* Estilo para el botón "Agregar" */
+       .custom-button.create-add {
+         background-color: green; /* Azul */
+         color: #fff; /* Texto blanco */
+         border: 1px solid #0056b3; /* Borde azul más oscuro */
+         margin-right: 40px;
+        }
+
+        /* Estilo para el botón "Guardar" */
+       .custom-button.create-button {
+         background-color: #007bff; /* Azul */
+         color: #fff; /* Texto blanco */
+         border: 1px solid #0056b3; /* Borde azul más oscuro */
+         margin-right: 40px;
+        }
+
+        /* Estilo adicional para el botón "Cancelar" */
+       .btn-warning.custom-button.cancel-button {
+         background-color: #808080; /* Gris */
+         color: #fff; /* Texto blanco */
+         border: 1px solid #555; /* Borde gris más oscuro */
+          margin-top: 10px; /* Ajusta el margen superior según sea necesario */
+        }
+
+        .custom-textarea {
+           width: 82%; /* O ajusta el ancho según tus preferencias */
+           height: 75px;
+           padding: 5px;
+          border: 1px solid #ccc;
+           border-radius: 4px;
+          box-sizing: border-box;
+          color: blue; /* Color azul para los enlaces */
+           text-decoration: underline; /* Subrayar los enlaces */
+        }
+
+        select[name="id_proveedor"] {
+          max-width: 300px; /* Ajusta el valor según sea necesario */
+         width: 100%; /* Garantiza que ocupe el ancho completo del contenedor */
+         height: 30px; /* Ajusta el valor según sea necesario para la altura */
+        }
+
+       input[name="departamento"] {
+         height: 30px;
+        }
     
-    }
-
-    /* Estilo adicional para el botón "Cancelar" */
-.btn-warning.custom-button.cancel-button {
-    background-color: #808080; /* Gris */
-    color: #fff; /* Texto blanco */
-    border: 1px solid #555; /* Borde gris más oscuro */
-    margin-top: 10px; /* Ajusta el margen superior según sea necesario */
-}
-
-.custom-textarea {
-    width: 82%; /* O ajusta el ancho según tus preferencias */
-    height: 75px;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    color: blue; /* Color azul para los enlaces */
-    text-decoration: underline; /* Subrayar los enlaces */
-}
-
-select[name="id_proveedor"] {
-        max-width: 300px; /* Ajusta el valor según sea necesario */
-        width: 100%; /* Garantiza que ocupe el ancho completo del contenedor */
-        height: 30px; /* Ajusta el valor según sea necesario para la altura */
-    }
-
-    input[name="departamento"] {
-        height: 30px;
-        
-    }
+       .custom-select {
+          width: 200px; /* Ancho personalizado */
+          height: 35px; /* Altura personalizada */
+        }
+    
     </style>
 </head>
 <body>
@@ -196,145 +209,266 @@ select[name="id_proveedor"] {
                     <th>Categoría</th>
                 </tr>
                 <?php
-// Obtener y mostrar información de los productos
-$sqlProductos = "SELECT cantidad, descripcion, categoria FROM tbl_productos WHERE id_solicitud = $idSolicitud";
-$resultProductos = $conn->query($sqlProductos);
+                  // Obtener y mostrar información de los productos
+                  $sqlProductos = "SELECT cantidad, descripcion, categoria FROM tbl_productos WHERE id_solicitud = $idSolicitud";
+                  $resultProductos = $conn->query($sqlProductos);
 
-if ($resultProductos->num_rows > 0) {
-    while ($rowProducto = $resultProductos->fetch_assoc()) {
-        echo "<tr>";
-        echo "<td>" . $rowProducto['cantidad'] . "</td>";
-        echo "<td>" . $rowProducto['descripcion'] . "</td>";
+                  if ($resultProductos->num_rows > 0) {
+                     while ($rowProducto = $resultProductos->fetch_assoc()) {
+                         echo "<tr>";
+                         echo "<td>" . $rowProducto['cantidad'] . "</td>";
+                          echo "<td>" . $rowProducto['descripcion'] . "</td>";
         
-        // Obtener la categoría asociada al producto
-        $categoriaId = $rowProducto['categoria'];
-        $sqlCategoria = "SELECT id, categoria FROM tbl_categorias WHERE id = $categoriaId";
-        $resultCategoria = $conn->query($sqlCategoria);
-        if ($resultCategoria->num_rows > 0) {
-            $rowCategoria = $resultCategoria->fetch_assoc();
-            echo "<td>" . $rowCategoria['categoria'] . "</td>";
-        } else {
-            echo "<td>Categoría no encontrada</td>";
-        }
-        
-        echo "</tr>";
-    }
-} else {
-    echo "<tr><td colspan='3'>No hay productos asociados a esta solicitud.</td></tr>";
-}
-?>
+                         // Obtener la categoría asociada al producto
+                         $categoriaId = $rowProducto['categoria'];
+                         $sqlCategoria = "SELECT id, categoria FROM tbl_categorias WHERE id = $categoriaId";
+                         $resultCategoria = $conn->query($sqlCategoria);
+                           if ($resultCategoria->num_rows > 0) {
+                             $rowCategoria = $resultCategoria->fetch_assoc();
+                             echo "<td>" . $rowCategoria['categoria'] . "</td>";
+                            } else {
+                             echo "<td>Categoría no encontrada</td>";
+                            }
+         
+                          echo "</tr>";
+                        }
+                    } else {
+                       echo "<tr><td colspan='3'>No hay productos asociados a esta solicitud.</td></tr>";
+                    }
+                ?>
 
             </table>
         </div>
-
+        
         <div class="table" style="margin: 0 auto; text-align: center;">
-    <h2 style="text-align: center;">Cotización</h2>
-   
-    <form  method="post" action="guardar_cotizacion.php?id=<?php echo $idSolicitud; ?>">
+        
+           <h2 style="text-align: center;">Cotización
+             <button id="addQuote" class="custom-button create-add" style="float: right; margin-top: -10px;">Agregar Cotización</button>
+          </h2>
+          <form  method="post" action="guardar_cotizacion.php?id=<?php echo $idSolicitud; ?>">
 
-    <table style="width: 80%; margin: 0 auto;">
-            <tr>
-                <th>Proveedor:</th>
-                <td>
-                    <select name="id_proveedor" required >
-                        <option value="">--Seleccione--</option>
-                        <?php
-                        // Ajusta la consulta para buscar proveedores con estado "A" (activo)
-                        $sql = "SELECT ID_PROVEEDOR, NOMBRE FROM tbl_proveedores WHERE ESTADO_PROVEEDOR = 'A'";
-                        $result = $conn->query($sql);
-                        if ($result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                                echo "<option value='" . $row["ID_PROVEEDOR"] . "'>" . $row["NOMBRE"] . "</option>";
+           <!-- Sección de Cotización -->
+           <div id="quoteSection">
+              <div class="table-container">
+                 <table style="width: 80%; margin: 0 auto;">
+                       <tr>
+                          <th>Proveedor:</th>
+                          <td>
+                             <select name="id_proveedor[]" required class="custom-select">
+                                 <option value="">--Seleccione--</option>
+                                  <?php
+                                     // Ajusta la consulta para buscar proveedores con estado "A" (activo)
+                                      $sql = "SELECT ID_PROVEEDOR, NOMBRE FROM tbl_proveedores WHERE ESTADO_PROVEEDOR = 'A'";
+                                      $result = $conn->query($sql);
+                                      if ($result->num_rows > 0) {
+                                          while ($row = $result->fetch_assoc()) {
+                                              echo "<option value='" . $row["ID_PROVEEDOR"] . "'>" . $row["NOMBRE"] . "</option>";
+                                            }
+                                        } else {
+                                          echo "<option value='' disabled>No hay proveedores activos disponibles</option>";
+                                        }
+                                    ?>
+                               </select>
+                           </td>
+                             <th>Número:</th>
+                             <td><input type="text" name="numero_cotizacion[]" style="max-width: 100px; height: 30px;"></td>
+                       </tr>
+                        <tr style="display: none;">
+                          <th>Departamento:</th>
+                          <td><input required type="text" name="departamento[]" style="width: 290px;" value="<?php echo $departamentoSolicitud; ?>"></td>                
+                       </tr>
+                       <tr>
+                         <th>URL:</th>
+                         <td>
+                             <textarea name="url[]" required class="custom-textarea" rows="2"></textarea>
+                           </td>
+                          <th>Fecha:</th>
+                           <td><input type="date" name="fecha_cotizacion[]" style="max-width: 100px; height: 30px;"></td>
+                           <th>Estado:</th>
+                           <td><input type="text" name="estado[]" value="PENDIENTE" required style="max-width: 100px; height: 30px;"></td>
+                       </tr>
+                   </table>
+                   <!-- Tabla de Productos de la Solicitud -->
+                   <table id="quoteTable">
+                      <tr>
+                         <th>Cantidad</th>
+                         <th>Descripción</th>
+                         <th>Categoría</th>
+                          <th>Acciones</th>
+                      </tr>
+                       <?php
+                          // Obtener y mostrar información de los productos
+                          $sqlProductos = "SELECT cantidad, descripcion, categoria FROM tbl_productos WHERE id_solicitud = $idSolicitud";
+                          $resultProductos = $conn->query($sqlProductos);
+
+                          if ($resultProductos->num_rows > 0) {
+                               while ($rowProducto = $resultProductos->fetch_assoc()) {
+                                  echo "<tr>";
+                                  echo "<td><input type='number' name='cantidad[]' value='" . $rowProducto['cantidad'] . "' class='editable-field'></td>";
+                                 echo "<td><textarea name='descripcion[]' class='editable-field'>" . $rowProducto['descripcion'] . "</textarea></td>";
+                                  // Obtener la categoría asociada al producto
+                                  $categoriaId = $rowProducto['categoria'];
+                                  $sqlCategoria = "SELECT id, categoria FROM tbl_categorias WHERE id = $categoriaId";
+                                  $resultCategoria = $conn->query($sqlCategoria);
+                                   if ($resultCategoria->num_rows > 0) {
+                                      $rowCategoria = $resultCategoria->fetch_assoc();
+                                     echo "<td><input type='text' name='categoria[]' value='" . $rowCategoria['categoria'] . "' class='editable-field'></td>";
+                                    } else {
+                                      echo "<td>Categoría no encontrada</td>";
+                                    }
+                                 // Botón de eliminar
+                                 echo "<td><button class='btn btn-danger deleteRow'>Eliminar</button></td>";
+
+                                  echo "</tr>";
+                                }
+                            } else {
+                              echo "<tr><td colspan='4'>No hay productos asociados a esta solicitud.</td></tr>";
                             }
-                        } else {
-                            echo "<option value='' disabled>No hay proveedores activos disponibles</option>";
-                        }
-                        ?>
-                    </select>
-                </td>
-                <th>Número:</th>
-                <td><input type="text" name="numero_cotizacion" style="max-width: 100px;  height: 30px;"></td>
-            </tr>
-            <tr>
-                <th>Departamento:</th>
-                <td ><input required type="text" name="departamento"  style="width: 290px;" value="<?php echo $departamentoSolicitud; ?>" ></td>
-
-                <th>Fecha:</th>
-                <td><input type="date" name="fecha_cotizacion" style="max-width: 100px;  height: 30px;"></td>
-            </tr>
-            <tr>
-                <th>URL:</th>
-                <td>
-                    <textarea name="url" required class="custom-textarea" rows="2"></textarea>
-                </td>
-                <th>Estado:</th>
-                <td><input type="text" name="ESTADO" value="PENDIENTE" required style="max-width: 100px;  height: 30px;"></td>
-               
-            </tr>
-            
-        </table>
-    <form method="post" action="guardar_cotizacion.php?id=<?php echo $idSolicitud; ?>">
-    <div class="table">
+                       ?>
+                   </table>
+               </div>
+           </div>
     
-    <table style="width: 80%; margin: 0 auto;">
-        <!-- Encabezados de la tabla -->
-        <tr>
-            <th style="width: 20%;">Cantidad</th> <!-- Ajustar el ancho de la columna de cantidad -->
-            <th style="width: 50%;">Descripción</th> <!-- Ajustar el ancho de la columna de descripción -->
-            <th style="width: 30%;">Categoría</th> <!-- Ajustar el ancho de la columna de categoría -->
-        </tr>
-        <!-- Mostrar productos de la solicitud con opciones de edición -->
-        <?php
-        // Obtener y mostrar información de los productos
-        $sqlProductos = "SELECT P.id, P.cantidad, P.descripcion, C.id, C.categoria 
-                         FROM tbl_productos P 
-                         INNER JOIN tbl_categorias C ON P.categoria = C.id
-                         WHERE P.id_solicitud = $idSolicitud";
-        $resultProductos = $conn->query($sqlProductos);
+           <!-- Botones de Crear y Cancelar -->
+           <div id="actionButtons" style="margin-top: 20px; float: left;">
+              <input type="submit" value="Guardar" class="custom-button create-button">
+              <input type="button" value="Cancelar" class="btn btn-warning custom-button cancel-button" onclick="window.location.href='../solicitudes/solicitudes.php';">
+           </div>
+           </form>
+       </div>
+       
 
-        if ($resultProductos->num_rows > 0) {
-            while ($rowProducto = $resultProductos->fetch_assoc()) {
-                echo "<tr>";
-                // Cantidad editable
-                echo "<td><input type='number' name='cantidad[]' value='" . $rowProducto['cantidad'] . "' class='cant-input' required></td>";
-                // Descripción (readonly)
-                echo "<td><input type='text' name='descripcion[]' value='" . $rowProducto['descripcion'] . "' readonly class='same-width'></td>";
-                // Categoría seleccionable desde la lista desplegable
-                echo "<td>";
-                echo "<select name='categoria[]' class='same-width' required>";
-                // Obtener todas las categorías de la tabla tbl_categorias
-                $sqlCategorias = "SELECT id, categoria FROM tbl_categorias";
-                $resultCategorias = $conn->query($sqlCategorias);
-                if ($resultCategorias->num_rows > 0) {
-                    while ($rowCategoria = $resultCategorias->fetch_assoc()) {
-                        $selected = ($rowCategoria['id'] == $rowProducto['id']) ? 'selected' : '';
-                        echo "<option value='" . $rowCategoria['id'] . "' $selected>" . $rowCategoria['categoria'] . "</option>";
+       <script>
+          // Función para agregar dinámicamente más secciones de cotización
+           function addQuoteSection() {
+              var newQuoteSection = document.createElement('div');
+               newQuoteSection.classList.add('table-container');
+
+               var htmlContent = `
+                <table style="width: 80%; margin: 0 auto; margin-left: 63px;">
+                <tr>
+                    <th>Proveedor:</th>
+                    <td>
+                        <select name="id_proveedor[]" required class="custom-select">
+                            <option value="">--Seleccione--</option>
+                            <?php
+                              // Ajusta la consulta para buscar proveedores con estado "A" (activo)
+                              $sql = "SELECT ID_PROVEEDOR, NOMBRE FROM tbl_proveedores WHERE ESTADO_PROVEEDOR = 'A'";
+                              $result = $conn->query($sql);
+                              if ($result->num_rows > 0) {
+                                  while ($row = $result->fetch_assoc()) {
+                                     echo "<option value='" . $row["ID_PROVEEDOR"] . "'>" . $row["NOMBRE"] . "</option>";
+                                    }
+                                } else {
+                                  echo "<option value='' disabled>No hay proveedores activos disponibles</option>";
+                                }
+                            ?>
+                        </select>
+                    </td>
+                    <th>Número:</th>
+                    <td><input type="text" name="numero_cotizacion[]" style="max-width: 100px; height: 30px;"></td>
+                </tr>
+                <tr style="display: none;">
+                    <th>Departamento:</th>
+                    <td><input required type="text" name="departamento[]" style="width: 290px;" value="<?php echo $departamentoSolicitud; ?>"></td>
+                    
+                </tr>
+                <tr>
+                    <th>URL:</th>
+                    <td>
+                        <textarea name="url[]" required class="custom-textarea" rows="2"></textarea>
+                    </td>
+                    <th>Fecha:</th>
+                    <td><input type="date" name="fecha_cotizacion[]" style="max-width: 100px; height: 30px;"></td>
+                    <th>Estado:</th>
+                    <td><input type="text" name="estado[]" value="PENDIENTE" required style="max-width: 100px; height: 30px;"></td>
+                </tr>
+               </table>
+
+               <!-- Tabla de Productos de la Solicitud -->
+               <table id="quoteTable">
+                <tr>
+                    <th>Cantidad</th>
+                    <th>Descripción</th>
+                    <th>Categoría</th>
+                    <th>Acciones</th>
+                </tr>
+                <?php
+                  // Obtener y mostrar información de los productos
+                  $sqlProductos = "SELECT cantidad, descripcion, categoria FROM tbl_productos WHERE id_solicitud = $idSolicitud";
+                  $resultProductos = $conn->query($sqlProductos);
+ 
+                    if ($resultProductos->num_rows > 0) {
+                        while ($rowProducto = $resultProductos->fetch_assoc()) {
+                           echo "<tr>";
+                           echo "<td><input type='number' name='cantidad[]' value='" . $rowProducto['cantidad'] . "' class='editable-field'></td>";
+                           echo "<td><textarea name='descripcion[]' class='editable-field'>" . $rowProducto['descripcion'] . "</textarea></td>";
+
+                           // Obtener la categoría asociada al producto
+                           $categoriaId = $rowProducto['categoria'];
+                           $sqlCategoria = "SELECT id, categoria FROM tbl_categorias WHERE id = $categoriaId";
+                           $resultCategoria = $conn->query($sqlCategoria);
+                           if ($resultCategoria->num_rows > 0) {
+                               $rowCategoria = $resultCategoria->fetch_assoc();
+                               echo "<td><input type='text' name='categoria[]' value='" . $rowCategoria['categoria'] . "' class='editable-field'></td>";
+                            } else {
+                               echo "<td>Categoría no encontrada</td>";
+                            }
+                           // Botón de eliminar
+                           echo "<td><button class='btn btn-danger deleteRow'>Eliminar</button></td>";
+
+                           echo "</tr>";
+                        }
+                    } else {
+                      echo "<tr><td colspan='4'>No hay productos asociados a esta solicitud.</td></tr>";
                     }
-                }
-                echo "</select>";
-                echo "</td>";
-              
-                echo "</tr>";
+                ?>
+               </table>
+               </div>
+                `;
+
+              newQuoteSection.innerHTML = htmlContent;
+              document.getElementById('quoteSection').appendChild(newQuoteSection);
+               // Vincular evento de eliminación para el botón de eliminar en la nueva sección de cotización
+               var deleteButtons = newQuoteSection.querySelectorAll('.deleteRow');
+               deleteButtons.forEach(function(button) {
+                  button.addEventListener('click', function() {
+                      var row = button.closest('tr'); // Obtener la fila que contiene el botón de eliminar
+                      row.remove(); // Eliminar solo la fila correspondiente, no la sección completa
+                    });
+                });
+
+               // Agregar el margen entre las secciones de cotización
+               newQuoteSection.style.marginBottom = '60px';
             }
-        } else {
-            echo "<tr><td colspan='3'>No hay productos asociados a esta solicitud.</td></tr>";
-        }
-        ?>
-    </table>
-</div>
-<br>
 
-        <!-- Botones de Crear y Cancelar -->
-        <input type="submit" value="Crear" class="custom-button create-button">
-        <input type="button" value="Cancelar" class="btn btn-warning custom-button cancel-button" onclick="window.location.href='../solicitudes/solicitudes.php';">
-    </form>
-</div>
+            // Llama a la función para agregar una nueva sección de cotización al hacer clic en el botón
+            document.getElementById('addQuote').addEventListener('click', addQuoteSection);
 
-</div>
+           // Función para vincular el evento click para el botón de eliminar
+           function bindDeleteRowEvent() {
+              var deleteButtons = document.querySelectorAll('.deleteRow');
+               deleteButtons.forEach(function(button) {
+                   button.addEventListener('click', function() {
+                        var row = button.closest('tr');
+                        row.remove();
+                    });
+                });
+            }
 
+           // Llama a la función para vincular el evento click para el botón de eliminar
+           bindDeleteRowEvent();
+        </script>
+        
+    </div>
 
 </body>
 </html>
+
+
+
+
+
 
 
 
