@@ -185,7 +185,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         </div>
 
         <div class="button-row">
-         <a href="listar_proveedores.php"><button>Regresar</button></a>
+         <a href="listar_proveedores.php"><button>Cancelar</button></a>
         </div>
     </div>
 
