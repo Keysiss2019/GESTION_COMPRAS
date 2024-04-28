@@ -105,91 +105,105 @@ if (isset($_GET['id'])) {
     <meta charset="UTF-8">
     
     <style>
-          body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    /*background-image: url('../imagen/background.jpg');*/
-    background-size: 30%; /* Cambiar el tamaño de la imagen de fondo */
-    background-repeat: no-repeat;
-    background-position: center;
-    font-family: Arial, sans-serif;
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            /*background-image: url('../imagen/background.jpg');*/
+            /*background-size: 30%; /* Cambiar el tamaño de la imagen de fondo */
+            background-repeat: no-repeat;
+            background-position: center;
+            font-family: Arial, sans-serif; /* Tipo de letra cambiada */
+        }
+
+        /* Estilos para el formulario */
+        .form-container {
+            background-color: #ddd; /* Cambio de color a gris  */
+            padding: 10px;
+            border-radius: 10px; /* Aumentar el radio de la esquina */
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+            width: 550px; /* Aumentar el ancho del formulario */
+            text-align: center; /* Centra el contenido horizontalmente */
+            margin: 30 auto; /* Centra el formulario en la página */
+            border: 2px solid #ddd; /* Añadir borde gris */
+        }
+
+
+        /* Estilos para las filas del formulario */
+        .form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        /* Estilos para las etiquetas */
+        .form-row label {
+            flex: 1; /* Hace que las etiquetas ocupen una parte igual del espacio disponible */
+            text-align: left; /* Alinear a la izquierda */
+            margin-right: 10px; /* Espacio entre la etiqueta y el campo de entrada */
+        }
+
+        /* Estilos para el título */
+        h1 {
+            color: #007BFF; /* Cambiar el color del título a azul */
+            font-weight: bold; /* Hacer el título en negrita */
+        }
+
+        /* Estilos para los campos de entrada y selección */
+        .form-row input[type="text"],
+        .form-row input[type="email"],
+        .form-row input[type="password"],
+        .form-row select {
+            flex: 2; /* Hace que los campos ocupen una parte igual del espacio disponible */
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Estilos para el contenedor de los botones */
+.button-container {
+    text-align: center; /* Centra los botones horizontalmente */
+    display: flex; /* Cambia el comportamiento de los elementos a flex */
+    align-items: center; /* Centra verticalmente los elementos flex */
+    justify-content: center; /* Centra horizontalmente los elementos flex */
 }
 
- /* Estilos para el formulario */
- .form-container {
-    background-color: rgba(245, 245, 220, 0.9); /* Beige con transparencia */
-    padding: 20px;
+/* Estilos para los botones */
+.form-row button,
+.form-row a {
+    padding: 10px 20px; /* Reducción del padding para hacer los botones más pequeños */
+    border: none;
     border-radius: 5px;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-    width: 400px;
-    text-align: center; /* Centra el contenido horizontalmente */
-    margin: 0 auto; /* Centra el formulario en la página */
-}
-
-
-
-/* Estilos para las filas del formulario */
-.form-row {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-/* Estilos para las etiquetas */
-.form-row label {
-    flex: 1; /* Hace que las etiquetas ocupen una parte igual del espacio disponible */
-    text-align: right;
-    font-weight: bold;
-    margin-right: 10px; /* Espacio entre la etiqueta y el campo de entrada */
-}
-
-/* Estilos para los campos de entrada y selección */
-.form-row input[type="text"],
-.form-row input[type="email"],
-.form-row input[type="password"],
-.form-row select {
-    flex: 2; /* Hace que los campos ocupen una parte igual del espacio disponible */
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px; /* Tamaño de letra */
+    font-family: Arial, sans-serif; /* Tipo de letra cambiada */
+    width: auto; /* Ancho ajustado automáticamente al contenido */
 }
 
 /* Estilos para el botón "Guardar Cambios" */
 .button-container button[type="submit"] {
-    flex: 2; /* Hace que los botones ocupen una parte igual del espacio disponible */
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
     background-color: #007BFF; /* Fondo azul */
     color: white; /* Texto blanco */
+    margin-right: 5px; /* Espacio entre los botones */
 }
 
 /* Estilos para el botón "Cancelar" */
 .button-container a.btn-secondary {
-    flex: 2; /* Hace que los botones ocupen una parte igual del espacio disponible */
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
     background-color: gray; /* Fondo gris */
     color: #fff; /* Texto oscuro */
-    text-decoration: none; /* Evita la subrayado del enlace Cancelar */
-    text-align: center;
-    display: inline-block;
 }
 
-/* Estilo para el mensaje de error */
-.error-message {
+
+        /* Estilo para el mensaje de error */
+        .error-message {
             color: red;
-            font-weight: bold;
         }
-
-
     </style>
 
 
@@ -208,7 +222,7 @@ if (isset($_GET['id'])) {
         echo '<div class="error-message">' . $errorMsg . '</div>';
     }
     ?>
-      <h1>Usuario</h1>
+      <h1>USUARIO</h1>
     
        <form method="post" action="">
           <input type="hidden" name="id_usuario" value="<?php echo $idUsuario; ?>">
@@ -247,7 +261,7 @@ if (isset($_GET['id'])) {
             </div>
 
             <div class="form-row">
-               <label for="correo_electronico">Email:</label>
+               <label for="correo_electronico">Correo:</label>
                <input type="email" name="correo_electronico" id="correo_electronico" value="<?php echo $correoElectronico; ?>"><br>
             </div>
 
