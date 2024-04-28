@@ -50,8 +50,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     h1 {
         font-size: 24px;
-        color: #333;
-    }
+        color: #007BFF; /* Cambiar el color del título a azul */
+            font-weight: bold; /* Hacer el título en negrita */
+        }
+    
 
     form {
         background-color: #fff;
@@ -89,31 +91,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     th {
         background-color: #f2f2f2;
     }
+    
+
+    .btn-container {
+    text-align: right; /* Alinea los botones a la derecha */
+}
 
     button {
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 3px;
-        cursor: pointer;
-    }
+    display: inline-block;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px; /* Tamaño de la fuente */
+    font-family: Arial, sans-serif; /* Tipo de letra */
+}
 
-    a.styled-button {
-        display: inline-block;
-        text-decoration: none;
-        background-color: #ccc;
-        color: #333;
-        padding: 10px 20px;
-        border-radius: 3px;
-        margin-right: 10px;
-    }
+a.styled-button {
+    display: inline-block;
+    text-decoration: none;
+    background-color: #ccc;
+    color: #333;
+    padding: 10px 20px;
+    border-radius: 3px;
+    margin-right: 10px;
+    font-size: 14px; /* Tamaño de la fuente */
+    font-family: Arial, sans-serif; /* Tipo de letra */
+}
 
-    a.styled-button.cancel-button {
-        background-color: #ff3333;
-        color: #fff;
-        padding: 10px 10px; /* Ajusta el ancho y alto de los botones según tus preferencias */
-    }
+a.styled-button.cancel-button {
+    background-color: grey;
+    color: #fff;
+    padding: 10px 20px; /* Ajusta el ancho y alto de los botones según tus preferencias */
+    font-size: 14px; /* Tamaño de la fuente */
+    font-family: Arial, sans-serif; /* Tipo de letra */
+}
 
      
 </style>
@@ -168,11 +182,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 ?>
             </tbody>
         </table>
-
+        
+         <div class="button-container">
         <button type="submit">Guardar</button>
         
         <a href="../roles/roles.php" class="styled-button cancel-button"><i class='fas fa-times'></i> Cancelar</a>
-
+            </div>
     </form>
 </body>
 </html>
