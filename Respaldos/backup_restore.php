@@ -1,6 +1,6 @@
 <?php
 // Ruta a la carpeta que contiene los archivos .sql
-$dir = 'C:/xampp/htdocs/GESTION_COMPRAS/Respaldos';
+$dir = 'C:/xampp/htdocs/GESTION_COMPRAS-main/Respaldos';
 
 // Obtener los nombres completos de todos los archivos .sql en la carpeta
 $sql_archivos = array_filter(scandir($dir), function($archivo) {
@@ -35,6 +35,7 @@ if (isset($_POST['restore'])) {
     <meta charset="UTF-8">
     <title>Volcado y Restauración de Base de Datos</title>
     <style>
+        /* Estilos CSS aquí */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -54,7 +55,8 @@ if (isset($_POST['restore'])) {
             margin-bottom: 20px;
         }
         header h1 {
-            color: #333;
+            color: #007BFF; /* Cambiar el color del título a azul */
+            font-weight: bold; /* Hacer el título en negrita */
             font-size: 24px; /* Ajuste del tamaño de la fuente del encabezado */
         }
         section {
@@ -75,7 +77,7 @@ if (isset($_POST['restore'])) {
             font-size: 14px; /* Reducir el tamaño de la fuente de las etiquetas */
         }
         select, input[type="submit"] {
-            padding: 6px 10px; /* Reducir el relleno de los elementos */
+            padding: 10px 20px; /* Ajustar el relleno para hacer el botón más grande */
             font-size: 14px; /* Reducir el tamaño de la fuente de los elementos */
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -84,9 +86,12 @@ if (isset($_POST['restore'])) {
             margin-bottom: 10px;
         }
         input[type="submit"] {
-            background-color: #007bff;
+            background-color: #007BFF; /* Cambiar el color del botón a azul */
             color: #fff;
             cursor: pointer;
+        }
+        input[type="submit"].cancel-button {
+            background-color: grey; /* Cambiar el color del botón de cancelar a gris */
         }
         /* Estilos para el mensaje */
         .mensaje {
@@ -106,43 +111,77 @@ if (isset($_POST['restore'])) {
             background-color: #007bff;
             color: #fff;
             border: none;
-            padding: 5px 10px;
+            padding: 10px 20px; /* Ajustar el tamaño del botón */
             cursor: pointer;
             border-radius: 3px;
             margin-left: 10px; /* Espacio entre el mensaje y el botón */
+        }
+
+        .container {
+            max-width: 800px; /* Reducir el ancho del contenedor */
+            margin: 100px auto 0; /* Ajuste del margen superior */
+            padding: 20px;
+            background-color: #eee; /* Cambiado a un gris más claro */
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Dos columnas con el mismo ancho */
+            gap: 20px; /* Espacio entre las columnas */
+        }
+
+        .grid-item {
+            padding: 20px;
+            background-color: #fff; /* Fondo blanco */
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .grid-item h2 {
+            color: #333;
+            font-size: 20px; /* Ajuste del tamaño de la fuente del subencabezado */
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Respaldo y Restauración de Base de Datos</h1>
+            <h1>RESPALDO Y RESTAURACIÓN DE LA BASE DE DATOS</h1>
         </header>
         
-        <section>
-            <h2>Respaldo de Base de Datos:</h2>
-            <form action="Respaldo.php" method="post">
-                <input type="submit" name="dump" value="Respaldo" style="width: auto;"> <!-- Establecer el ancho automático para el botón -->
-            </form>
-        </section>
-        
-        <section>
-            <h2>Restauración de Base de Datos</h2>
-            <form action="" method="post">
-                <label for="archivo">Archivo:</label> <!-- Cambiar el texto del label -->
-                <select name="archivo" id="archivo" style="width: calc(50% - 22px);"> <!-- Reducir el ancho del elemento en función del relleno -->
-                    <?php echo $options; ?>
-                </select>
-                <input type="submit" name="restore" value="Restaurar" style="width: auto;"> <!-- Establecer el ancho automático para el botón -->
-            </form>
-        </section>
+        <div class="grid-container">
+            <div class="grid-item">
+                <section>
+                    <h2>Respaldo de Base de Datos:</h2>
+                    <form action="" method="post">
+                        <input type="submit" name="dump" value="Respaldo" style="width: auto;"> <!-- Establecer el ancho automático para el botón -->
+                    </form>
+                </section>
+            </div>
+            
+            <div class="grid-item">
+                <section>
+                    <h2>Restauración de Base de Datos</h2>
+                    <form action="" method="post">
+                        <label for="archivo">Archivo:</label> <!-- Cambiar el texto del label -->
+                        <select name="archivo" id="archivo" style="width: calc(100% - 22px);"> <!-- Reducir el ancho del elemento en función del relleno -->
+                            <?php echo $options; ?>
+                        </select>
+                        <input type="submit" name="restore" value="Restaurar" style="width: auto;"> <!-- Establecer el ancho automático para el botón -->
+                    </form>
+                </section>
+            </div>
+        </div>
 
         <!-- Botón de regresar -->
-<section>
-    <form action="javascript:history.back()" method="post">
-        <input type="submit" value="Regresar" style="width: auto;">
-    </form>
-</section>
+        <section>
+            <form action="javascript:history.back()" method="post">
+                <input type="submit" value="Cancelar" class="cancel-button" style="width: auto;"> <!-- Aplicar la clase y establecer el ancho automático -->
+            </form>
+        </section>
 
         <!-- Mostrar el mensaje aquí mismo -->
         <?php if (!empty($mensaje)) : ?>
@@ -151,7 +190,6 @@ if (isset($_POST['restore'])) {
         </script>
         <?php endif; ?>
     </div>
-    
-    </div>
 </body>
 </html>
+
