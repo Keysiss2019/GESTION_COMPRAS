@@ -40,7 +40,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            margin: 0;
+            margin: 80PX;
             padding: 0;
            
         
@@ -51,10 +51,11 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             text-align: left;
             border: 1px solid #ccc;
             padding: 20px;
-            margin: 20px;
-            background-color: powderblue; /* Color de fondo azul claro (cielo) */
+            margin: 50px;
+            background-color: #ddd; /* Color de fondo GRIS */
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
             opacity: 0.9; /* Valor de opacidad (menos transparente) */
+            border-radius: 5px;
         }
 
         .table-container {
@@ -66,7 +67,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         .table {
             width: 48%; /* El 2% es para el espacio entre las tablas */
             box-sizing: border-box; /* Para evitar que los bordes agreguen más ancho */
-            background-color: cornsilk; /* Color de fondo  para las tablas */
+            background-color: #FFF; /* Color de fondo  para las tablas */
         }
 
         table {
@@ -82,7 +83,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         }
 
         th {
-            background-color: bisque;
+            background-color: #FFF;
         }
 
         .button-row {
@@ -108,15 +109,21 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
       
          /* Estilo del botón */
         button {
-            background-color: blue; /* Color verde para el botón */
+            background-color: gray; /* Color verde para el botón */
             color: white; /* Texto en color blanco */
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 16px; /* Aumenta ligeramente el tamaño de la letra del botón "Guardar" */
         }
 
-
+           /* Estilos para centrar el título */
+        h2 {
+          text-align: center; /* Centrar el texto horizontalmente */
+         color: #007BFF; /* Cambiar el color del título a azul */
+           font-weight: bold; /* Hacer el título en negrita */
+}
 
 
 
@@ -125,7 +132,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 <body>
     <div class="container">
         <div class="table-title">
-            <h2>Detalles del Proveedor</h2>
+            <h2>DETALLES DEL PROVEEDOR</h2>
         </div>
         <div class="table-container">
             <div class="table"> 

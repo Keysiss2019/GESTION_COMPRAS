@@ -90,13 +90,15 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         }
 
         /* Estilos para centrar el título */
-h2 {
-    text-align: center; /* Centrar el texto horizontalmente */
+        h2 {
+          text-align: center; /* Centrar el texto horizontalmente */
+         color: #007BFF; /* Cambiar el color del título a azul */
+           font-weight: bold; /* Hacer el título en negrita */
 }
 
         /* Estilos para el contenedor del formulario (el cuadro) */
         .form-container {
-    width: 80%; /* Ancho del contenedor */
+    width: 50%; /* Ancho del contenedor */
     margin: 5% auto; /* Centrar horizontalmente en la página */
     padding: 20px; /* Espacio interno alrededor del formulario */
     border: 1px solid #ccc; /* Borde del cuadro */
@@ -104,11 +106,9 @@ h2 {
     background-color: #ddd; /* Color de fondo del cuadro */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
     opacity: 0.9; /* Valor de opacidad (menos transparente) */
+    border-radius: 5px;
 }
 
-
-
-       
 
 /* Estilos para la columna del formulario */
 .form-column {
@@ -153,6 +153,8 @@ button, .custom-button {
     color: #fff; /* Color de texto para el botón principal */
     border: none; /* Sin borde */
     cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px; /* Aumenta ligeramente el tamaño de la letra del botón "Guardar" */
 }
 
 .cancel-button {
@@ -160,16 +162,11 @@ button, .custom-button {
     text-decoration: none; /* Quita el subrayado */
 }
 
-
-
-
-
-
     </style>
 </head>
 <body>
     <div class="form-container">
-        <h2 style="text-align: center;">Proveedor</h2>
+        <h2 style="text-align: center;">PROVEEDOR</h2>
 
         <form method="POST" action="actualizar_proveedor.php">
             <input type="hidden" name="ID_PROVEEDOR" value="<?php echo $row['ID_PROVEEDOR']; ?>">
@@ -217,8 +214,4 @@ button, .custom-button {
     </div>
 </body>
 </html>
-
-
-
-
 
