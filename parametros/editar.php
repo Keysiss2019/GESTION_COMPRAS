@@ -6,93 +6,76 @@
         body {
             text-align: center;
             font-family: Arial, sans-serif;
-            background: rgba(255, 255, 255, 0.10);
-            /*background-image: url('../imagen/background.jpg');*/
-            background-size: cover;
+            background: rgba(255, 255, 255, 0.20);
+            background-size: 40%;
             background-position: center;
             background-repeat: no-repeat;
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            justify-content: center; /* Centra horizontalmente */
+            align-items: center; /* Centra verticalmente */
             min-height: 100vh;
         }
 
         .container {
-            width: 200%;
+            width: 45%; /* Ajusta el ancho del contenedor */
             text-align: center;
-            border: 1px solid #ccc;
-            padding: 20px;
-            background-color: powderblue;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            opacity: 0.9;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .table {
-            box-sizing: border-box;
-            background-color: cornsilk;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .centered-message {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .btn-container {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 10px;
-        }
-
-        .btn {
-            flex: 1;
-            background-color: #007bff;
-            color: #fff;
-            padding: 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 0 5px;
-            box-sizing: border-box;
-            text-decoration: none;
+            border-radius: 10px; /* Aumentar el radio de la esquina */
+            padding: 40px;
+            background-color: #ddd; /* Color de fondo gris*/
         }
 
         .form-group {
             display: flex;
             align-items: center;
-            margin-bottom: 15px;
+            justify-content: center; /* Centra horizontalmente los elementos del formulario */
+            margin-bottom: 10px;
         }
 
-        .form-group label {
-            width: 150px;
-            display: inline-block;
-            flex: 1;
-            text-align: right;
-            margin-left: 40px;
-            font-weight: bold;
+        label {
+            width: 120px; /* Ancho fijo para las etiquetas, ajusta según sea necesario */
+            margin-right: 25px; /* Espacio entre la etiqueta y el campo de entrada */
+            text-align: left; /* Alinea el texto a la izquierda */
         }
 
-        .form-group input, .form-group select, .form-group textarea {
-            flex: 2;
-            width: 90%;
+        input {
+            flex: 1; /* El campo de entrada toma el resto del espacio disponible */
             padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
             box-sizing: border-box;
         }
+
+        input[type="submit"],
+        input[type="button"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 30%; /* Ajusta según sea necesario */
+            box-sizing: border-box;
+            display: inline-block; /* Muestra en la misma línea que el botón Guardar */
+        }
+
+        input[type="submit"] {
+            margin-right: 10px; /* Agregar espacio a la derecha del botón de guardar */
+        }
+
+        input.cancel {
+            background-color: gray;
+        }
+
+        h2 {
+            color: #007BFF; /* Cambiar el color del título a azul */
+            font-weight: bold; /* Hacer el título en negrita */
+        }
+
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="table">
-           <h2>Parámetro</h2>
+        <h2>PARÁMETRO</h2>
            <?php
              session_start();
 
@@ -135,12 +118,12 @@
                       echo "<div class='form-group'><label for='parametro'>Parámetro:</label><input type='text' name='parametro' value='$parametro' required></div>";
                        echo "<div class='form-group'><label for='valor'>Valor:</label><input type='text' name='valor' value='$valor' required></div>";
 
-                       echo "<div class='form-group'><label for='fecha_creacion'>Fecha de Creación:</label><input type='text' name='fecha_creacion' value='$fecha_creacion' readonly></div>";
+                       echo "<div class='form-group'><label for='fecha_creacion'>Fecha Creación:</label><input type='text' name='fecha_creacion' value='$fecha_creacion' readonly></div>";
 
                        // Obtener la fecha actual en formato YYYY-MM-DD
                        $fecha_modificacion_actual = date('Y-m-d');
 
-                      echo "<div class='form-group'><label for='fecha_modificacion'>Fecha de Modificación:</label><input type='text' name='fecha_modificacion' value='$fecha_modificacion_actual'></div>"; 
+                      echo "<div class='form-group'><label for='fecha_modificacion'>Fecha Modificación:</label><input type='text' name='fecha_modificacion' value='$fecha_modificacion_actual'></div>"; 
 
                       // Campo oculto para el nombre del usuario que inició sesión (MODIFICADO_POR)
                      echo "<input type='hidden' name='modificado_por' value='" . (isset($_SESSION['nombre_usuario']) ? $_SESSION['nombre_usuario'] : '') . "'>";

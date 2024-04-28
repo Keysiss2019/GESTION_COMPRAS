@@ -57,11 +57,13 @@ session_start();
         /* Estilos para centrar el título */
 h2 {
     text-align: center; /* Centrar el texto horizontalmente */
+    color: #007BFF; /* Cambiar el color del título a azul */
+           font-weight: bold; /* Hacer el título en negrita */
 }
 
    /* Estilos para el contenedor del formulario */
    .form-container {
-            width: 80%;
+            width: 50%;
             margin: 5% auto; /* Ajusta el margen para centrar vertical y horizontalmente */
             padding: 20px;
             border: 1px solid #ccc;
@@ -69,6 +71,7 @@ h2 {
             background-color: #ddd;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             opacity: 0.9;
+            border-radius: 5px;
         }    
 
 /* Estilos para la columna del formulario */
@@ -103,8 +106,9 @@ select{
 /* Estilos para la sección de botones */
 .button-section {
     clear: both; /* Limpiar el flotado para que los elementos debajo no floten */
-    text-align: left; /* Alinear los botones a la izquierda */
+    text-align: right; /* Alinear los botones a la izquierda */
     margin-top: 20px; /* Espacio superior para separar de las columnas */
+    border-radius: 5px;
 }
 
 /* Estilos para los botones */
@@ -114,6 +118,8 @@ button, .custom-button {
     color: #fff; /* Color de texto para el botón principal */
     border: none; /* Sin borde */
     cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px; /* Aumenta ligeramente el tamaño de la letra del botón "Guardar" */
 }
 
 .cancel-button {
@@ -128,7 +134,7 @@ button, .custom-button {
 <body>
 <br><br>
 <div class="form-container">
-    <h2 style="text-align: center;">Proveedor</h2>
+    <h2 style="text-align: center;">PROVEEDOR</h2>
 
     <form method="POST" action="crear_proveedor.php">
         <div class="form-column">

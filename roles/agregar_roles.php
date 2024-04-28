@@ -46,7 +46,7 @@
         label {
             display: block;
             margin-bottom: 5px;
-            font-weight: bold;
+            /*font-weight: bold;*/
         }
 
         input[type="text"],
@@ -85,23 +85,22 @@
             margin-right: 5px;
         }
 
-        button[type="submit"] {
-            background-color: #007BFF;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
+        .btn-container button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100px; /* Ancho fijo para los botones */
+    margin-left: 10px;
+    font-size: 14px; /* Tamaño de fuente opcional */
+}
 
-        button[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-
-        /* Para los botones agregar y cancelar */
-        .btn-container {
-            text-align: right;
-        }
+.btn-container button.cancelar {
+    background-color: gray; /* Cambia el color de fondo a gris */
+    color: #fff; /* Cambia el color del texto a blanco */
+}
 
         .btn-container button {
             width: 100px; /* Ancho fijo para los botones */
@@ -109,6 +108,20 @@
             padding: 10px;
             font-size: 14px; /* Tamaño de fuente opcional */
         }
+
+        /* Estilos para el título */
+        h2 {
+            color: #007BFF; /* Cambiar el color del título a azul */
+            font-weight: bold; /* Hacer el título en negrita */
+        }
+
+         /* Estilos para el título */
+         h3 {
+            color: #007BFF; /* Cambiar el color del título a azul */
+            font-weight: bold; /* Hacer el título en negrita */
+        }
+
+
     </style>
 </head>
 
@@ -198,7 +211,7 @@
     ?>
     <div class="container">
         <div class="left">
-            <h2 style="text-align: center;">Nuevo Rol  </h2>
+            <h2 style="text-align: center;">NUEVO ROL </h2>
             <p><?php echo $message; ?></p>
 
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
@@ -211,13 +224,13 @@
                 
                 <div class="btn-container">
                     <button type="submit" name="agregar" >Guardar</button>
-                    <button type="button" onclick="window.location.href='roles.php'">Cancelar</button>
+                    <button type="button" class="cancelar" onclick="window.location.href='roles.php'">Cancelar</button>
                 </div>
             </div>
             <div class="right">
                 <table>
                     <thead>
-                       <h3 style="text-align: center;">Permisos</h3>
+                       <h3 style="text-align: center;">PERMISOS</h3>
                         <tr>
                             <th>Nº</th>
                             <th>Pantallas</th>
@@ -237,7 +250,7 @@
                             while ($objeto = $result_objetos->fetch_assoc()) {
                                 echo '<tr>';
                                 echo '<td class="numeracion">' . $numeroObjeto . '</td>';
-                                echo '<td class="alineado-izquierda">' . $objeto["NOMBRE_OBJETO"] . '</td>';
+                                echo '<td style="text-align: left;">' . $objeto["NOMBRE_OBJETO"] . '</td>';
 
                                 if ($result_permisos->num_rows > 0) {
                                     mysqli_data_seek($result_permisos, 0); // Reiniciar el puntero del resultado de permisos

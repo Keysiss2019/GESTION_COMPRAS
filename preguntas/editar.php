@@ -111,7 +111,6 @@ $conn->close();
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            /*background-image: url('../imagen/background.jpg'); */
             background-size: 30%; /* Cambiar el tamaño de la imagen de fondo */
             background-repeat: no-repeat;
             background-position: center;
@@ -119,20 +118,34 @@ $conn->close();
         }
 
         .container {
-            background-color: rgba(245, 245, 220, 0.9); /* Beige con transparencia */
+            background-color: #ddd; /* Beige con transparencia */
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-            width: 400px;
+            width: 550px;
             text-align: left; /* Alinea el contenido a la izquierda */
             margin: 0 auto; /* Centra el formulario en la página */
         }
+
+        /* Estilos para el título */
+       h2 {
+           color: #007BFF; /* Cambiar el color del título a azul */
+           font-weight: bold; /* Hacer el título en negrita */
+       }
+
+       /* Estilos para el contenedor de los botones */
+       .button-container {
+           text-align: center; /* Centra los botones horizontalmente */
+           margin-top: 20px; /* Espacio arriba de los botones */
+       }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h2><i class="fas fa-question"></i> Pregunta</h2>
+        <div class="text-center"> <!-- Nuevo contenedor para centrar -->
+            <h2><i class="fas fa-question"></i> PREGUNTA</h2>
+        </div>
         <!-- Mostrar mensaje de error aquí -->
         <?php echo $errorMsg; ?>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id=" . $idPregunta); ?>" method="POST">
@@ -155,8 +168,10 @@ $conn->close();
             </div>
 
             <!-- Botones de guardar y cancelar -->
-            <button type="submit" class="btn btn-primary">Guardar</button>
-            <a href="preguntas.php" class="btn btn-secondary">Cancelar</a>
+            <div class="button-container"> <!-- Nuevo contenedor para centrar -->
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a href="preguntas.php" class="btn btn-secondary">Cancelar</a>
+            </div>
         </form>
     </div>
 </body>

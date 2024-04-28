@@ -26,7 +26,7 @@ foreach ($datos as $dato) {
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #fff;
             margin: 0;
             padding: 0;
         }
@@ -42,13 +42,14 @@ foreach ($datos as $dato) {
         h1 {
             text-align: center;
             margin: 20px 0;
-            color: #333;
+            color: #007BFF; 
+            font-weight: bold; 
         }
 
         /* Estilo para los contenedores de gráficos */
         .chart-container {
             width: 50%; /* Ancho de los gráficos */
-            background-color: #fff;
+            background-color: #ddd;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
         }
@@ -98,7 +99,7 @@ foreach ($datos as $dato) {
 <body>
     <div class="center-content">
         <div class="chart-container">
-            <h1>Estadísticas de Objetos por Fecha</h1>
+            <h1>ESTADÍSTICAS DE OBJETOS POR FECHA</h1>
             <div id="chart_div" style="width: 100%; height: 400px;"></div>
 
     

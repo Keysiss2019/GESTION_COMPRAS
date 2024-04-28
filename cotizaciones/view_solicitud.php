@@ -84,7 +84,7 @@ if ($resultRolUsuario->num_rows > 0) {
             border: 1px solid #ccc;
             padding: 40px;
             margin: 20px;
-            background-color: powderblue; /* Color de fondo azul claro (cielo) */
+            background-color: #ddd; /* Color de fondo azul claro (cielo) */
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
             opacity: 0.9; /* Valor de opacidad (menos transparente) */
         }
@@ -99,7 +99,7 @@ if ($resultRolUsuario->num_rows > 0) {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
-    background-color: cornsilk; /* Color de fondo  para las tablas */
+    background-color: #ddd; /* Color de fondo  para las tablas */
 }
 
 th, td {
@@ -114,7 +114,7 @@ th, td {
 
 
 th {
-    background-color: bisque;
+    background-color: #ddd;
 }
 
         /* Estilos para todas las tablas con la clase "solicitud-info" */
@@ -123,7 +123,7 @@ th {
             border: 0px solid #ccc;
             padding: 10px;
             width: 100%;
-            background-color: cornsilk; /* Color de fondo  para las tablas */
+            background-color: #ddd; /* Color de fondo  para las tablas */
         }
 
       /* Estilos para la tabla con clase "solicitud-info" */

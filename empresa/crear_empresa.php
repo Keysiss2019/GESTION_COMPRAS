@@ -34,6 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 } else {
     // Mostrar el formulario de creación de empresas
 ?>
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -49,27 +51,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         
         .container {
-            margin-top: 50px;
+            margin-top: 40px;
             width: 50%;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
+            background-color: #ddd;
+            padding: 10px;
+            border-radius: 5px;
             box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
         }
         
         h2 {
-            text-align: center;
             margin-bottom: 20px;
+            text-align: center;
+            color: #007BFF; /* Cambiar el color del título a azul */
+            font-weight: bold; /* Hacer el título en negrita */
         }
         
         label {
-            font-weight: bold;
+            margin-bottom: 5px; /* Reducir el espacio inferior de las etiquetas */
+            /*font-weight: bold;*/
         }
         
         input[type="text"], input[type="tel"], input[type="email"], textarea, select {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
+            padding: 5px;
+            margin-bottom: 0px; /* Reducir el espacio inferior de los campos de entrada */
             border: 1px solid #ccc;
             border-radius: 5px;
         }
@@ -86,25 +91,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         
         .cancel-button {
-            background-color: #dc3545;
-        }
-        
-        .custom-button:hover, .cancel-button:hover {
-            background-color: #0056b3;
+            background-color: gray;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
         }
     </style>
 </head>
 <body>
 <div class="container">
     <form action="guardar_empresa.php" method="POST">
-        <h2>Crear Empresa</h2>
+        <h2>EMPRESA</h2>
 
         <label for="nombre_empresa">Nombre de la Empresa:</label>
         <input type="text" name="nombre_empresa" required>
 
-        <label for="fecha_inicio_operacion">Fecha de Inicio de Operación:</label>
+        <label for="fecha_inicio_operacion">Fecha de Inicio de Operación:</label><br>
         <input type="date" name="fecha_inicio_operacion" required>
-
+        <br>
         <label for="tel_empresa">Teléfono:</label>
         <input type="tel" name="tel_empresa" required>
 
@@ -121,12 +128,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </select>
 
         <br><br>
-        <button type="submit" class="custom-button">Guardar</button>
-        <a href="listarempresa.php" class="custom-button cancel-button">Cancelar</a>
+        <div class="text-center"> <!-- Centrar los botones -->
+            <button type="submit" class="btn btn-primary">Guardar</button> <!-- Utilizar clase de Bootstrap para estilos -->
+            <a href="listarempresa.php" class="btn btn-secondary">Cancelar</a> <!-- Utilizar clase de Bootstrap para estilos -->
+        </div>
     </form>
 </div>
 </body>
 </html>
+
 <?php
 }
 ?>

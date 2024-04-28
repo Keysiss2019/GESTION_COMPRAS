@@ -24,8 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="styles.css">
-
     <title>Crear Objeto</title>
     <style>
         body {
@@ -38,33 +36,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             padding: 0;
         }
 
-       
-
         form {
-            max-width: 500px;
-            margin: 0 auto;
+            max-width: 550px;
+            margin: 50px auto;
             padding: 20px;
-            background-color: #fff;
+            background-color: #ddd;
             border: 1px solid #ddd;
             border-radius: 5px;
             margin-bottom: 10px; /* Agrega margen inferior al formulario */
         }
 
+        h2 {
+            text-align: center;
+            color: #007BFF; /* Color azul */
+            font-weight: bold; /* Texto en negrita */
+        }
+
         label {
             display: block;
             margin-top: 10px;
-            font-weight: bold;
+            /*font-weight: bold;*/ /* Quita la negrita de las etiquetas */
         }
 
-        /* Estilo para el campo de entrada de texto */
-  textarea {
-    width: 100%;
-    height: 150px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 5px;
-    font-size: 14px;
-  }
+        textarea {
+            width: 100%;
+            height: 150px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px;
+            font-size: 14px;
+        }
 
         input {
             width: 95%;
@@ -74,50 +75,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border-radius: 3px;
         }
 
+        .button-container {
+            text-align: center; /* Centra los botones horizontalmente */
+        }
+
         .custom-button {
-    display: inline-block;
-    padding: 15px 10px; /* Ajusta el tamaño del botón según tus preferencias */
-    border: none;
-    border-radius: 3px;
-    font-weight: bold;
-    cursor: pointer;
-}
+            display: inline-block;
+            padding: 10px 20px; /* Ajusta el tamaño del botón según tus preferencias */
+            margin-top: 10px; /* Añade espacio entre los botones */
+            border: none;
+            border-radius: 5px;/*se cambio*/
+           /* font-weight: bold;*/
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px; /* Tamaño de letra */
+            font-family: Arial, sans-serif; /* Tipo de letra cambiada */
+            background-color: #007BFF; /* Fondo azul */
+            color: white; /* Texto blanco */
+            /*transition: background-color 0.3s; /* Agrega transición para el cambio de color de fondo */
+        }
 
+        .custom-button.cancel-button {
+            background-color: gray; /* Fondo gris */
+            color: #fff; /* Texto oscuro */
+        }
 
-.custom-button.cancel-button {
-    background-color: #ff0000; /* Cambia el color de fondo para el botón "Cancelar" */
-    color: #fff; /* Cambia el color del texto para el botón "Cancelar" */
-}
+        /*.custom-button:hover {
+            background-color: #0056b3; /* Cambia el color de fondo al pasar el cursor sobre ambos botones */
+        
 
-.custom-button {
-    background-color: blue; /* Cambia el color de fondo para el botón "Guardar" */
-    color: #fff; /* Cambia el color del texto para el botón "Guardar" */
-}
-
-.custom-button:hover {
-    background-color: #555; /* Cambio de color de fondo al pasar el cursor sobre ambos botones */
-}
-
-
-      
     </style>
 </head>
 <body>
     <div class="container">
-    <br><br>
-    <form action="crear_objeto.php" method="POST">
-        <h2 style="text-align: center;">Crear Objetos</h2>
-        <label for="nombre_objeto">Nombre del Objeto:</label>
-        <input type="text" name="nombre_objeto" required>
-        <br>
-        <label for="descripcion">Descripción:</label>
-        <textarea name="descripcion"></textarea>
-        <br>
-        
-        <button type="submit" class="custom-button">Guardar</button>
-         <!-- Botón de Cancelar que redirige a listar_objetos.php -->
-         <a href="listar_objetos.php" class="custom-button cancel-button">Cancelar</a>
-    </form>
+        <br><br>
+        <form action="crear_objeto.php" method="POST">
+            <h2>CREAR OBJETOS</h2> <!-- Etiqueta h2 en azul y en negrita -->
+            <label for="nombre_objeto">Nombre del Objeto:</label>
+            <input type="text" name="nombre_objeto" required>
+            <br>
+            <label for="descripcion">Descripción:</label>
+            <textarea name="descripcion"></textarea>
+            <br>
+            <div class="button-container">
+                <button type="submit" class="custom-button">Guardar</button>
+                <!-- Botón de Cancelar que redirige a listar_objetos.php -->
+                <a href="listar_objetos.php" class="custom-button cancel-button">Cancelar</a>
+            </div>
+        </form>
     </div>
 </body>
 </html>

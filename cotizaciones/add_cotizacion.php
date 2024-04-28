@@ -62,7 +62,7 @@ while ($rowDescripcion = $resultDescripciones->fetch_assoc()) {
             border: 1px solid #ccc;
             padding: 20px;
             margin: 20px;
-            background-color: powderblue; /* Color de fondo del contenedor */
+            background-color: #ddd; /* Color de fondo del contenedor */
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             opacity: 0.9;
         }
@@ -71,7 +71,7 @@ while ($rowDescripcion = $resultDescripciones->fetch_assoc()) {
             width: 100%; /* Ajusta el ancho de la tabla al 100% del contenedor */
             box-sizing: border-box;
             margin-bottom: 20px; /* Agrega margen inferior */
-            background-color: cornsilk; /* Color de fondo para las tablas */
+            background-color: #ddd; /* Color de fondo para las tablas */
         }
 
         table {

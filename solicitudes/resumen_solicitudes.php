@@ -88,7 +88,7 @@ $totalPages = ceil($totalRows / $resultsPerPage);
 <body>
 
 <div class="container">
-    <h2 class="mb-4">Resumen Estadístico de Solicitudes</h2>
+    <h2 class="mb-4">Resumen de Solicitudes</h2>
 
     <?php if ($resultado->num_rows > 0): ?>
         <div class="mb-3">

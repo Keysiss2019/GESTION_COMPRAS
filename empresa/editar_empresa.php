@@ -72,35 +72,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         
         .container {
-            margin-top: 50px;
+            margin-top: 40px;
             width: 50%;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
+            background-color: #ddd;
+            padding: 10px;
+            border-radius: 5px;
             box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
         }
         
         h2 {
             text-align: center;
             margin-bottom: 20px;
+            color: #007BFF; /* Cambiar el color del título a azul */
+            font-weight: bold; /* Hacer el título en negrita */
         }
         
         label {
-            font-weight: bold;
+            /*font-weight: bold;*/
+            margin-bottom: 5px; /* Reducir el espacio inferior de las etiquetas */
         }
         
         input[type="text"], input[type="tel"], input[type="email"], textarea, select {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
+            padding: 5px;
+            margin-bottom: 0px; /* Reducir el espacio inferior de los campos de entrada */
             border: 1px solid #ccc;
             border-radius: 5px;
         }
         
-        .custom-button {
-            background-color: #007bff;
-            color: #fff;
-            padding: 10px 20px;
+        .custom-button, .cancel-button {
+            padding: 10px 20px; /* Igualar el padding de ambos botones */
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -108,27 +109,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin-right: 10px;
         }
         
-        .cancel-button {
-            background-color: #dc3545;
+        .custom-button {
+            background-color: #007bff;
+            color: #fff;
         }
         
-        .custom-button:hover, .cancel-button:hover {
-            background-color: #0056b3;
+        .cancel-button {
+            background-color: gray;
+            color: #fff;
         }
     </style>
 </head>
 <body>
 <div class="container">
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-        <h2>Editar Información</h2>
+        <h2>EMPRESA</h2>
         <input type="hidden" name="id_empresa" value="<?php echo $empresa['id_empresa']; ?>">
 
         <label for="nombre_empresa">Nombre de la Empresa:</label>
         <input type="text" name="nombre_empresa" value="<?php echo $empresa['nombre_empresa']; ?>" required>
 
-        <label for="fecha_inicio_operacion">Inicio de Operación:</label>
+        <label for="fecha_inicio_operacion">Inicio de Operación:</label><br>
         <input type="date" name="fecha_inicio_operacion" value="<?php echo $empresa['fecha_inicio_operacion']; ?>" required>
-
+        <br>
         <label for="tel_empresa">Teléfono:</label>
         <input type="tel" name="tel_empresa" value="<?php echo $empresa['tel_empresa']; ?>" required>
 
@@ -145,10 +148,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </select>
 
         <br><br>
-        <button type="submit" class="custom-button">Guardar</button>
-        <a href="listarempresa.php" class="custom-button cancel-button">Cancelar</a>
+        <div class="text-center"> <!-- Centrar los botones -->
+            <button type="submit" class="custom-button">Guardar</button>
+            <a href="listarempresa.php" class="cancel-button">Cancelar</a>
+        </div>
     </form>
 </div>
 </body>
 </html>
+
 

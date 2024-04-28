@@ -83,11 +83,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
         .form-container {
-            background-color: rgba(245, 245, 220, 0.9); /* Beige con transparencia */
+            background-color: #ddd; /* Beige con transparencia */
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-            width: 400px;
+            width: 550px;
             text-align: center; /* Centro el contenido horizontalmente */
         }
 
@@ -101,23 +101,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             flex: 1;
             padding-right: 10px;
             text-align: right;
-            font-weight: bold;
+            /*font-weight: bold;*/
+            text-align: left; /* Alineación a la izquierda */
         }
 
         .form-input {
             flex: 2;
             padding: 5px;
         }
-
+        
+        .button-container {
+    text-align: center; /* Centrar horizontalmente el contenido */
+}
         button[type="submit"] {
-            margin-left: auto;
-            display: block;
-            padding: 8px 20px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+        display: inline-block; /* Cambia de bloque a en línea */
+        padding: 8px 20px;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100px; /* Ancho fijo para ambos botones */
+        margin: 0 5px; /* Espacio entre los botones */
+    }
+
+        /* Estilos para el título */
+        h1 {
+            color: #007BFF; /* Cambiar el color del título a azul */
+            font-weight: bold; /* Hacer el título en negrita */
         }
 
         /* Otros estilos de tu elección */
@@ -126,7 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 
     <div class="form-container">
-    <h1>Rol</h1>
+    <h1>ROL</h1>
     
     <p><?php echo $message; ?></p>
     
@@ -139,13 +150,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <!-- Deshabilitar el campo de fecha de creación -->
         <div class="form-row">
-            <label class="form-label" for="fecha_creacion">Fecha de Creación:</label>
+            <label class="form-label" for="fecha_creacion">Fecha Creación:</label>
             <input class="form-input" type="text" name="fecha_creacion" value="<?php echo date('Y-m-d', strtotime($rol['FECHA_CREACION'])); ?>" disabled>
         </div>
 
         <!-- Mostrar y permitir editar la fecha de modificación -->
         <div class="form-row">
-            <label class="form-label" for="fecha_modificacion">Fecha de Modificación:</label>
+            <label class="form-label" for="fecha_modificacion">Fecha Modificación:</label>
             <input class="form-input" type="text" name="fecha_modificacion" value="<?php echo date('Y-m-d', strtotime($rol['FECHA_MODIFICACION'])); ?>">
         </div>
 
@@ -162,7 +173,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <!-- Otros campos para editar -->
 
-        <div class="form-row">
+        <div class="button-container">
             <button type="submit">Guardar</button>
             <a href="roles.php" class="btn btn-secondary">Cancelar</a>
         </div>
