@@ -21,10 +21,8 @@
             padding: 0;
         }
 
-       
-
         form {
-            max-width: 400px;
+            max-width: 550px;
             margin: 0 auto;
             padding: 20px;
             background-color: #ddd;
@@ -36,7 +34,7 @@
         label {
             display: block;
             margin-top: 10px;
-            font-weight: bold;
+            /*font-weight: bold;*/
         }
 
         input {
@@ -46,14 +44,21 @@
             border: 1px solid #ddd;
             border-radius: 3px;
         }
+         
+        .button-section {
+    clear: both; /* Limpiar el flotado para que los elementos debajo no floten */
+    text-align: center; /* Alinear los botones a la izquierda */
+    margin-top: 20px; /* Espacio superior para separar de las columnas */
+}
 
         .custom-button {
           display: inline-block;
           padding: 10px 20px; /* Ajusta el tamaño del botón según tus preferencias */
           border: none;
-          border-radius: 3px;
-          font-weight: bold;
+          border-radius: 5px;
+          /*font-weight: bold;*/
          cursor: pointer;
+         text-align: center; /* Alinear los botones a la izquierda */
         }
 
 
@@ -64,9 +69,17 @@
         }
 
        .custom-button {
-         background-color: blue; /* Cambia el color de fondo para el botón "Guardar" */
-         color: #fff; /* Cambia el color del texto para el botón "Guardar" */
+        background-color: #007bff;
+            color: #fff;
+            font-size: 16px; /* Aumenta ligeramente el tamaño de la letra del botón "Guardar" */
         }
+
+        h2 {
+            text-align: center;
+            color: #007BFF; /* Cambiar el color del título a azul */
+           font-weight: bold; /* Hacer el título en negrita */
+        }
+        
     </style>
 </head>
 <body>
@@ -89,7 +102,7 @@
         ?>
       <br><br>
       <form method="POST" action="actualizar_categoria.php">
-          <h2 style="text-align: center;">Categoría</h2><br>
+          <h2 style="text-align: center;">CATEGORÍA</h2><br>
 
            <input type="hidden" name="id" value="<?php echo $categoria['id']; ?>"> <!-- Corregir aquí -->
 
@@ -107,8 +120,11 @@
 
            <!-- Puedes agregar más campos de edición aquí, si es necesario. -->
           <br><br>
+
+          <div class=button-section>
           <button type="submit" class="custom-button">Guardar</button>
             <a href="listar_categorias.php" class="custom-button cancel-button">Cancelar</a>
+          </div>
        </form>
 
     </div>
