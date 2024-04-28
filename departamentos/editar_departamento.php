@@ -24,7 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
     <script src="https://kit.fontawesome.com/860e3c70ee.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="../estilos.js"></script>
-    <title>Editar Categoría</title>
+    <title>Editar Departamento</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -94,10 +93,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
             border-radius: 3px;
         }
 
+        .button-container {
+    text-align: center; /* Centra los botones horizontalmente */
+    display: flex; /* Cambia el comportamiento de los elementos a flex */
+    align-items: center; /* Centra verticalmente los elementos flex */
+    justify-content: center; /* Centra horizontalmente los elementos flex */
+}
+
         /* Estilos para los botones */
         button, .cancel-button {
            border: none; /* Sin borde */
            cursor: pointer;
+           border-radius: 5px;
+           text-align: center;
            text-decoration: none; /* Quitar el subrayado */
         }
 
@@ -114,6 +122,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
           background-color: gray; /* Color de fondo para el botón "Cancelar" */
           color: #fff; /* Color de texto para el botón "Cancelar" */
         }
+
+         /* Estilos para el título */
+       h2 {
+           color: #007BFF; /* Cambiar el color del título a azul */
+           font-weight: bold; /* Hacer el título en negrita */
+       }
+
  
     </style>
 </head>
@@ -121,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
     <br><br>
     <div class="form-container">
 
-      <h2> Departamento</h2>
+      <h2> DEPARTAMENTO </h2>
 
        <form method="POST" action="actualizar_departamento.php">
          <input type="hidden" name="id" value="<?php echo $departamento['id_departamento']; ?>">

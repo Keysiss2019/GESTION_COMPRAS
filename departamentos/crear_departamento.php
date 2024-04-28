@@ -49,9 +49,9 @@ $empresas = $stmt_empresas->fetchAll(PDO::FETCH_ASSOC);
         }
 
         .container {
-            max-width: 400px;
+            max-width: 500px;
             margin: 5% auto; /* Ajusta el margen para centrar verticalmente */
-            padding: 20px;
+            padding: 10px;
             background-color: #ddd; /* Cambia el color de fondo a gris */
             border: 1px solid #ddd; /* Cambia el color del borde */
             border-radius: 5px;
@@ -66,7 +66,7 @@ $empresas = $stmt_empresas->fetchAll(PDO::FETCH_ASSOC);
         label {
             display: block;
             margin-top: 10px;
-            font-weight: bold;
+            /*font-weight: bold;*/
         }
 
         input {
@@ -91,34 +91,42 @@ $empresas = $stmt_empresas->fetchAll(PDO::FETCH_ASSOC);
         }
 
         .custom-button {
-          display: inline-block;
-          width: 150px; /* Ajusta el ancho de los botones según tus preferencias */
-          padding: 10px 0; /* Ajusta el espaciado vertical si es necesario */
-          margin: 0 10px; /* Ajusta el espaciado horizontal entre los botones si es necesario */
-          border: none;
-          border-radius: 3px;
-          font-weight: bold;
-          cursor: pointer;
-          text-align: center;
-        }
+        display: inline-block;
+        width: 100px; /* Ajusta el ancho de los botones según tus preferencias */
+        padding: 10px 0; /* Ajusta el espaciado vertical si es necesario */
+        margin: 0 5px; /* Ajusta el espaciado horizontal entre los botones si es necesario */
+        border: none;
+        border-radius: 5px;
+        font-family: Arial, sans-serif; /* Utiliza la misma fuente para todos los botones */
+        cursor: pointer;
+        text-align: center;
+    }
 
-       .custom-button.cancel-button {
-          background-color: gray; /* Cambia el color de fondo para el botón "Cancelar" */
-          color: #fff; /* Cambia el color del texto para el botón "Cancelar" */
-          text-decoration: none; /* Quitar el subrayado */
-        }
+    .custom-button.cancel-button {
+        background-color: gray; /* Cambia el color de fondo para el botón "Cancelar" */
+        color: #fff; /* Cambia el color del texto para el botón "Cancelar" */
+        text-decoration: none; /* Quitar el subrayado */
+    }
 
-        .custom-button {
-          background-color: blue; /* Cambia el color de fondo para el botón "Guardar" */
-         color: #fff; /* Cambia el color del texto para el botón "Guardar" */
-        }
+    .custom-button {
+        background-color: #007BFF; /* Cambia el color de fondo para el botón "Guardar" */
+        color: #fff; /* Cambia el color del texto para el botón "Guardar" */
+        font-size: 16px; /* Aumenta ligeramente el tamaño de la letra del botón "Guardar" */
+    }
+
+        
+       /* Estilos para el título */
+       h2 {
+           color: #007BFF; /* Cambiar el color del título a azul */
+           font-weight: bold; /* Hacer el título en negrita */
+       }
 
     </style>
 </head>
 <body>
     <div class="container">
         <form method="POST" action="crear_departamento.php">
-           <h2 style="text-align: center;">Departamento</h2>
+           <h2 style="text-align: center;">DEPARTAMENTO</h2>
            <label for="id_empresa">Empresa:</label>
             <select name="id_empresa" id="id_empresa" required>
                <option value="">--Seleccione--</option>
