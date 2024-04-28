@@ -17,27 +17,32 @@
     min-height: 100vh;
     margin: 0;
     /*background-image: url('../imagen/background.jpg'); */
-    background-size: 30%; /* Cambiar el tamaño de la imagen de fondo */
+    /*background-size: 30%; /* Cambiar el tamaño de la imagen de fondo */
     background-repeat: no-repeat;
     background-position: center;
     font-family: Arial, sans-serif;
 }
 
         .container {
-           background-color: rgba(245, 245, 220, 0.9); /* Beige con transparencia */
+           background-color: #ddd; /* Beige con transparencia */
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-            width: 400px;
+            width: 550px;
             text-align: center; /* Centra el contenido horizontalmente */
             margin: 0 auto; /* Centra el formulario en la página */
         }
+         /* Estilos para el título */
+       h2 {
+           color: #007BFF; /* Cambiar el color del título a azul */
+           font-weight: bold; /* Hacer el título en negrita */
+       }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h2><i class="fas fa-question"></i> Crear Pregunta</h2>
+        <h2><i class="fas fa-question"></i> CREAR PREGUNTA </h2>
         
         <?php
     // Iniciar la sesión si aún no se ha iniciado
