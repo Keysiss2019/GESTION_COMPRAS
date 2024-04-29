@@ -1,6 +1,6 @@
 <?php
 // Ruta a la carpeta que contiene los archivos .sql
-$dir = 'C:/xampp/htdocs/GESTION_COMPRAS-main/Respaldos';
+$dir = 'C:/xampp/htdocs/GESTION_COMPRAS/Respaldos';
 
 // Obtener los nombres completos de todos los archivos .sql en la carpeta
 $sql_archivos = array_filter(scandir($dir), function($archivo) {
