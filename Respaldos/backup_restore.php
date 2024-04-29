@@ -1,6 +1,6 @@
 <?php
 // Ruta a la carpeta que contiene los archivos .sql
-$dir = 'C:/xampp/htdocs/GESTION_COMPRAS-main/Respaldos';
+$dir = 'C:/xampp/htdocs/GESTION_COMPRAS/Respaldos';
 
 // Obtener los nombres completos de todos los archivos .sql en la carpeta
 $sql_archivos = array_filter(scandir($dir), function($archivo) {
@@ -156,7 +156,7 @@ if (isset($_POST['restore'])) {
             <div class="grid-item">
                 <section>
                     <h2>Respaldo de Base de Datos:</h2>
-                    <form action="" method="post">
+                    <form action="Respaldo.php" method="post">
                         <input type="submit" name="dump" value="Respaldo" style="width: auto;"> <!-- Establecer el ancho automático para el botón -->
                     </form>
                 </section>
