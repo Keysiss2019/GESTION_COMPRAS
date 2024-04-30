@@ -108,8 +108,8 @@ if(isset($_SESSION['nombre_usuario']) && !empty($_SESSION['nombre_usuario'])) {
             margin-bottom: 20px;
             display: inline-flex; /* Mostrar en línea */
             border-radius: 0;
-            width: 90px; /* Ajustar el ancho según sea necesario */
-            height: 20px; /* Ajustar la altura según sea necesario */
+            width: 120px; /* Ajustar el ancho según sea necesario */
+            height: 35px; /* Ajustar la altura según sea necesario */
         
         }
         
@@ -122,7 +122,7 @@ if(isset($_SESSION['nombre_usuario']) && !empty($_SESSION['nombre_usuario'])) {
 <body>
 
 <div class="container">
-    <h2>Bitácora de Usuarios</h2>
+    <h2>Bitácora</h2>
 
     <div class="export-icons">
         <a href="export_excel.php"><i class="fas fa-file-excel"></i> Exportar a Excel</a>
@@ -131,7 +131,7 @@ if(isset($_SESSION['nombre_usuario']) && !empty($_SESSION['nombre_usuario'])) {
 
     <!-- Agregar el select para seleccionar el número de registros por página -->
     <div class="select-container">
-        <label for="resultsPerPage">Registros:</label>
+        <label for="resultsPerPage">Mostrar:</label>
         <select class="form-control" id="resultsPerPage" name="resultsPerPage" onchange="changeResultsPerPage()">
             <option value="5" <?php if($resultsPerPage == 5) echo "selected"; ?>>5</option>
             <option value="10" <?php if($resultsPerPage == 10) echo "selected"; ?>>10</option>
@@ -199,9 +199,7 @@ if(isset($_SESSION['nombre_usuario']) && !empty($_SESSION['nombre_usuario'])) {
                         <td><?php echo $row['tabla_afectada']; ?></td>
                         <td><?php echo $row['detalle_anterior']; ?></td>
                         <td><?php echo $row['detalle_posterior']; ?></td>
-                        <td>
-                        <button onclick="resetChanges(<?php echo $row['id_auditoria']; ?>)">Restablecer</button>
-                        </td>
+                        
                     </tr>
                 <?php endwhile; ?>
             </tbody>
