@@ -36,35 +36,23 @@ while ($rowDescripcion = $resultDescripciones->fetch_assoc()) {
     $descripciones[] = $descripcion;
 }
 
-// Obtener los datos de la cotización existente
-$sqlCotizacion = "SELECT * FROM tbl_cotizacion WHERE id = $idSolicitud";
-$resultCotizacion = $conn->query($sqlCotizacion);
+// Obtener los datos de todas las cotizaciones asociadas a la solicitud
+$sqlCotizaciones = "SELECT * FROM tbl_cotizacion WHERE id = $idSolicitud";
+$resultCotizaciones = $conn->query($sqlCotizaciones);
 
-if ($resultCotizacion->num_rows > 0) {
-    // Existe una cotización para esta solicitud
-    $rowCotizacion = $resultCotizacion->fetch_assoc();
-    $numeroCotizacion = $rowCotizacion['NUMERO_COTIZACION'];
-    $fechaCotizacion = $rowCotizacion['FECHA_COTIZACION'];
-    $urlCotizacion = $rowCotizacion['URL'];
-    $estadoCotizacion = $rowCotizacion['ESTADO'];
+// Crear un array para almacenar las cotizaciones
+$cotizaciones = array();
 
-     // Obtener el nombre del proveedor asociado con la cotización
-     $idProveedor = $rowCotizacion['ID_PROVEEDOR']; // Asegúrate de que este sea el nombre correcto del campo en tu base de datos
-     $sqlProveedor = "SELECT NOMBRE FROM tbl_proveedores WHERE ID_PROVEEDOR = $idProveedor";
-     $resultProveedor = $conn->query($sqlProveedor);
-     
-     if ($resultProveedor->num_rows > 0) {
-         $rowProveedor = $resultProveedor->fetch_assoc();
-         $nombreProveedor = $rowProveedor['NOMBRE'];
-     } else {
-         $nombreProveedor = "Proveedor no encontrado";
-     }
-} else {
-    // No hay cotización para esta solicitud
-    $numeroCotizacion = "";
-    $fechaCotizacion = "";
-    $urlCotizacion = "";
-    $estadoCotizacion = "";
+if ($resultCotizaciones->num_rows > 0) {
+    while ($rowCotizacion = $resultCotizaciones->fetch_assoc()) {
+        $cotizacion = array(
+            'numero' => $rowCotizacion['NUMERO_COTIZACION'],
+            'fecha' => $rowCotizacion['FECHA_COTIZACION'],
+            'url' => $rowCotizacion['URL'],
+            'estado' => $rowCotizacion['ESTADO']
+        );
+        $cotizaciones[] = $cotizacion;
+    }
 }
 
 ?>
@@ -72,9 +60,10 @@ if ($resultCotizacion->num_rows > 0) {
 <!DOCTYPE html>
 <html>
 
-<meta charset="UTF-8">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalles de Solicitud y Productos</title>
+    <title>Detalles de Solicitud y Cotizaciones</title>
     <style>
         body {
             text-align: left;
@@ -140,14 +129,13 @@ if ($resultCotizacion->num_rows > 0) {
         .table-container th {
             background-color: bisque;
         }
-
-        /* Estilo para los botones "Crear" y "Cancelar" */
+         /* Estilo para los botones "Crear" y "Cancelar" */
     .custom-button {
         width: 150px;
         height: 50px;
         margin-bottom: 15px; /* Ajusta el espacio entre los botones según sea necesario */
        
-       
+        margin-right: 630px;
     }
 
     /* Estilo para el botón "Crear" */
@@ -167,33 +155,11 @@ if ($resultCotizacion->num_rows > 0) {
     margin-top: 10px; /* Ajusta el margen superior según sea necesario */
 }
 
-.custom-textarea {
-    width: 82%; /* O ajusta el ancho según tus preferencias */
-    height: 75px;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    color: blue; /* Color azul para los enlaces */
-    text-decoration: underline; /* Subrayar los enlaces */
-}
-
-select[name="id_proveedor"] {
-        max-width: 300px; /* Ajusta el valor según sea necesario */
-        width: 100%; /* Garantiza que ocupe el ancho completo del contenedor */
-        height: 30px; /* Ajusta el valor según sea necesario para la altura */
-    }
-
-    input[name="departamento"] {
-        height: 30px;
-        
-    }
     </style>
 </head>
+
 <body>
     <div class="container">
-        <!-- Información de Solicitud -->
-       
         <div class="table-container">
             <h2 style="text-align: center;">Información de Solicitud</h2>
             <table>
@@ -226,129 +192,202 @@ select[name="id_proveedor"] {
                     <th>Categoría</th>
                 </tr>
                 <?php
-// Obtener y mostrar información de los productos
-$sqlProductos = "SELECT cantidad, descripcion, categoria FROM tbl_productos WHERE id_solicitud = $idSolicitud";
-$resultProductos = $conn->query($sqlProductos);
+                   // Obtener y mostrar información de los productos
+                   $sqlProductos = "SELECT cantidad, descripcion, categoria FROM tbl_productos WHERE id_solicitud = $idSolicitud";
+                   $resultProductos = $conn->query($sqlProductos);
 
-if ($resultProductos->num_rows > 0) {
-    while ($rowProducto = $resultProductos->fetch_assoc()) {
-        echo "<tr>";
-        echo "<td>" . $rowProducto['cantidad'] . "</td>";
-        echo "<td>" . $rowProducto['descripcion'] . "</td>";
+                  if ($resultProductos->num_rows > 0) {
+                      while ($rowProducto = $resultProductos->fetch_assoc()) {
+                          echo "<tr>";
+                          echo "<td>" . $rowProducto['cantidad'] . "</td>";
+                          echo "<td>" . $rowProducto['descripcion'] . "</td>";
         
-        // Obtener la categoría asociada al producto
-        $categoriaId = $rowProducto['categoria'];
-        $sqlCategoria = "SELECT id, categoria FROM tbl_categorias WHERE id = $categoriaId";
-        $resultCategoria = $conn->query($sqlCategoria);
-        if ($resultCategoria->num_rows > 0) {
-            $rowCategoria = $resultCategoria->fetch_assoc();
-            echo "<td>" . $rowCategoria['categoria'] . "</td>";
-        } else {
-            echo "<td>Categoría no encontrada</td>";
-        }
-        
-        echo "</tr>";
-    }
-} else {
-    echo "<tr><td colspan='3'>No hay productos asociados a esta solicitud.</td></tr>";
-}
-?>
+                         // Obtener la categoría asociada al producto
+                          $categoriaId = $rowProducto['categoria'];
+                          $sqlCategoria = "SELECT id, categoria FROM tbl_categorias WHERE id = $categoriaId";
+                         $resultCategoria = $conn->query($sqlCategoria);
+                          if ($resultCategoria->num_rows > 0) {
+                               $rowCategoria = $resultCategoria->fetch_assoc();
+                               echo "<td>" . $rowCategoria['categoria'] . "</td>";
+                            } else {
+                               echo "<td>Categoría no encontrada</td>";
+                            }    
+                           echo "</tr>";
+                        }
+                   } else {
+                      echo "<tr><td colspan='3'>No hay productos asociados a esta solicitud.</td></tr>";
+                    }
+                ?>
 
             </table>
         </div>
 
+        <!-- Sección de cotizaciones -->
         <div class="table" style="margin: 0 auto; text-align: center;">
-    <h2 style="text-align: center;">Cotización</h2>
-   
-    <form  method="post" action="actualizar_cotizacion.php?id=<?php echo $idSolicitud; ?>">
-
-    <table style="width: 80%; margin: 0 auto;">
     
-    <tr>
-    <th>Proveedor:</th>
-    <td><input type="text" name="nombreProveedor" style="width: 290px; height: 30px;" value="<?php echo $nombreProveedor; ?>"></td>
-    <th>Código:</th>
-    <td><input type="text" name="codigo" style="max-width: 100px; height: 30px;" value="<?php echo $codigo; ?>"></td>
-</tr>
+           <?php
+             // Consultar todas las cotizaciones asociadas a la solicitud
+              $sqlCotizaciones = "SELECT * FROM tbl_cotizacion WHERE id = $idSolicitud";
+              $resultCotizaciones = $conn->query($sqlCotizaciones);
+              // Obtener el número total de cotizaciones
+              $totalCotizaciones = $resultCotizaciones->num_rows;
 
-<tr>
-    <th>Departamento:</th>
-    <td><input required type="text" name="departamento" style="width: 290px;" value="<?php echo $departamentoSolicitud; ?>"></td>
-    <th>Fecha:</th>
-    <td><input type="date" name="fecha_cotizacion" style="max-width: 100px; height: 30px;" value="<?php echo $fechaCotizacion; ?>" readonly></td>
-</tr>
-<tr>
-    <th>URL:</th>
-    <td><textarea name="url" required class="custom-textarea" rows="2"><?php echo $urlCotizacion; ?></textarea></td>
-    <th>Estado:</th>
-<td><input type="text" name="estado" value="<?php echo $estadoCotizacion; ?>" required style="max-width: 100px; height: 30px;" readonly></td>
+              // Variable para llevar un conteo de las cotizaciones mostradas
+              $cotizacionesMostradas = 0;
 
-</tr>
+               // Verificar si hay cotizaciones disponibles
+               if ($totalCotizaciones > 0) {
+                  // Iterar sobre cada cotización
+                  while ($rowCotizacion = $resultCotizaciones->fetch_assoc()) {
+                      $cotizacionesMostradas++;
+                      // Obtener los detalles de la cotización
+                      $numeroCotizacion = $rowCotizacion['NUMERO_COTIZACION'];
+                      $fechaCotizacion = $rowCotizacion['FECHA_COTIZACION'];
+                      $urlCotizacion = $rowCotizacion['URL'];
+                      $estadoCotizacion = $rowCotizacion['ESTADO'];
 
+                      // Obtener el ID de la cotización y del proveedor asociado
+                       $idCotizacion = $rowCotizacion['ID_COTIZACION'];
+                       $idProveedor = $rowCotizacion['ID_PROVEEDOR'];
 
-   
-    <!-- Aquí agregamos la información del proveedor -->
-   
-</table>
+                      // Consultar el nombre del proveedor asociado con el ID
+                       $sqlProveedor = "SELECT ID_PROVEEDOR, NOMBRE FROM tbl_proveedores WHERE ID_PROVEEDOR = $idProveedor AND ESTADO_PROVEEDOR = 'A'";
+                       $resultProveedor = $conn->query($sqlProveedor);
+                       $rowProveedor = $resultProveedor->fetch_assoc();
+                       $nombreProveedor = $rowProveedor['NOMBRE'];
 
+                      // Consultar todos los proveedores activos excepto el proveedor asociado a esta cotización
+                      $sqlProveedores = "SELECT ID_PROVEEDOR, NOMBRE FROM tbl_proveedores WHERE ID_PROVEEDOR != $idProveedor AND ESTADO_PROVEEDOR = 'A'";
+                       $resultProveedores = $conn->query($sqlProveedores);
+            ?>
+                     <!-- Detalles de la cotización -->
+                    <form method="post" action="actualizar_cotizacion.php?id=<?php echo  $idSolicitud; ?>">
+                       <h2 style="text-align: center;">Cotización</h2>   
+                       <table style="width: 80%; margin: 0 auto;">
+                        <tr>
+                          <!-- Dentro del bucle de las cotizaciones -->
+                           <th style="text-align: left;">Proveedor:</th>
+                           <td style="text-align: left;" >
+                           <!-- Crear la lista desplegable de proveedores -->
+                           <select name="id_proveedor" style="width: 300px; height: 30px;">
+    <!-- Mostrar primero el proveedor asociado a la cotización -->
+    <option value="<?php echo $idProveedor; ?>"><?php echo $nombreProveedor; ?></option>
+    <?php
+    // Mostrar otros proveedores en la lista desplegable
+    while ($rowProveedor = $resultProveedores->fetch_assoc()) {
+        $idProveedorOption = $rowProveedor['ID_PROVEEDOR'];
+        $nombreProveedorOption = $rowProveedor['NOMBRE'];
+        echo "<option value='$idProveedorOption'>$nombreProveedorOption</option>";
+    }
+    ?>
+</select>
 
-    <form method="post" action="actualizar_cotizacion.php?id=<?php echo $idSolicitud; ?>">
-    <div class="table">
-    
-    <table style="width: 80%; margin: 0 auto;">
-        <!-- Encabezados de la tabla -->
-        <tr>
-            <th style="width: 20%;">Cantidad</th> <!-- Ajustar el ancho de la columna de cantidad -->
-            <th style="width: 50%;">Descripción</th> <!-- Ajustar el ancho de la columna de descripción -->
-            <th style="width: 30%;">Categoría</th> <!-- Ajustar el ancho de la columna de categoría -->
-        </tr>
-        <!-- Mostrar productos de la solicitud con opciones de edición -->
-        <?php
-        // Obtener y mostrar información de los productos
-        $sqlProductos = "SELECT P.id, P.cantidad, P.descripcion, C.id, C.categoria 
-                         FROM tbl_productos P 
-                         INNER JOIN tbl_categorias C ON P.categoria = C.id
-                         WHERE P.id_solicitud = $idSolicitud";
-        $resultProductos = $conn->query($sqlProductos);
+                    </td>
+                        <th style="text-align: left;">Número de Cotización:</th>
+                        <td><input type="text" name="numeroCotizacion" style="max-width: 100px; height: 30px;" value="<?php echo $numeroCotizacion; ?>"></td>
+                        <th style="display: none;">Departamento:</th>
+                        <td style="display: none;"><input required type="text" name="departamento" style="width: 290px;" value="<?php echo $departamentoSolicitud; ?>"></td>
+                       
+                    </tr>
+                   
+                    <tr>
+                    <th style="text-align: left;">Fecha:</th>
+                    <td style="text-align: left;"><input type="date" name="fechacotizacion" style="width: 290px; height: 30px;" value="<?php echo $fechaCotizacion; ?>"></td>
 
-        if ($resultProductos->num_rows > 0) {
-            while ($rowProducto = $resultProductos->fetch_assoc()) {
-                echo "<tr>";
-                // Cantidad editable
-                echo "<td><input type='number' name='cantidad[]' value='" . $rowProducto['cantidad'] . "' class='cant-input' required></td>";
-                // Descripción (readonly)
-                echo "<td><input type='text' name='descripcion[]' value='" . $rowProducto['descripcion'] . "' readonly class='same-width'></td>";
-                // Categoría seleccionable desde la lista desplegable
-                echo "<td>";
-                echo "<select name='categoria[]' class='same-width' required>";
-                // Obtener todas las categorías de la tabla tbl_categorias
-                $sqlCategorias = "SELECT id, categoria FROM tbl_categorias";
-                $resultCategorias = $conn->query($sqlCategorias);
-                if ($resultCategorias->num_rows > 0) {
-                    while ($rowCategoria = $resultCategorias->fetch_assoc()) {
-                        $selected = ($rowCategoria['id'] == $rowProducto['id']) ? 'selected' : '';
-                        echo "<option value='" . $rowCategoria['id'] . "' $selected>" . $rowCategoria['categoria'] . "</option>";
+                    <th style="text-align: left;">Estado:</th>
+                    <td><input type="text" name="estado" value="<?php 
+                       $estadoCompleto = '';
+                       switch ($estadoCotizacion) {
+                          case 'PE':
+                              $estadoCompleto = 'PENDIENTE';
+                                break;
+                            case 'PENDIENTE':
+                              $estadoCompleto = 'PENDIENTE';
+                              break;
+                            case 'PRO':
+                               $estadoCompleto = 'PROCESO';
+                                break;
+                           case 'PROCESO':
+                               $estadoCompleto = 'PROCESO';
+                               break;
+                            case 'AP':
+                              $estadoCompleto = 'APROBADA';
+                               break;
+                           case 'APROBADA':
+                                $estadoCompleto = 'APROBADA';
+                               break;
+                           default:
+                             $estadoCompleto = 'Desconocido';
+                              break;
+                        }
+                        echo $estadoCompleto;
+                    ?>" style="max-width: 100px; height: 30px;" readonly></td>
+                    </tr>
+                    <tr>
+                    <th style="text-align: left;">URL:</th>
+                    <td><textarea name="url" required class="custom-textarea" rows="4" style="width: 100%;"><?php echo $urlCotizacion; ?></textarea></td>
+                    
+                    </tr>
+                </table>
+                
+                <table style="width: 80%; margin: 10px auto;">
+                    <!-- Encabezados de la tabla -->
+                    <tr>
+                        <th style="width: 10%;">Cantidad</th>
+                        <th style="width: 70%;">Descripción</th>
+                        <th style="width: 20%;">Categoría</th>
+                    </tr>
+                    <!-- Mostrar productos de la solicitud con opciones de edición -->
+                    <?php
+                   $idCotizacion = $rowCotizacion['ID_COTIZACION'];
+                   $sqlProductos = "SELECT CD.ID, CD.CANTIDAD, CD.DESCRIPCION, C.CATEGORIA AS NOMBRE_CATEGORIA
+                 FROM tbl_cotizacion_detalle CD
+                 INNER JOIN tbl_categorias C ON CD.ID_CATEGORIA = C.id
+                 WHERE CD.ID_COTIZACION = $idCotizacion";
+
+                   $resultProductos = $conn->query($sqlProductos);
+
+                    if ($resultProductos->num_rows > 0) {
+                        while ($rowProducto = $resultProductos->fetch_assoc()) {
+                            echo "<tr>";
+                            echo "<input type='hidden' name='id[]' value='" . $rowProducto['ID'] . "'>"; // Campo oculto para el ID del detalle
+                            echo "<td><input type='number' name='cantidad[]' value='" . $rowProducto['CANTIDAD'] . "' class='cant-input' style='width: 80%; height: 45px;' required></td>";
+                            echo "<td><textarea name='descripcion[]' readonly class='same-width' style='width: 100%; height: 75px;'>" . $rowProducto['DESCRIPCION'] . "</textarea></td>";
+
+                            echo "<td>";
+                            echo "<input type='text' name='categoria[]' value='" . $rowProducto['NOMBRE_CATEGORIA'] . "' readonly class='same-width' style='width: 80%; height: 45px;' >";
+
+                            echo "</td>";
+                            echo "</tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='3'>No hay productos asociados a esta solicitud para esta cotización.</td></tr>";
                     }
-                }
-                echo "</select>";
-                echo "</td>";
-              
-                echo "</tr>";
-            }
-        } else {
-            echo "<tr><td colspan='3'>No hay productos asociados a esta solicitud.</td></tr>";
+                    
+                    ?>
+                 
+            </table>
+            <?php
         }
+        // Botones de guardar fuera del bucle
         ?>
-    </table>
-</div>
-<br>
-
-        <!-- Botones de Crear y Cancelar -->
+        <!-- Botones de guardar -->
+        <div style="text-align: center; margin-top: 20px;">
         <input type="submit" value="Guardar" class="custom-button create-button">
         <input type="button" value="Cancelar" class="btn btn-warning custom-button cancel-button" onclick="window.location.href='../solicitudes/solicitudes.php';">
-    </form>
+        </div>
+        </form>
+        <?php
+    } else {
+        echo "No se encontraron cotizaciones para esta solicitud.";
+    }
+
+    ?>
+
+    
 </div>
 
 </div>
 </body>
+
 </html>
