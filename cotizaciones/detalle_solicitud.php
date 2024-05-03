@@ -1,7 +1,7 @@
 <?php
 include 'db_connection.php';
 
-$solicitud_id = $_GET['id']; // Obtener el ID de la solicitud desde la URL
+$solicitud_id = $_GET['id']; // Usando el operador de fusión de null para proporcionar un valor predeterminado
 
 // Consulta para recuperar detalles de la solicitud
 $sqlSolicitud = "SELECT * FROM tbl_solicitudes WHERE id = ?";
@@ -15,7 +15,7 @@ if ($stmtSolicitud) {
     // Consulta para recuperar información de la cotización aprobada
     $sqlCotizacionAprobada = "SELECT c.ID_COTIZACION, c.NUMERO_COTIZACION, p.NOMBRE AS NOMBRE_PROVEEDOR, c.ESTADO,  c.URL FROM tbl_cotizacion c
                          INNER JOIN tbl_proveedores p ON c.ID_PROVEEDOR = p.ID_PROVEEDOR
-                         WHERE c.id = ? AND c.ESTADO = 'Proceso'";
+                         WHERE c.id = ? AND (c.ESTADO = 'PRO' OR c.ESTADO = 'PROCESO')";
 
     $stmtCotizacionAprobada = $conn->prepare($sqlCotizacionAprobada);
 
@@ -37,7 +37,7 @@ if ($stmtSolicitud) {
             text-align: center;
             font-family: Arial, sans-serif;
             background: rgba(255, 255, 255, 0.10); /* Cambia el valor de "0.7" para ajustar la transparencia */
-            /*background-image: url('../imagen/background.jpg'); /* Reemplaza con la ruta de tu imagen de fondo */
+           
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -53,11 +53,9 @@ if ($stmtSolicitud) {
             border: 1px solid #ccc;
             padding: 20px;
             margin: 20px;
-            background-color: #ddd; /* Color de fondo azul claro (cielo) */
+            background-color: powderblue; /* Color de fondo azul claro (cielo) */
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
             opacity: 0.9; /* Valor de opacidad (menos transparente) */
-            width: 50%; /* Define un ancho para el contenedor */
-            margin: 100px auto 0; /* 100px de margen superior, centrado horizontalmente */
         }
 
         .table-container {
@@ -69,7 +67,7 @@ if ($stmtSolicitud) {
         .table {
             width: 100%; /* El 2% es para el espacio entre las tablas */
             box-sizing: border-box; /* Para evitar que los bordes agreguen más ancho */
-            background-color: #ddd; /* Color de fondo  para las tablas */
+            background-color: cornsilk; /* Color de fondo  para las tablas */
         }
 
         table {
@@ -89,7 +87,7 @@ if ($stmtSolicitud) {
 
 
         th {
-            background-color: #ffff;
+            background-color: bisque;
         }
 
         .button-row {
@@ -128,7 +126,7 @@ if ($stmtSolicitud) {
 
 
     .blue-button {
-        background-color: blue;
+        background-color: #007bff;
         color: white;
         padding: 10px 20px;
         text-decoration: none;
@@ -143,12 +141,12 @@ if ($stmtSolicitud) {
 <div class="container">
     
 <div class="table">
-    <h2>Detalle de Solicitud</h2>
+    <h2>DETALLE SOLICITUD</h2>
     <?php
     if ($resultSolicitud->num_rows > 0) {
         $rowSolicitud = $resultSolicitud->fetch_assoc();
-        //echo "<p>Número: " . $rowSolicitud['id'] . "</p>";
-        echo "<p>Código: " . $rowSolicitud['codigo'] . "</p>";
+        echo "<p>ID: " . $rowSolicitud['id'] . "</p>";
+        echo "<p>CÓDIGO: " . $rowSolicitud['codigo'] . "</p>";
        
        
         // Consulta para obtener el nombre del departamento
@@ -162,7 +160,7 @@ if ($stmtSolicitud) {
 
         if ($resultDepartamento->num_rows > 0) {
             $rowDepartamento = $resultDepartamento->fetch_assoc();
-            echo "<p>Departamento: " . $rowDepartamento['nombre_departamento'] . "</p>";
+            echo "<p>DEPARTAMENTO: " . $rowDepartamento['nombre_departamento'] . "</p>";
         } else {
             echo "<p>Departamento no encontrado.</p>";
         }
@@ -170,7 +168,7 @@ if ($stmtSolicitud) {
         echo "<p>Error al preparar la consulta del departamento.</p>";
     }
 
-       echo "<p>Estado: " . $rowSolicitud['estado'] . "</p>";
+       echo "<p>ESTADO: " . $rowSolicitud['estado'] . "</p>";
         // Agrega aquí más detalles de la solicitud según tu estructura de base de datos
     } else {
         echo "Solicitud no encontrada.";
@@ -178,44 +176,41 @@ if ($stmtSolicitud) {
     ?>
 
 
-    <h2 style="text-align: center;">Cotización Aprobada</h2>
+<h2 style="text-align: center;">COTIZACIONES APROBADAS</h2>
 <table border="1">
     <tr>
-    <th style='text-align: center;'>Código</th>
-    <th style='text-align: center;'>Proveedor</th>
-    <th style='text-align: center;'>Estado</th>
-    <th style='text-align: center;'>URL</th>
+        <th style='text-align: center;'>CÓDIGO</th>
+        <th style='text-align: center;'>PROVEEDOR</th>
+        <th style='text-align: center;'>ESTADO</th>
+        <th style='text-align: center;'>URL</th>
+        <th style='text-align: center;'>ACCIÓN</th>
     </tr>
     <?php
     if ($resultCotizacionAprobada->num_rows > 0) {
-        $rowCotizacionAprobada = $resultCotizacionAprobada->fetch_assoc();
-        echo "<tr>";
-        echo "<td>" . $rowCotizacionAprobada['NUMERO_COTIZACION'] . "</td>";
-        echo "<td>" . $rowCotizacionAprobada['NOMBRE_PROVEEDOR'] . "</td>";
-       
-        echo "<td>" . $rowCotizacionAprobada['ESTADO'] . "</td>";
-        echo "<td><a href='" . $rowCotizacionAprobada['URL'] . "' style='color: blue;' target='_blank'>" . $rowCotizacionAprobada['URL'] . "</a></td>";
-        echo "</tr>";
-
-         
+        while ($rowCotizacionAprobada = $resultCotizacionAprobada->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td>" . $rowCotizacionAprobada['NUMERO_COTIZACION'] . "</td>";
+            echo "<td>" . $rowCotizacionAprobada['NOMBRE_PROVEEDOR'] . "</td>";
+            echo "<td>" . $rowCotizacionAprobada['ESTADO'] . "</td>";
+            echo "<td><a href='" . $rowCotizacionAprobada['URL'] . "' style='color: blue;' target='_blank'>" . $rowCotizacionAprobada['URL'] . "</a></td>";
+            echo "<td><a href='#' class='blue-button orden-compra' data-cotizacion-id='" . $rowCotizacionAprobada['ID_COTIZACION'] . "'>Orden de Compra</a></td>";
+          
+            echo "</tr>";
+        }
     } else {
-        echo "No hay cotizaciones aprobadas para esta solicitud.";
+        echo "<tr><td colspan='4'>No hay cotizaciones aprobadas disponibles para esta solicitud.</td></tr>";
     }
-    
-    
     ?> 
-    </table>
+</table>
+
     
 </div>
 <br>
 
 
 
-<?php if (isset($rowCotizacionAprobada['ID_COTIZACION'])): ?>
-    <a href="#" class="blue-button orden-compra" data-cotizacion-id="<?php echo $rowCotizacionAprobada['ID_COTIZACION']; ?>">Orden de Compra</a>
-<?php else: ?>
-    <p>No hay cotizaciones aprobadas disponibles.</p>
-<?php endif; ?>
+
+
 
 <a href="../solicitudes/solicitudes.php" class="red-button">Cancelar</a>
 
@@ -231,13 +226,19 @@ if ($stmtSolicitud) {
             e.preventDefault(); // Evitar que el enlace funcione como un enlace normal
 
             // Obtener el ID de la cotización desde el atributo de datos
-            var cotizacionId = $(this).data("cotizacion-id");
+            var cotizacionIds = [];
+            $(".orden-compra").each(function() {
+                cotizacionIds.push($(this).data("cotizacion-id"));
+            });
 
-            // Aquí podrías realizar alguna acción, como redirigir a la página de orden de compra
-            window.location.href = "../compras/compras.php?cotizacion_id=" + cotizacionId;
+            // Aquí podrías realizar alguna acción para cada cotización, como redirigir a la página de orden de compra
+            cotizacionIds.forEach(function(cotizacionId) {
+                window.open("../compras/compras.php?cotizacion_id=" + cotizacionId, "_blank");
+            });
         });
     });
 </script>
+
 
 </body>
 </html>

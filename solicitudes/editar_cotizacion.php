@@ -261,133 +261,134 @@ if ($resultCotizaciones->num_rows > 0) {
                        $resultProveedores = $conn->query($sqlProveedores);
             ?>
                      <!-- Detalles de la cotización -->
-                    <form method="post" action="actualizar_cotizacion.php?id=<?php echo  $idSolicitud; ?>">
-                       <h2 style="text-align: center;">Cotización</h2>   
-                       <table style="width: 80%; margin: 0 auto;">
-                        <tr>
-                          <!-- Dentro del bucle de las cotizaciones -->
-                           <th style="text-align: left;">Proveedor:</th>
-                           <td style="text-align: left;" >
-                           <!-- Crear la lista desplegable de proveedores -->
-                           <select name="id_proveedor" style="width: 300px; height: 30px;">
-    <!-- Mostrar primero el proveedor asociado a la cotización -->
-    <option value="<?php echo $idProveedor; ?>"><?php echo $nombreProveedor; ?></option>
-    <?php
-    // Mostrar otros proveedores en la lista desplegable
-    while ($rowProveedor = $resultProveedores->fetch_assoc()) {
-        $idProveedorOption = $rowProveedor['ID_PROVEEDOR'];
-        $nombreProveedorOption = $rowProveedor['NOMBRE'];
-        echo "<option value='$idProveedorOption'>$nombreProveedorOption</option>";
-    }
-    ?>
-</select>
+                     <form method="post" action="actualizar_cotizacion.php">
+                          <input type="hidden" name="id_solicitud" value="<?php echo $idSolicitud; ?>">
+                          <input type="hidden" name="id_cotizacion[]" value="<?php echo $rowCotizacion['ID_COTIZACION']; ?>">
 
-                    </td>
-                        <th style="text-align: left;">Número de Cotización:</th>
-                        <td><input type="text" name="numeroCotizacion" style="max-width: 100px; height: 30px;" value="<?php echo $numeroCotizacion; ?>"></td>
-                        <th style="display: none;">Departamento:</th>
-                        <td style="display: none;"><input required type="text" name="departamento" style="width: 290px;" value="<?php echo $departamentoSolicitud; ?>"></td>
+                           <h2 style="text-align: center;">Cotización</h2>   
+                            <table style="width: 80%; margin: 0 auto;">
+                             <tr>
+                                   <!-- Dentro del bucle de las cotizaciones -->
+                                   <th style="text-align: left;">Proveedor:</th>
+                                   <td style="text-align: left;" >
+                                   <!-- Crear la lista desplegable de proveedores -->
+                                   <select name="id_proveedor[<?php echo $rowCotizacion['ID_COTIZACION']; ?>]" style="width: 300px; height: 30px;">
+                                      <!-- Mostrar primero el proveedor asociado a la cotización -->
+                                     <option value="<?php echo $idProveedor; ?>"><?php echo $nombreProveedor; ?></option>
+                                     <?php
+                                          // Mostrar otros proveedores en la lista desplegable
+                                          while ($rowProveedor = $resultProveedores->fetch_assoc()) {
+                                              $idProveedorOption = $rowProveedor['ID_PROVEEDOR'];
+                                               $nombreProveedorOption = $rowProveedor['NOMBRE'];
+                                              echo "<option value='$idProveedorOption'>$nombreProveedorOption</option>";
+                                            }
+                                       ?>
+                                   </select>
+
+                                   </td>
+                                  <th style="text-align: left;">Número:</th>
+                                  <td><input type="text" name="numeroCotizacion[<?php echo $rowCotizacion['ID_COTIZACION']; ?>]" style="max-width: 100px; height: 30px;" value="<?php echo $numeroCotizacion; ?>"></td>
+                                  <th style="display: none;">Departamento:</th>
+                                  <td style="display: none;"><input required type="text" name="departamento" style="width: 290px;" value="<?php echo $departamentoSolicitud; ?>"></td>
                        
-                    </tr>
+                                </tr>
                    
-                    <tr>
-                    <th style="text-align: left;">Fecha:</th>
-                    <td style="text-align: left;"><input type="date" name="fechacotizacion" style="width: 290px; height: 30px;" value="<?php echo $fechaCotizacion; ?>"></td>
+                                <tr>
+                                  <th style="text-align: left;">Fecha:</th>
+                                  <td style="text-align: left;"><input type="date" name="fechacotizacion" style="width: 290px; height: 30px;" value="<?php echo $fechaCotizacion; ?>"></td>
 
-                    <th style="text-align: left;">Estado:</th>
-                    <td><input type="text" name="estado" value="<?php 
-                       $estadoCompleto = '';
-                       switch ($estadoCotizacion) {
-                          case 'PE':
-                              $estadoCompleto = 'PENDIENTE';
-                                break;
-                            case 'PENDIENTE':
-                              $estadoCompleto = 'PENDIENTE';
-                              break;
-                            case 'PRO':
-                               $estadoCompleto = 'PROCESO';
-                                break;
-                           case 'PROCESO':
-                               $estadoCompleto = 'PROCESO';
-                               break;
-                            case 'AP':
-                              $estadoCompleto = 'APROBADA';
-                               break;
-                           case 'APROBADA':
-                                $estadoCompleto = 'APROBADA';
-                               break;
-                           default:
-                             $estadoCompleto = 'Desconocido';
-                              break;
-                        }
-                        echo $estadoCompleto;
-                    ?>" style="max-width: 100px; height: 30px;" readonly></td>
-                    </tr>
-                    <tr>
-                    <th style="text-align: left;">URL:</th>
-                    <td><textarea name="url" required class="custom-textarea" rows="4" style="width: 100%;"><?php echo $urlCotizacion; ?></textarea></td>
-                    
-                    </tr>
-                </table>
+                                  <th style="text-align: left;">Estado:</th>
+                                  <td><input type="text" name="estado" value="<?php 
+                                  $estadoCompleto = '';
+                                   switch ($estadoCotizacion) {
+                                      case 'PE':
+                                          $estadoCompleto = 'PENDIENTE';
+                                          break;
+                                       case 'PENDIENTE':
+                                           $estadoCompleto = 'PENDIENTE';
+                                           break;
+                                       case 'PRO':
+                                          $estadoCompleto = 'PROCESO';
+                                          break;
+                                        case 'PROCESO':
+                                          $estadoCompleto = 'PROCESO';
+                                          break;
+                                       case 'AP':
+                                          $estadoCompleto = 'APROBADA';
+                                          break;
+                                       case 'APROBADA':
+                                           $estadoCompleto = 'APROBADA';
+                                           break;
+                                       default:
+                                        $estadoCompleto = 'Desconocido';
+                                        break;
+                                    }
+                                       echo $estadoCompleto;
+                                    ?>" style="max-width: 100px; height: 30px;" readonly></td>
+                               </tr>
+                               <tr>
+                                  <th style="text-align: left;">URL:</th>
+                                  <td><textarea name="url" required class="custom-textarea" rows="4" style="width: 100%;"><?php echo $urlCotizacion; ?></textarea></td>
+                               </tr>
+                          </table>
                 
-                <table style="width: 80%; margin: 10px auto;">
-                    <!-- Encabezados de la tabla -->
-                    <tr>
-                        <th style="width: 10%;">Cantidad</th>
-                        <th style="width: 70%;">Descripción</th>
-                        <th style="width: 20%;">Categoría</th>
-                    </tr>
-                    <!-- Mostrar productos de la solicitud con opciones de edición -->
-                    <?php
-                   $idCotizacion = $rowCotizacion['ID_COTIZACION'];
-                   $sqlProductos = "SELECT CD.ID, CD.CANTIDAD, CD.DESCRIPCION, C.CATEGORIA AS NOMBRE_CATEGORIA
-                 FROM tbl_cotizacion_detalle CD
-                 INNER JOIN tbl_categorias C ON CD.ID_CATEGORIA = C.id
-                 WHERE CD.ID_COTIZACION = $idCotizacion";
+                          <table style="width: 80%; margin: 10px auto;">
+                              <!-- Encabezados de la tabla -->
+                              <tr>
+                                  <th style="width: 10%;">Cantidad</th>
+                                  <th style="width: 70%;">Descripción</th>
+                                  <th style="width: 20%;">Categoría</th>
+                               </tr>
+                               <!-- Mostrar productos de la solicitud con opciones de edición -->
+                              <?php
+                                   $idCotizacion = $rowCotizacion['ID_COTIZACION'];
+                                   $sqlProductos = "SELECT CD.ID, CD.CANTIDAD, CD.DESCRIPCION, C.CATEGORIA AS NOMBRE_CATEGORIA
+                                   FROM tbl_cotizacion_detalle CD
+                                   INNER JOIN tbl_categorias C ON CD.ID_CATEGORIA = C.id
+                                   WHERE CD.ID_COTIZACION = $idCotizacion";
 
-                   $resultProductos = $conn->query($sqlProductos);
+                                   $resultProductos = $conn->query($sqlProductos);
 
-                    if ($resultProductos->num_rows > 0) {
-                        while ($rowProducto = $resultProductos->fetch_assoc()) {
-                            echo "<tr>";
-                            echo "<input type='hidden' name='id[]' value='" . $rowProducto['ID'] . "'>"; // Campo oculto para el ID del detalle
-                            echo "<td><input type='number' name='cantidad[]' value='" . $rowProducto['CANTIDAD'] . "' class='cant-input' style='width: 80%; height: 45px;' required></td>";
-                            echo "<td><textarea name='descripcion[]' readonly class='same-width' style='width: 100%; height: 75px;'>" . $rowProducto['DESCRIPCION'] . "</textarea></td>";
+                                  if ($resultProductos->num_rows > 0) {
+                                      while ($rowProducto = $resultProductos->fetch_assoc()) {
+                                          echo "<tr>";
+                                          echo "<input type='hidden' name='id[]' value='" . $rowProducto['ID'] . "'>"; // Campo oculto para el ID del detalle
+                                          echo "<td><input type='number' name='cantidad[]' value='" . $rowProducto['CANTIDAD'] . "' class='cant-input' style='width: 80%; height: 45px;' required></td>";
+                                          echo "<td><textarea name='descripcion[]' readonly class='same-width' style='width: 100%; height: 75px;'>" . $rowProducto['DESCRIPCION'] . "</textarea></td>";
 
-                            echo "<td>";
-                            echo "<input type='text' name='categoria[]' value='" . $rowProducto['NOMBRE_CATEGORIA'] . "' readonly class='same-width' style='width: 80%; height: 45px;' >";
+                                          echo "<td>";
+                                          echo "<input type='text' name='categoria[]' value='" . $rowProducto['NOMBRE_CATEGORIA'] . "' readonly class='same-width' style='width: 80%; height: 45px;' >";
 
-                            echo "</td>";
-                            echo "</tr>";
-                        }
-                    } else {
-                        echo "<tr><td colspan='3'>No hay productos asociados a esta solicitud para esta cotización.</td></tr>";
-                    }
+                                         echo "</td>";
+                                          echo "</tr>";
+                                        }
+                                    } else {
+                                      echo "<tr><td colspan='3'>No hay productos asociados a esta solicitud para esta cotización.</td></tr>";
+                                    }
                     
-                    ?>
+                                ?>
                  
-            </table>
-            <?php
-        }
-        // Botones de guardar fuera del bucle
-        ?>
-        <!-- Botones de guardar -->
-        <div style="text-align: center; margin-top: 20px;">
-        <input type="submit" value="Guardar" class="custom-button create-button">
-        <input type="button" value="Cancelar" class="btn btn-warning custom-button cancel-button" onclick="window.location.href='../solicitudes/solicitudes.php';">
-        </div>
-        </form>
-        <?php
-    } else {
-        echo "No se encontraron cotizaciones para esta solicitud.";
-    }
+                            </table>
+                            <?php
+                               }
+                               // Botones de guardar fuera del bucle
+                                ?>
+                         <!-- Botones de guardar -->
+                         <div style="text-align: center; margin-top: 20px;">
+                              <input type="submit" value="Guardar" class="custom-button create-button">
+                              <input type="button" value="Cancelar" class="btn btn-warning custom-button cancel-button" onclick="window.location.href='../solicitudes/solicitudes.php';">
+                            </div>
+                      </form>
+                 <?php
+               } else {
+                  echo "No se encontraron cotizaciones para esta solicitud.";
+               }
 
-    ?>
+            ?>
 
     
-</div>
+        </div>
 
-</div>
+    </div>
 </body>
-
 </html>

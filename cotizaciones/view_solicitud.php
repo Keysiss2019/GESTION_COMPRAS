@@ -84,7 +84,7 @@ if ($resultRolUsuario->num_rows > 0) {
             border: 1px solid #ccc;
             padding: 40px;
             margin: 20px;
-            background-color: #ddd; /* Color de fondo azul claro (cielo) */
+            background-color: powderblue; /* Color de fondo azul claro (cielo) */
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
             opacity: 0.9; /* Valor de opacidad (menos transparente) */
         }
@@ -99,7 +99,7 @@ if ($resultRolUsuario->num_rows > 0) {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
-    background-color: #ddd; /* Color de fondo  para las tablas */
+    background-color: cornsilk; /* Color de fondo  para las tablas */
 }
 
 th, td {
@@ -114,7 +114,7 @@ th, td {
 
 
 th {
-    background-color: #ddd;
+    background-color: bisque;
 }
 
         /* Estilos para todas las tablas con la clase "solicitud-info" */
@@ -123,7 +123,7 @@ th {
             border: 0px solid #ccc;
             padding: 10px;
             width: 100%;
-            background-color: #ddd; /* Color de fondo  para las tablas */
+            background-color: cornsilk; /* Color de fondo  para las tablas */
         }
 
       /* Estilos para la tabla con clase "solicitud-info" */
@@ -152,7 +152,7 @@ table.solicitud-info tr:last-child td {
 
         /* Estilo del botón */
         .aprobar-button {
-            background-color: #4CAF50;
+            background-color: #007bff;
             color: white;
             padding: 12px 20px;
             border: none;
@@ -165,6 +165,19 @@ table.solicitud-info tr:last-child td {
 
         .aprobar-button:hover {
             background-color: #45a049;
+        }
+        
+        /* Estilo del botón */
+        .cancelar-button {
+            background-color: gray;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            text-decoration: none;
+            display: inline-block;
         }
 
         .regresar-button {
@@ -203,30 +216,30 @@ table.solicitud-info tr:last-child td {
                       $cotizacionesAprobadas = $_POST['cotizaciones_aprobadas'];
 
                       // Marcar todas las cotizaciones como "En Proceso"
-                      $sqlMarcarEnProceso = "UPDATE tbl_cotizacion SET ESTADO = 'Pendiente' WHERE ID = $idSolicitud";
+                      $sqlMarcarEnProceso = "UPDATE tbl_cotizacion SET ESTADO = 'PROCESO' WHERE ID = $idSolicitud";
                        if ($conn->query($sqlMarcarEnProceso) !== TRUE) {
                           echo "Error al marcar cotizaciones en proceso: " . $conn->error;
                         }
 
-                      // Actualizar el estado de las cotizaciones aprobadas a "Aprobada"
+                      // Actualizar el estado de las cotizaciones aprobadas a "PROCESO"
                       foreach ($cotizacionesAprobadas as $cotizacionID) {
-                          $sqlActualizarCotizacion = "UPDATE tbl_cotizacion SET ESTADO = 'Proceso' WHERE ID_COTIZACION = $cotizacionID";
+                          $sqlActualizarCotizacion = "UPDATE tbl_cotizacion SET ESTADO = 'PROCESO' WHERE ID_COTIZACION = $cotizacionID";
                             if ($conn->query($sqlActualizarCotizacion) !== TRUE) {
                              echo "Error al aprobar la cotización ID $cotizacionID: " . $conn->error;
                             }
                         }
 
                         // Actualizar el estado de la solicitud a "En Proceso"
-$sqlActualizarEstadoSolicitud = "UPDATE tbl_solicitudes SET estado = 'Proceso' WHERE id = ?";
-$stmtActualizarEstadoSolicitud = $conn->prepare($sqlActualizarEstadoSolicitud);
-$stmtActualizarEstadoSolicitud->bind_param("i", $idSolicitud);
-if ($stmtActualizarEstadoSolicitud->execute() !== TRUE) {
-    echo "Error al actualizar el estado de la solicitud: " . $conn->error;
-}
-$stmtActualizarEstadoSolicitud->close();
+                        $sqlActualizarEstadoSolicitud = "UPDATE tbl_solicitudes SET estado = 'Proceso' WHERE id = ?";
+                        $stmtActualizarEstadoSolicitud = $conn->prepare($sqlActualizarEstadoSolicitud);
+                        $stmtActualizarEstadoSolicitud->bind_param("i", $idSolicitud);
+                        if ($stmtActualizarEstadoSolicitud->execute() !== TRUE) {
+                          echo "Error al actualizar el estado de la solicitud: " . $conn->error;
+                        }
+                        $stmtActualizarEstadoSolicitud->close();
 
-                      echo "Cotización aprobada con éxito.";
-                      header('Location: ../solicitudes/solicitudes.php'); // Redirige a la página de solicitudes
+                       echo "Cotización aprobada con éxito.";
+                       header('Location: ../solicitudes/solicitudes.php'); // Redirige a la página de solicitudes
 
                       exit();
                     } else {
@@ -248,7 +261,7 @@ $stmtActualizarEstadoSolicitud->close();
                    echo '<div class="solicitud-info">';
                    echo '<h3>Información de la Solicitud</h3>';
                    echo '<table class="solicitud-info">';
-                   echo '<tr><td>Número:</td><td>' . $rowSolicitud['id'] . '</td></tr>';
+                   echo '<tr><td>Id:</td><td>' . $rowSolicitud['id'] . '</td></tr>';
                    echo '<tr><td>Código:</td><td>' . $rowSolicitud['codigo'] . '</td></tr>';
                    echo '<tr><td>Usuario:</td><td>' . $rowSolicitud['nombre_usuario'] . '</td></tr>';
                    echo '<tr><td>Departamento:</td><td>' . $rowSolicitud['nombre_departamento'] . '</td></tr>';
@@ -298,6 +311,7 @@ $stmtActualizarEstadoSolicitud->close();
                           echo '<div class="radio-button">';
                           echo '<input type="radio" name="cambiar" value="Si" onclick="mostrarTabla()"> Sí';
                           echo '<input type="radio" name="cambiar" value="No" onclick="mostrarTabla()"> No';
+                          
                           echo '</div>';
                           //echo '<button class="aprobar-button" type="submit" name="cambiar_cotizacion">Cambiar</button>';
                            echo '</form>';
@@ -317,7 +331,7 @@ $stmtActualizarEstadoSolicitud->close();
 
                               while ($rowCotizacion = $resultCotizaciones->fetch_assoc()) {
                                   echo '<tr>';
-                                  echo '<td><input type="radio" name="cotizaciones_aprobadas[]" value="' . $rowCotizacion['ID_COTIZACION'] . '"></td>';
+                                  echo '<td><input type="checkbox" name="cotizaciones_aprobadas[]" value="' . $rowCotizacion['ID_COTIZACION'] . '"></td>';
                                   echo '<td>' . $rowCotizacion['NUMERO_COTIZACION'] . '</td>';
                                   echo '<td>' . $rowCotizacion['NOMBRE_PROVEEDOR'] . '</td>';
                                   echo '<td><a href="' . $rowCotizacion['URL'] . '" target="_blank">' . $rowCotizacion['URL'] . '</a></td>';
@@ -329,6 +343,7 @@ $stmtActualizarEstadoSolicitud->close();
                                echo '<br>';
                                echo '<div class="button-container">';
                                echo '<button class="aprobar-button" type="submit" name="aprobar">Aprobar</button>';
+                               echo '<button class="cancelar-button" type="button" onclick="cancelar()">Cancelar</button>';
                                echo '</div>';
                                echo '</form>';
                             } else {
@@ -362,7 +377,7 @@ $stmtActualizarEstadoSolicitud->close();
 
                   while ($rowCotizacion = $resultCotizaciones->fetch_assoc()) {
                         echo '<tr>';
-                        echo '<td><input type="radio" name="cotizaciones_aprobadas[]" value="' . $rowCotizacion['ID_COTIZACION'] . '"></td>';
+                        echo '<td><input type="checkbox" name="cotizaciones_aprobadas[]" value="' . $rowCotizacion['ID_COTIZACION'] . '"></td>';
                         echo '<td>' . $rowCotizacion['NUMERO_COTIZACION'] . '</td>';
                         echo '<td>' . $rowCotizacion['NOMBRE_PROVEEDOR'] . '</td>';
                         echo '<td><a href="' . $rowCotizacion['URL'] . '" target="_blank">' . $rowCotizacion['URL'] . '</a></td>';
@@ -396,6 +411,11 @@ $stmtActualizarEstadoSolicitud->close();
              window.location.href = '../solicitudes/solicitudes.php';
             }
        }
+    </script>
+    <script>
+       function cancelar() {
+          window.location.href = '../solicitudes/solicitudes.php'; // Redirige al usuario a la página de solicitudes
+        }
     </script>
 
 </div>
