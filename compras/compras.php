@@ -57,60 +57,56 @@
         .order-signature {
             margin-top: 20px;
         } 
-
-    </style>
-
-    <style>
     
-      /* Estilos para la tabla de orden total */
-   /* Contenedor de la tabla de orden total */
-.order-total-container {
-    position: relative;
-}
+      
+       /* Contenedor de la tabla de orden total */
+      .order-total-container {
+         position: relative;
+        }
 
-/* Estilos para la tabla de orden total */
-.order-total {
-    position: absolute;
-    top: 0;
-    left: 370px; /* Ajusta el margen derecho según tus necesidades */
-    text-align: right;
-}
+       /* Estilos para la tabla de orden total */
+       .order-total {
+          position: absolute;
+          top: 0;
+           left: 370px; /* Ajusta el margen derecho según tus necesidades */
+           text-align: right;
+        }
 
-.order-total table {
-    width: 39%;
-    border-collapse: collapse;
-    margin-top: 0px;
-    margin-left: auto; /* Centra la tabla horizontalmente */
-    margin-right: auto; /* Centra la tabla horizontalmente */
-}
+        .order-total table {
+          width: 39%;
+          border-collapse: collapse;
+          margin-top: 0px;
+          margin-left: auto; /* Centra la tabla horizontalmente */
+          margin-right: auto; /* Centra la tabla horizontalmente */
+        }
 
-.order-total td {
-    /* Estilos para las celdas de la tabla de orden total */
-    border: 1px solid black;
-    padding: 8px;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+        .order-total td {
+          /* Estilos para las celdas de la tabla de orden total */
+          border: 1px solid black;
+          padding: 8px;
+          text-align: center;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
 
 
-.order-total td:first-child {
-    width: 5%;
-}
+        .order-total td:first-child {
+         width: 5%;
+        }
 
-.order-total td:nth-child(2) {
-    width: 39%;
-}
+        .order-total td:nth-child(2) {
+          width: 39%;
+        }
 
-.order-total td:nth-child(3),
-.order-total td:nth-child(4) {
-    width: 39%;
-}
+        .order-total td:nth-child(3),
+        .order-total td:nth-child(4) {
+           width: 39%;
+        }
 
-.order-total td:last-child {
-    width: 39%;
-}
+        .order-total td:last-child {
+          width: 39%;
+        }
 
        .centered-content {
          display: flex;
@@ -160,16 +156,8 @@
 
     <div class="order-header">
         <?php
-         // Conecta a la base de datos
-         $servername = "localhost";
-         $username = "root";
-         $password = "";
-         $dbname = "gestion_compras2";
-
-          $conn = new mysqli($servername, $username, $password, $dbname);
-            if ($conn->connect_error) {
-              die("Error de conexión: " . $conn->connect_error);
-            }
+         // Incluir el archivo de configuración de la base de datos
+          include '../conexion/conexion.php';
             
            
           // Consulta para obtener el número de orden más alto
@@ -188,11 +176,43 @@
         
         <form action="guardar_orden.php" method="POST">
        
-       
+        <?php
+        // Recuperar el ID de la cotización de la URL
+        $cotizacionId = isset($_GET['cotizacion_id']) ? $_GET['cotizacion_id'] : null;
+
+        // Validar el ID de la cotización
+        if ($cotizacionId === null || !is_numeric($cotizacionId)) {
+            echo "ID de cotización no válido";
+            exit;
+        }
+
+        // Consulta para obtener el ID de la solicitud basado en el ID de la cotización
+        include '../conexion/conexion.php'; // Asegúrate de incluir el archivo de conexión a la base de datos
+        $sqlObtenerIdSolicitud = "SELECT ID FROM tbl_cotizacion WHERE ID_COTIZACION = ?";
+        $stmtObtenerIdSolicitud = $conn->prepare($sqlObtenerIdSolicitud);
+        $stmtObtenerIdSolicitud->bind_param("i", $cotizacionId);
+        $stmtObtenerIdSolicitud->execute();
+        $resultIdSolicitud = $stmtObtenerIdSolicitud->get_result();
+
+        // Definir la variable $idSolicitud antes de intentar mostrarla en pantalla
+        $idSolicitud = null;
+
+        // Verificar si se encontró el ID de la solicitud
+        if ($resultIdSolicitud->num_rows > 0) {
+            // Obtener el valor del ID de la solicitud
+            $rowIdSolicitud = $resultIdSolicitud->fetch_assoc();
+            $idSolicitud = $rowIdSolicitud['ID'];
+        }
+
+        // Agrega aquí la lógica para mostrar otros detalles de la solicitud según tu estructura de base de datos
+        ?>
+        <p>ID de Solicitud: <?php echo ($idSolicitud !== null ? $idSolicitud : "No encontrado"); ?></p>
+
+
       <!-- Elemento para mostrar el ID de la cotización -->
        <p id="cotizacionIdDisplay">ID de Cotización: </p>
 
-        <p style="display: flex; justify-content: space-between;">
+            <p style="display: flex; justify-content: space-between;">
               <span>Nº de Pedido: <?php echo $nuevo_numero_orden; ?></span>
             </p>
            <input type="hidden" name="numero_orden" value="<?php echo $nuevo_numero_orden; ?>">
@@ -202,61 +222,14 @@
              <input type="text" name="fecha_orden" style="margin-left: 10px; width: 188px;" value="<?php echo date("Y-m-d"); ?>">
             </p>
 
-            <p style="display: flex; align-items: center;">
-              <span style="width: 80px;">Proveedor:</span>
-                <select name="proveedor" id="proveedorSelect" onchange="seleccionarProveedor()">
-                 <option value="">Selecciona un proveedor</option>
-                   <?php
-                     $servername = "localhost";
-                     $username = "root";
-                     $password = "";
-                      $dbname = "gestion_compras2";
-
-                     // Obtener el ID de la cotización desde la URL
-                      $cotizacionId = isset($_GET['cotizacion_id']) ? $_GET['cotizacion_id'] : null;
-
-                        // Validar el ID de la cotización
-                       if ($cotizacionId === null || !is_numeric($cotizacionId)) {
-                          // Manejar el error, redirigir o mostrar un mensaje de error
-                          echo "ID de cotización no válido";
-                           exit;
-                        }
-
-                      // Establecer la conexión con la base de datos
-                      $conn = new mysqli($servername, $username, $password, $dbname);
-                      if ($conn->connect_error) {
-                          die("Error de conexión: " . $conn->connect_error);
-                        }
-
-                      $sql = "SELECT ID_PROVEEDOR, NOMBRE FROM tbl_proveedores WHERE ESTADO_PROVEEDOR = 'A'";
-                       $result = $conn->query($sql);
-
-                       if ($result === false) {
-                            die("Error en la consulta: " . $conn->error);
-                        }
-
-                       if ($result->num_rows > 0) {
-                          while ($proveedor = $result->fetch_assoc()) {
-                               echo '<option value="' . $proveedor["ID_PROVEEDOR"] . '" data-cotizacion-id="' . $cotizacionId . '">' . $proveedor["NOMBRE"] . '</option>';
-                            }
-                        } else {
-                          echo "No se encontraron proveedores activos en la base de datos.";
-                        }
-
-                      // Cierra la conexión con la base de datos
-                       $conn->close();
-                    ?>
-                </select>
-            </p>
-
-
             <p style="display: flex; align-items: center;"> <!-- Utilizamos flexbox para alinear verticalmente los elementos -->
-              <span style="width: 80px;">Contacto:</span> <!-- Establecemos un ancho fijo para el label de contacto -->
-              <select name="contacto" id="contactoSelect" style="width: 195px;">
-                 <option value="">Selecciona un contacto</option>
-               </select>
+               <span style="width: 80px;">Proveedor:</span>
+              <input type="text" name="proveedor" id="proveedorTexto" readonly> <!-- Campo de texto para mostrar el proveedor -->
            </p>
-           <input type="hidden" name="cotizacion_id" value="<?php echo $cotizacionId; ?>">
+
+           <input type="hidden" name="cotizacion_id" id="cotizacionIdInput" value="<?php echo $cotizacionId; ?>">           
+           <input type="hidden" name="proveedor_id" id="proveedorId" value="">
+
 
     </div>
     <!-- Tabla para mostrar detalles de cotización -->
@@ -318,232 +291,172 @@
     </form>
 
     <script>
-        function seleccionarProveedor() {
-         var selectElement = document.getElementById('proveedorSelect');
-         var cotizacionIdInput = document.getElementById('cotizacionIdInput');
 
-         var cotizacionId = selectElement.options[selectElement.selectedIndex].getAttribute('data-cotizacion-id');
-         cotizacionIdInput.value = cotizacionId;
+        document.addEventListener('DOMContentLoaded', function() {
+         const urlParams = new URLSearchParams(window.location.search);
+         const cotizacionId = urlParams.get('cotizacion_id');
 
-         cargarCotizaciones();
-        }
-    </script>
+         // Mostrar el ID de la cotización en pantalla
+          document.getElementById('cotizacionIdDisplay').textContent = 'ID de Cotización: ' + cotizacionId;
 
-    <script>
-      $(document).ready(function() {
-            $("#proveedorSelect").on("change", function() {
-             var proveedorId = $("#proveedorSelect").val();
-              cargarContactos(proveedorId); // Llama a la función cargarContactos con el proveedorId seleccionado
-            });
-        });
-
-       function cargarContactos(proveedorId) {
-            if (!proveedorId) {
-              return;
-            }
-
-            $.ajax({
-              type: "POST",
-              url: "obtener_contactos.php",
-              data: { proveedorId: proveedorId },
-              success: function(response) {
-                 console.log(response); // Agrega esta línea para verificar la respuesta
-                  $("#contactoSelect").html(response);
-                }
-            });
-        }
-   </script>
-
-
-
-   <script>
-      $(document).ready(function() {
-    
-      var envioActivo = true;
-    
-       $("#proveedorSelect").on("change", function() {
-          if (envioActivo) {
-              envioActivo = false;
-
-              var proveedorId = $(this).val();
-       
-              cargarCotizaciones(proveedorId);
-            }
-        });
-
-       function cargarCotizaciones() {
-          var selectElement = document.getElementById('proveedorSelect');
-          var cotizacionIdDisplay = document.getElementById('cotizacionIdDisplay');
-
-          // Obtener el valor seleccionado del proveedor
-          var proveedorId = selectElement.value;
-
-          // Obtener el atributo data-cotizacion-id de la opción seleccionada
-          var cotizacionId = selectElement.options[selectElement.selectedIndex].getAttribute('data-cotizacion-id');
-
-          // Mostrar el ID de la cotización en pantalla
-          cotizacionIdDisplay.textContent = 'ID de Cotización: ' + cotizacionId;
-
-          // Llamar a la función para cargar los detalles de la cotización
-           if (cotizacionId !== null && proveedorId !== null) {
-              cargarDetallesCotizacion(proveedorId, cotizacionId);
-            }
-
-        }
-    
-  
-        $("#proveedorSelect").on("change", function () {
-         
-         var proveedorId = $(this).val();
-     
-         cargarContactos(proveedorId);
-          cargarDetallesCotizacion(proveedorId);
-
-        });
-
-        // Obtener proveedor seleccionado al cargar la página
-        var proveedorIdInicial = $("#proveedorSelect").val();
-        cargarContactos(proveedorIdInicial);
-        cargarDetallesCotizacion(proveedorIdInicial);
-
-       function cargarDetallesCotizacion(proveedorId) {
-         // Limpiar ambas tablas antes de agregar nuevas filas
-         $("#cotizacionesTable").empty();
-          $("#order-total tbody").empty();
- 
-           if (proveedorId) {
-             var cotizacionId = $("#proveedorSelect option:selected").data('cotizacion-id');
-
-                $.ajax({
-                 type: "POST",
-                 url: "obtener_cotizaciones.php",
-                 data: { proveedorId: proveedorId, cotizacionId: cotizacionId },
-                 dataType: 'json',
-                   success: function (response) {
-                      // Limpiar la tabla antes de agregar nuevas filas
-                      $("#cotizacionesTable").empty();
-
-                        if (response.length > 0) {
-                          // Agregar filas a la tabla solo si hay datos
-                          response.forEach(function (cotizacion) {
-                              var filaCotizaciones = '<tr>' +
-                               '<td>' + cotizacion.CANTIDAD + '</td>' +
-                               '<td>' + cotizacion.DESCRIPCION + '</td>' +
-                               '<td><input type="text" name="precios[]" class="precioInput" placeholder="Ingrese el precio"></td>' +
-                               '<td class="valorTotal"></td>' +
-                               '<td class="excentoValue">' + (cotizacion.EXCENTO ? 'Sí' : 'No') + '</td>' +
-                               '</tr>';
-
-                               $("#cotizacionesTable").append(filaCotizaciones);
- 
-                               // Calcular totales al ingresar el precio
-                               $(".precioInput").on("input", function () {
-                                  calcularTotales();
-                                });
-                            });
-                        } else {
-                          // Si no hay datos disponibles, mostrar el mensaje
-                            $("#cotizacionesTable").append('<tr><td colspan="5">No hay datos disponibles para el proveedor seleccionado.</td></tr>');
-
-                          // Limpiar totales si no hay datos
-                          $(".subtotalValue").text('0.00');
-                           $("#subtotalInput").val('0.00');
-                          $("#isvValue").text('0.00');
-                          $("#isvInput").val('0.00');
-                           $("#totalValue").text('0.00');
-                          $("#total_factura_input").val('0.00');
-                        }
-                    },
-                      error: function (xhr, status, error) {
-                       console.error("Error en la solicitud AJAX:", status, error);
-                    }
-                });
-           } else {
-             // Si no hay proveedor seleccionado, no mostrar el mensaje
-            }
-        }
-
-
-       // Función para enviar los datos al servidor
-        $("#btnGuardarOrden").on("click", function() {
-    
-
-          console.log("Botón Guardar clickeado");
-          // Obtener los datos del formulario
-          var formData = $("form").serialize();
-
-          // Obtener las cotizaciones y precios
-          var cotizaciones = [];
-          var precios = [];
-
-          // Calcula el monto basado en tus necesidades (por ejemplo, suma de los precios totales de los productos)
-    var monto = parseFloat($("#totalValue").text());
-
-// Asigna el valor del monto al campo oculto
-$("#montoInput").val(monto);
-          $("#cotizacionesTable tr").each(function(index, row) {
-              var cantidad = $(row).find("td:eq(0)").text();
-              var descripcion = $(row).find("td:eq(1)").text();
-              var precio = parseFloat($(row).find(".precioInput").val()) || 0;
-
-              cotizaciones.push({ cantidad: cantidad, descripcion: descripcion });
-              precios.push(precio);
-           });
-
-          // Agregar las cotizaciones y precios a los datos del formulario
-           formData += "&cotizaciones=" + JSON.stringify(cotizaciones);
-           formData += "&precios=" + JSON.stringify(precios);
-
-           // Enviar datos al servidor a través de AJAX
+          // Realizar una solicitud AJAX para obtener el proveedor asociado a la cotización
            $.ajax({
-              type: "POST",
-              url: "guardar_orden.php",
-              data: formData,
-              dataType: 'json',
-              success: function(response) {
-                 console.log(response);
-                 // Manejar la respuesta del servidor si es necesario
+              type: "GET",
+              url: "obtener_proveedor.php",
+               data: { cotizacion_id: cotizacionId },
+               success: function(response) {
+              // Verificar si se recibió un nombre de proveedor o un mensaje de error
+              const data = JSON.parse(response);
+              if (data.nombre) {
+                  // Mostrar el nombre del proveedor en el campo de texto correspondiente
+                  $('#proveedorTexto').val(data.nombre);
 
-                 // Redirigir a ordenes_compras.php después de guardar
-                  window.location.href = "ordenes_compras.php";
-                },
-                    error: function(xhr, status, error) {
-                       console.error("Error en la solicitud AJAX:", status, error);
-                    }
-               });
-            });
+                  // Obtener y asignar el ID del proveedor al campo oculto
+                  $('#proveedorId').val(data.id);
+
+                  // Mostrar el ID del proveedor en el elemento HTML correspondiente
+                   $('#proveedorIdDisplay').text('ID del proveedor: ' + data.id);
+           
+                } else {
+                  // Mostrar un mensaje de error si no se encuentra el proveedor
+                  $('#proveedorTexto').val('Proveedor no encontrado');
+                }
+            },
+           error: function(xhr, status, error) {
+               console.error("Error en la solicitud AJAX:", status, error);
+            }
         });
 
-      // Función para limpiar y calcular totales
-       function calcularTotales() {
-            var subtotal = 0;
 
-          // Calcular y mostrar el valor total en la fila
-           $("#cotizacionesTable tr").each(function(index, row) {
-              var cantidad = $(row).find("td:eq(0)").text();
-              var precio = parseFloat($(row).find(".precioInput").val()) || 0;
-               var valorTotal = cantidad * precio;
-              $(row).find(".valorTotal").text(valorTotal.toFixed(2));
 
-              subtotal += valorTotal;
-           });
 
-            var isv = subtotal * 0.15; // 15% de ISV
-            var total = subtotal + isv;
 
-           // Actualizar los campos ocultos con los totales calculados
-           $(".subtotalValue").text(subtotal.toFixed(2));
-           $("#isvValue").text(isv.toFixed(2));
-            $("#totalValue").text(total.toFixed(2));
+        // Realizar una solicitud AJAX para obtener los detalles de la cotización
+        $.ajax({
+            type: "GET",
+            url: "obtener_cotizaciones.php",
+            data: { cotizacion_id: cotizacionId },
+            success: function(response) {
+                // Verificar si se recibieron los detalles de la cotización correctamente
+                const data = JSON.parse(response);
+                if (data.length > 0) {
+                    // Agregar filas a la tabla con los detalles de la cotización
+                    data.forEach(function(detalle) {
+                        var filaDetalle = '<tr>' +
+                            '<td>' + detalle.cantidad + '</td>' +
+                            '<td>' + detalle.descripcion + '</td>' +
+                            '<td><input type="text" class="precioInput" placeholder="Ingrese el precio"></td>' + // Agregamos un campo de texto para que el usuario ingrese el precio
+                            '<td class="valorTotal"></td>' +
+                            '<td>' + (detalle.excento ? 'Sí' : 'No') + '</td>' +
+                             '</tr>';
+                           $("#cotizacionesTable").append(filaDetalle);
+                   });
+                 
+                 // Calcular totales cuando el usuario ingresa el precio
+                 $(".precioInput").on("input", function() {
+                     calcularTotales();
+                  });
 
-           // Actualizar los campos ocultos con los totales calculados (estos se envían al servidor)
-           $("#subtotalInput").val(subtotal.toFixed(2));
-           $("#isvInput").val(isv.toFixed(2));
-           $("#total_factura_input").val(total.toFixed(2));
+                  // Calcular totales
+                    calcularTotales();
+                } else {
+                    // Mostrar un mensaje si no se encontraron detalles de la cotización
+                    $("#cotizacionesTable").append('<tr><td colspan="5">No se encontraron detalles de la cotización.</td></tr>');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error en la solicitud AJAX:", status, error);
+            }
+        });
+    });
+
+    // Función para enviar los datos al servidor
+    $("#btnGuardarOrden").on("click", function() {
+        console.log("Botón Guardar clickeado");
+        // Obtener los datos del formulario
+        var formData = $("form").serialize();
+
+        // Obtener las cotizaciones y precios
+        var cotizaciones = [];
+        var precios = [];
+
+        $("#cotizacionesTable tr").each(function(index, row) {
+            var cantidad = $(row).find("td:eq(0)").text();
+            var descripcion = $(row).find("td:eq(1)").text();
+            var precio = parseFloat($(row).find(".precioInput").val()) || 0;
+
+            cotizaciones.push({ cantidad: cantidad, descripcion: descripcion });
+            precios.push(precio);
+        });
+
+        // Agregar las cotizaciones y precios a los datos del formulario
+        formData += "&cotizaciones=" + JSON.stringify(cotizaciones);
+        formData += "&precios=" + JSON.stringify(precios);
+
+        // Enviar datos al servidor a través de AJAX
+        $.ajax({
+            type: "POST",
+            url: "guardar_orden.php",
+            data: formData,
+            dataType: 'json',
+            success: function(response) {
+                console.log(response);
+                // Manejar la respuesta del servidor si es necesario
+
+                // Redirigir a ordenes_compras.php después de guardar
+                window.location.href = "compras.php?cotizacion_id=<?php echo $cotizacionId; ?>";
+            },
+            error: function(xhr, status, error) {
+                console.error("Error en la solicitud AJAX:", status, error);
+            }
+        });
+    });
+
+    // Función para limpiar y calcular totales
+    function calcularTotales() {
+    var subtotal = 0;
+
+    // Calcular y mostrar el valor total en la fila
+    $("#cotizacionesTable tr").each(function(index, row) {
+        var cantidad = $(row).find("td:eq(0)").text();
+        var precio = parseFloat($(row).find(".precioInput").val()) || 0;
+        var valorTotal = cantidad * precio;
+        $(row).find(".valorTotal").text(valorTotal.toFixed(2));
+
+        subtotal += valorTotal;
+    });
+
+    // Realizar una solicitud AJAX para obtener el valor del impuesto ISV
+    $.ajax({
+        type: "GET",
+        url: "obtener_ISV.php",
+        success: function(response) {
+            // Verificar si se recibió el valor del impuesto ISV correctamente
+            const data = JSON.parse(response);
+            if (data.impuesto) {
+                var impuesto = parseFloat(data.impuesto);
+                var isv = subtotal * (impuesto / 100); // Calcular el impuesto (ISV)
+                var total = subtotal + isv; // Calcular el total
+                // Actualizar los campos ocultos con los totales calculados
+                $(".subtotalValue").text(subtotal.toFixed(2));
+                $("#isvValue").text(isv.toFixed(2));
+                $("#totalValue").text(total.toFixed(2));
+                // Actualizar los campos ocultos con los totales calculados (estos se envían al servidor)
+                $("#subtotalInput").val(subtotal.toFixed(2));
+                $("#isvInput").val(isv.toFixed(2));
+                $("#total_factura_input").val(total.toFixed(2));
+            } else {
+                console.error("Error: No se recibió el valor del impuesto ISV desde el servidor");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error en la solicitud AJAX para obtener el impuesto ISV:", status, error);
         }
+    });
+}
 
-   
-    </script>
+
+</script>
 
 
 </body>
