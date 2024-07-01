@@ -7,7 +7,7 @@
             text-align: left;
             font-family: Arial, sans-serif;
             background: rgba(255, 255, 255, 0.10);
-            /*background-image: url('../imagen/IHCIS.jpg');*/
+            background-image: url('../imagen/IHCIS.jpg');
             background-size: 40%;
             background-position: center;
             background-repeat: no-repeat;
@@ -80,6 +80,29 @@
             text-align: center;
             margin-top: 20px;
         }
+     
+        .contacto-select {
+          width: 96.5%;
+           height: 34px;
+           font-size: 14px;
+           padding: 5px;
+           margin-bottom: 15px; /* Añade margen inferior para espaciarlo del siguiente campo */
+        }
+        .cantidad-input {
+          width: 100%;  /* Asegura que el campo use todo el ancho disponible */
+          height: 35px; /* Ajusta la altura del campo */
+          font-size: 16px; /* Ajusta el tamaño de la fuente */
+          padding: 5px; /* Agrega relleno para mejor presentación */
+          margin-bottom: 15px; /* Añade margen inferior para espaciarlo del siguiente campo */
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: flex-start; /* Cambia a 'flex-end' o 'center' según sea necesario */
+            gap: 10px; /* Espacio entre los botones */
+            margin-top: 15px; /* Espacio arriba de los botones */
+        }
+
         /* Estilo para el botón de cancelar */
        
         .cancel-button {
@@ -96,27 +119,30 @@
     </style>
 </head>
 <body>
-    <?php
-    include('../conexion/conexion.php');
+   <?php
+     include('../conexion/conexion.php');
 
-    // Verificar si se proporcionó un número de orden válido en la URL
-    if(isset($_GET['numero_orden'])) {
-        // Obtener el número de orden de la URL
-        $numero_orden = $_GET['numero_orden'];
+        // Verificar si se proporcionó un número de orden válido en la URL
+       if(isset($_GET['numero_orden'])) {
+          // Obtener el número de orden de la URL
+         $numero_orden = $_GET['numero_orden'];
 
-        // Consulta para obtener los detalles de la orden de compra
-        $sql_orden = "SELECT oc.*, p.NOMBRE AS NOMBRE_PROVEEDOR 
+         // Consulta para obtener los detalles de la orden de compra
+         $sql_orden = "SELECT oc.*, p.NOMBRE AS NOMBRE_PROVEEDOR 
                       FROM tbl_orden_compra oc
                       INNER JOIN tbl_proveedores p ON oc.ID_PROVEEDOR = p.ID_PROVEEDOR
                       WHERE oc.ID_ORDEN_COMPRA = '$numero_orden'";
-        $result_orden = $conn->query($sql_orden);
+          $result_orden = $conn->query($sql_orden);
 
-        if($result_orden->num_rows > 0) {
-            $row_orden = $result_orden->fetch_assoc();
+          if($result_orden->num_rows > 0) {
+              $row_orden = $result_orden->fetch_assoc();
 
-            // Obtener el monto de la orden de compra producto (si es necesario)
-            $monto = obtenerMontoOrdenCompraProducto($conn, $numero_orden);
-            ?>
+              // Obtener el monto de la orden de compra producto (si es necesario)
+              $monto = obtenerMontoOrdenCompraProducto($conn, $numero_orden);
+           
+              // Obtener la lista de contactos del proveedor
+               $contactos = obtenerContactosProveedor($conn, $row_orden['ID_PROVEEDOR']);
+    ?>
 
 
             <form id="formulario_orden_pago" action="procesar_pago.php" method="POST">
@@ -141,17 +167,22 @@
                             <input type="text" id="nombre_proveedor" name="nombre_proveedor" value="<?php echo $row_orden['NOMBRE_PROVEEDOR']; ?>" readonly>
                             <input type="hidden" name="id_proveedor" value="<?php echo $row_orden['ID_PROVEEDOR']; ?>">
 
-
+                            <label for="contacto_proveedor">Contacto:</label>
+                            <select id="contacto_proveedor" name="contacto_proveedor" required class="contacto-select">
+                                <?php foreach ($contactos as $contacto): ?>
+                                 <option value="<?php echo $contacto['NOMBRE']; ?>"><?php echo $contacto['NOMBRE']; ?></option>
+                                 <?php endforeach; ?>
+                            </select>
 
                             <label for="monto_total">Cantidad:</label>
-                            <input type="text" id="monto_total" name="monto_total" value="<?php echo $monto; ?>" readonly>
+                            <input type="text" id="monto_total" name="monto_total" value="<?php echo $monto; ?>" readonly class="cantidad-input">
                         
-                            <label for="concepto">Concepto:</label>
-                            <textarea id="concepto" name="concepto" rows="4" cols="30" required></textarea>
+                           
                         </div>
 
                         <!-- Columna Derecha -->
                         <div class="right-column">
+                        
                         <label for="banco">Banco:</label>
                             <input type="text" id="banco" name="banco" value="<?php echo obtenerBancoProveedor($conn, $row_orden['ID_PROVEEDOR']); ?>" readonly>
 
@@ -164,11 +195,14 @@
                             <label for="solicitante">Nombre del Solicitante:</label>
                             <input type="text" id="solicitante" name="solicitante" required>
                             <input type="hidden" name="id_orden_compra" value="<?php echo $numero_orden; ?>">
-                           
+                            <label for="concepto">Concepto:</label>
+                            <textarea id="concepto" name="concepto" rows="4" cols="30" required></textarea>
 
                         </div>
+                        <div class="button-group">
                         <button type="submit">Crear Pago</button>
                         <button type="button" onclick="window.location.href='../compras/ordenes_compras.php';" class="cancel-button">Cancelar</button>
+                    </div>
                     </div>
                 </div>
                 
@@ -227,10 +261,20 @@
             return "";
         }
     }
-    ?>
 
-   
-  
+    function obtenerContactosProveedor($conn, $idProveedor) {
+        $sql = "SELECT ID_CONTACTO_PROVEEDOR, NOMBRE FROM tbl_contactos_proveedores WHERE ID_PROVEEDOR = '$idProveedor'";
+        $result = $conn->query($sql);
+        $contactos = [];
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $contactos[] = $row;
+            }
+        }
+        return $contactos;
+    }
+    
+    ?>
 
     <!-- Script de JavaScript para enviar el formulario mediante AJAX -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -256,6 +300,8 @@
                 });
             });
         });
+
+
     </script>
 </body>
 </html>
